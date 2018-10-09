@@ -1,0 +1,694 @@
+<?xml version="1.0"?>
+<SqlWorkbenchSqlProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Delivery2">
+  <Items>
+    <LogicalFolder Name="Connections" Type="2" Sorted="true">
+      <Items>
+        <ConnectionNode Name="BCLDAP105:DPSG\wuxyx001">
+          <Created>2018-10-09T11:22:31.959754-05:00</Created>
+          <Type>SQL</Type>
+          <Server>BCLDAP105</Server>
+          <UserName />
+          <Authentication>Windows Authentication</Authentication>
+          <InitialDB />
+          <LoginTimeout>30</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName />
+        </ConnectionNode>
+        <ConnectionNode Name="BSCCAP108:DPSG\wuxyx001">
+          <Created>2018-10-09T11:22:21.9488001-05:00</Created>
+          <Type>SQL</Type>
+          <Server>BSCCAP108</Server>
+          <UserName />
+          <Authentication>Windows Authentication</Authentication>
+          <InitialDB />
+          <LoginTimeout>30</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName />
+        </ConnectionNode>
+        <ConnectionNode Name="BSCCAP121:DPSG\wuxyx001">
+          <Created>2018-10-09T11:22:10.7716986-05:00</Created>
+          <Type>SQL</Type>
+          <Server>BSCCAP121</Server>
+          <UserName />
+          <Authentication>Windows Authentication</Authentication>
+          <InitialDB />
+          <LoginTimeout>30</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName />
+        </ConnectionNode>
+        <ConnectionNode Name="BSCCSQ07:DPSG\wuxyx001">
+          <Created>2018-10-09T11:22:44.5380273-05:00</Created>
+          <Type>SQL</Type>
+          <Server>BSCCSQ07</Server>
+          <UserName />
+          <Authentication>Windows Authentication</Authentication>
+          <InitialDB />
+          <LoginTimeout>30</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName />
+        </ConnectionNode>
+        <ConnectionNode Name="DPSGSharedClstr:DPSG\wuxyx001">
+          <Created>2018-10-09T11:22:54.3036329-05:00</Created>
+          <Type>SQL</Type>
+          <Server>DPSGSharedClstr</Server>
+          <UserName />
+          <Authentication>Windows Authentication</Authentication>
+          <InitialDB />
+          <LoginTimeout>30</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName />
+        </ConnectionNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Queries" Type="0" Sorted="true">
+      <Items>
+        <FileNode Name="-- 810- Shadow.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>-- 810- Shadow.sql</FullPath>
+        </FileNode>
+        <FileNode Name="!! PROD !!.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>!! PROD !!.sql</FullPath>
+        </FileNode>
+        <FileNode Name="0000.TestGit.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>0000.TestGit.sql</FullPath>
+        </FileNode>
+        <FileNode Name="0001.TestAddFromQAConnection.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>0001.TestAddFromQAConnection.sql</FullPath>
+        </FileNode>
+        <FileNode Name="01. ETL.pLoadDeliveryPlanFromRN.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>01. ETL.pLoadDeliveryPlanFromRN.sql</FullPath>
+        </FileNode>
+        <FileNode Name="02. ETL.pMergeDeliveryPlan.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>02. ETL.pMergeDeliveryPlan.sql</FullPath>
+        </FileNode>
+        <FileNode Name="03. ETL.pProcessPlannedDelivery.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>03. ETL.pProcessPlannedDelivery.sql</FullPath>
+        </FileNode>
+        <FileNode Name="04. Operation.pGetDriverDeliveryPlan.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>04. Operation.pGetDriverDeliveryPlan.sql</FullPath>
+        </FileNode>
+        <FileNode Name="05. Testing.pGetNonBreakRouteForToday.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>05. Testing.pGetNonBreakRouteForToday.sql</FullPath>
+        </FileNode>
+        <FileNode Name="06. ETL.pUploadToAzure.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>06. ETL.pUploadToAzure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="07. Operation.pGetDeliveryByRoute.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>07. Operation.pGetDeliveryByRoute.sql</FullPath>
+        </FileNode>
+        <FileNode Name="08. Erase.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>08. Erase.sql</FullPath>
+        </FileNode>
+        <FileNode Name="09. Testing.pResetRouteDeliveryTime.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>09. Testing.pResetRouteDeliveryTime.sql</FullPath>
+        </FileNode>
+        <FileNode Name="101. dbo.udfDistanceInMiles.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>101. dbo.udfDistanceInMiles.sql</FullPath>
+        </FileNode>
+        <FileNode Name="102. Setup.pDeleteStoreBySAPAccountNumber.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>102. Setup.pDeleteStoreBySAPAccountNumber.sql</FullPath>
+        </FileNode>
+        <FileNode Name="103. Backup_Export.pGetStoreServiceReport.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>103. Backup_Export.pGetStoreServiceReport.sql</FullPath>
+        </FileNode>
+        <FileNode Name="103. Export.pGetStoreServiceReport.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>103. Export.pGetStoreServiceReport.sql</FullPath>
+        </FileNode>
+        <FileNode Name="104. Export.pGetStoreServiceReport1.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>104. Export.pGetStoreServiceReport1.sql</FullPath>
+        </FileNode>
+        <FileNode Name="105. Add Table Columns.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>105. Add Table Columns.sql</FullPath>
+        </FileNode>
+        <FileNode Name="106. Export.pGetStoreServiceReport2.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>106. Export.pGetStoreServiceReport2.sql</FullPath>
+        </FileNode>
+        <FileNode Name="107. StoreServiceReport RC 1.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>107. StoreServiceReport RC 1.sql</FullPath>
+        </FileNode>
+        <FileNode Name="108. Operation.pInsertMerchStopCheckIn.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>108. Operation.pInsertMerchStopCheckIn.sql</FullPath>
+        </FileNode>
+        <FileNode Name="109. Operation.pInsertMerchStopCheckOut.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>109. Operation.pInsertMerchStopCheckOut.sql</FullPath>
+        </FileNode>
+        <FileNode Name="110. StoreServiceReport RC 2.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>110. StoreServiceReport RC 2.sql</FullPath>
+        </FileNode>
+        <FileNode Name="601. ETL.pLoadDeliverySchedulePeriodically.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>601. ETL.pLoadDeliverySchedulePeriodically.sql</FullPath>
+        </FileNode>
+        <FileNode Name="601. Types.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>601. Types.sql</FullPath>
+        </FileNode>
+        <FileNode Name="602. ETL.udf_SetOpenQuery.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>602. ETL.udf_SetOpenQuery.sql</FullPath>
+        </FileNode>
+        <FileNode Name="603. Tables.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>603. Tables.sql</FullPath>
+        </FileNode>
+        <FileNode Name="604. loadOrders.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>604. loadOrders.sql</FullPath>
+        </FileNode>
+        <FileNode Name="605. ETL.pLoadOrderPeriodically.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>605. ETL.pLoadOrderPeriodically.sql</FullPath>
+        </FileNode>
+        <FileNode Name="606. Mesh.pGetMaster.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>606. Mesh.pGetMaster.sql</FullPath>
+        </FileNode>
+        <FileNode Name="607. Mesh.pGetDeliveryManifest.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>607. Mesh.pGetDeliveryManifest.sql</FullPath>
+        </FileNode>
+        <FileNode Name="608. Mesh.pUploadRouteCheckout.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>608. Mesh.pUploadRouteCheckout.sql</FullPath>
+        </FileNode>
+        <FileNode Name="609. Mesh.pInsertMeshMyDayLog.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>609. Mesh.pInsertMeshMyDayLog.sql</FullPath>
+        </FileNode>
+        <FileNode Name="610. Mesh.pUploadAddedStop.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>610. Mesh.pUploadAddedStop.sql</FullPath>
+        </FileNode>
+        <FileNode Name="611. Setup.pInsertWebAPILog.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>611. Setup.pInsertWebAPILog.sql</FullPath>
+        </FileNode>
+        <FileNode Name="612. Mesh.pDeleteStop.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>612. Mesh.pDeleteStop.sql</FullPath>
+        </FileNode>
+        <FileNode Name="613. Mesh.pUpdateEstimatedArrivals.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>613. Mesh.pUpdateEstimatedArrivals.sql</FullPath>
+        </FileNode>
+        <FileNode Name="614. Mesh.pCheckInDeliveryStop.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>614. Mesh.pCheckInDeliveryStop.sql</FullPath>
+        </FileNode>
+        <FileNode Name="615. Mesh.pCheckOutDeliveryStop.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>615. Mesh.pCheckOutDeliveryStop.sql</FullPath>
+        </FileNode>
+        <FileNode Name="616. Mesh.pUploadStopDNS.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>616. Mesh.pUploadStopDNS.sql</FullPath>
+        </FileNode>
+        <FileNode Name="617. Mesh.pUploadNewSequence.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>617. Mesh.pUploadNewSequence.sql</FullPath>
+        </FileNode>
+        <FileNode Name="618. Mesh.pInsertInvoice.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>618. Mesh.pInsertInvoice.sql</FullPath>
+        </FileNode>
+        <FileNode Name="619. Mesh.pCancelDNS.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>619. Mesh.pCancelDNS.sql</FullPath>
+        </FileNode>
+        <FileNode Name="621. Operation.pGetMerchStoreDelivery.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>621. Operation.pGetMerchStoreDelivery.sql</FullPath>
+        </FileNode>
+        <FileNode Name="622. Operation.pGetMerchandisingDetails.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>622. Operation.pGetMerchandisingDetails.sql</FullPath>
+        </FileNode>
+        <FileNode Name="623. Planning.pGetPreDispatch.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>623. Planning.pGetPreDispatch.sql</FullPath>
+        </FileNode>
+        <FileNode Name="624. ETL.pFillDeliveryQuantity.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>624. ETL.pFillDeliveryQuantity.sql</FullPath>
+        </FileNode>
+        <FileNode Name="631. Operation.pInsertBlob.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>631. Operation.pInsertBlob.sql</FullPath>
+        </FileNode>
+        <FileNode Name="650. Check DeliveryRoute.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>650. Check DeliveryRoute.sql</FullPath>
+        </FileNode>
+        <FileNode Name="666. Mesh.pCopyCurrent0522.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>666. Mesh.pCopyCurrent0522.sql</FullPath>
+        </FileNode>
+        <FileNode Name="666. Mesh.pResetIrvingApr12.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>666. Mesh.pResetIrvingApr12.sql</FullPath>
+        </FileNode>
+        <FileNode Name="667. Reset Today .sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>667. Reset Today .sql</FullPath>
+        </FileNode>
+        <FileNode Name="670.1. DeploymentPackage.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>670.1. DeploymentPackage.sql</FullPath>
+        </FileNode>
+        <FileNode Name="670.2. DeploymentPackage.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>670.2. DeploymentPackage.sql</FullPath>
+        </FileNode>
+        <FileNode Name="670.3 Mesh Deployment(2018-06-22).sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>670.3 Mesh Deployment(2018-06-22).sql</FullPath>
+        </FileNode>
+        <FileNode Name="670.4 Enable Features(2018-06-22).sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>670.4 Enable Features(2018-06-22).sql</FullPath>
+        </FileNode>
+        <FileNode Name="670.5 Enable Features(2018-09-10).sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>670.5 Enable Features(2018-09-10).sql</FullPath>
+        </FileNode>
+        <FileNode Name="688. CheckForUploadStatus.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>688. CheckForUploadStatus.sql</FullPath>
+        </FileNode>
+        <FileNode Name="699. Enable Feature.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>699. Enable Feature.sql</FullPath>
+        </FileNode>
+        <FileNode Name="798. New Table PromoionChannel.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>798. New Table PromoionChannel.sql</FullPath>
+        </FileNode>
+        <FileNode Name="798. RollBack.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>798. RollBack.sql</FullPath>
+        </FileNode>
+        <FileNode Name="799. PreCal.pRefreshLookups.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>799. PreCal.pRefreshLookups.sql</FullPath>
+        </FileNode>
+        <FileNode Name="799. RollBack.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>799. RollBack.sql</FullPath>
+        </FileNode>
+        <FileNode Name="800. Playbook.pGetPromotionsByRouteIDWu.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>800. Playbook.pGetPromotionsByRouteIDWu.sql</FullPath>
+        </FileNode>
+        <FileNode Name="800. RollBack.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>800. RollBack.sql</FullPath>
+        </FileNode>
+        <FileNode Name="801. Playbook.pSaveDSDPromotion.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>801. Playbook.pSaveDSDPromotion.sql</FullPath>
+        </FileNode>
+        <FileNode Name="801. RollBack.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>801. RollBack.sql</FullPath>
+        </FileNode>
+        <FileNode Name="901. Reset Test.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>901. Reset Test.sql</FullPath>
+        </FileNode>
+        <FileNode Name="902. Operation.pGetMerchStoreDelivery.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>902. Operation.pGetMerchStoreDelivery.sql</FullPath>
+        </FileNode>
+        <FileNode Name="99.The Jobs.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>99.The Jobs.sql</FullPath>
+        </FileNode>
+        <FileNode Name="999. Job Status.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>999. Job Status.sql</FullPath>
+        </FileNode>
+        <FileNode Name="A0001. Notify.pGetNotifications.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>A0001. Notify.pGetNotifications.sql</FullPath>
+        </FileNode>
+        <FileNode Name="A0001-1. Notify.pGetNotifications.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>A0001-1. Notify.pGetNotifications.sql</FullPath>
+        </FileNode>
+        <FileNode Name="A0002. Notify.pResetNotification.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>A0002. Notify.pResetNotification.sql</FullPath>
+        </FileNode>
+        <FileNode Name="A0003. Notify.p0InitalMerchCall.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>A0003. Notify.p0InitalMerchCall.sql</FullPath>
+        </FileNode>
+        <FileNode Name="A0004. Notify.p0DriverUpdate.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>A0004. Notify.p0DriverUpdate.sql</FullPath>
+        </FileNode>
+        <FileNode Name="A0005. PopulateParties.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>A0005. PopulateParties.sql</FullPath>
+        </FileNode>
+        <FileNode Name="A0006. Merch-GrandUserAccess.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>A0006. Merch-GrandUserAccess.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Add Azure Linked Server.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Add Azure Linked Server.sql</FullPath>
+        </FileNode>
+        <FileNode Name="B001. Operation.pGetMerchStoreDelivery.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>B001. Operation.pGetMerchStoreDelivery.sql</FullPath>
+        </FileNode>
+        <FileNode Name="ETL.pLoadFromRM(NullAccountIssue).sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>ETL.pLoadFromRM(NullAccountIssue).sql</FullPath>
+        </FileNode>
+        <FileNode Name="GerPromotionByRoute_Forward.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>GerPromotionByRoute_Forward.sql</FullPath>
+        </FileNode>
+        <FileNode Name="GetPromotionByRoute_Rollback.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>GetPromotionByRoute_Rollback.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Json Query Test.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Json Query Test.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Mesh-Qureis.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Mesh-Qureis.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Operation.pInsertMerchStopCheckIn.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Operation.pInsertMerchStopCheckIn.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Playbook.pGetPromotionsByRouteID_UrgencyFixForCRQ 06921.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Playbook.pGetPromotionsByRouteID_UrgencyFixForCRQ 06921.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Prod Issue for too many promotions.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Prod Issue for too many promotions.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Prodution Trouble Shooting.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Prodution Trouble Shooting.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Ragov's data.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Ragov's data.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Readme.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Readme.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Shared.PurgeLogs.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Shared.PurgeLogs.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Test.pTestNB.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Test.pTestNB.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Ticket 109 3.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Ticket 109 3.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Ticket 109 Version 2.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Ticket 109 Version 2.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Ticket 109.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Ticket 109.sql</FullPath>
+        </FileNode>
+        <FileNode Name="VMB-Prod.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>VMB-Prod.sql</FullPath>
+        </FileNode>
+        <FileNode Name="X01. Shared.pPurgePromotions.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>X01. Shared.pPurgePromotions.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Y00. Shared.ImageTobeDeleted.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Y00. Shared.ImageTobeDeleted.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Y01. Shared.pPurgePOIs.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Y01. Shared.pPurgePOIs.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Z0. Shared.pPurgeLogs.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Z0. Shared.pPurgeLogs.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Z1. PurgeJob.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Z1. PurgeJob.sql</FullPath>
+        </FileNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Miscellaneous" Type="3" Sorted="true">
+      <Items />
+    </LogicalFolder>
+  </Items>
+</SqlWorkbenchSqlProject>
