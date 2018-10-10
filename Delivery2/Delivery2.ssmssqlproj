@@ -86,8 +86,8 @@
           <FullPath>0000.TestGit.sql</FullPath>
         </FileNode>
         <FileNode Name="0001.TestAddFromQAConnection.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>0001.TestAddFromQAConnection.sql</FullPath>
         </FileNode>
@@ -97,11 +97,19 @@
           <AssociatedConnUserName />
           <FullPath>0002.Testinng for new project.sql</FullPath>
         </FileNode>
+<<<<<<< HEAD
         <FileNode Name="0003. Prod.RouteHasMultipleBreaks.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>0003. Prod.RouteHasMultipleBreaks.sql</FullPath>
+=======
+        <FileNode Name="0003 .sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>0003 .sql</FullPath>
+>>>>>>> bf9ec55b2851ab5ca1b57f40a91336fa7f34c93d
         </FileNode>
         <FileNode Name="01. ETL.pLoadDeliveryPlanFromRN.sql">
           <AssociatedConnectionMoniker />

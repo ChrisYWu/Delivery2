@@ -1,5 +1,6 @@
 
 Select @@SERVERNAME
+Go
 
 Use Merch
 Go
