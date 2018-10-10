@@ -1,6 +1,7 @@
 Use Merch
 Go
 
+
 Select DeliveryDateUTC, RouteID, Count(*)
 From Mesh.PlannedStop
 Where StopType <> 'STP'
