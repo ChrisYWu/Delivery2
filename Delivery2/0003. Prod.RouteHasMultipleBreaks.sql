@@ -8,6 +8,7 @@ Select DB_Name() As [Database]
 Go
 
 
+
 Select DeliveryDateUTC, RouteID, Count(*)
 From Mesh.PlannedStop
 Where StopType <> 'STP'
