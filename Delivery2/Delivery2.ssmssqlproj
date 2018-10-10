@@ -97,6 +97,12 @@
           <AssociatedConnUserName />
           <FullPath>0002.Testinng for new project.sql</FullPath>
         </FileNode>
+        <FileNode Name="0003. Prod.RouteHasMultipleBreaks.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>0003. Prod.RouteHasMultipleBreaks.sql</FullPath>
+        </FileNode>
         <FileNode Name="01. ETL.pLoadDeliveryPlanFromRN.sql">
           <AssociatedConnectionMoniker />
           <AssociatedConnSrvName />
