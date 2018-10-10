@@ -102,7 +102,13 @@
           <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>0003. Prod.RouteHasMultipleBreaks.sql</FullPath>
-        </FileNode>		
+        </FileNode>
+        <FileNode Name="0005. Test Emput file.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>0005. Test Emput file.sql</FullPath>
+        </FileNode>
         <FileNode Name="01. ETL.pLoadDeliveryPlanFromRN.sql">
           <AssociatedConnectionMoniker />
           <AssociatedConnSrvName />
@@ -116,8 +122,8 @@
           <FullPath>02. ETL.pMergeDeliveryPlan.sql</FullPath>
         </FileNode>
         <FileNode Name="03. ETL.pProcessPlannedDelivery.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>03. ETL.pProcessPlannedDelivery.sql</FullPath>
         </FileNode>
