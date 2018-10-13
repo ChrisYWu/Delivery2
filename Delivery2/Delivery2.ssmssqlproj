@@ -74,8 +74,8 @@
           <FullPath>-- 810- Shadow.sql</FullPath>
         </FileNode>
         <FileNode Name="!! PROD !!.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>!! PROD !!.sql</FullPath>
         </FileNode>
@@ -362,8 +362,8 @@
           <FullPath>622. Operation.pGetMerchandisingDetails.sql</FullPath>
         </FileNode>
         <FileNode Name="623. Planning.pGetPreDispatch.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>623. Planning.pGetPreDispatch.sql</FullPath>
         </FileNode>
@@ -428,10 +428,16 @@
           <FullPath>670.4 Enable Features(2018-06-22).sql</FullPath>
         </FileNode>
         <FileNode Name="670.5 Enable Features(2018-09-10).sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>670.5 Enable Features(2018-09-10).sql</FullPath>
+        </FileNode>
+        <FileNode Name="670.6 Enable Features(2018-10-12, Lubbuck).sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>670.6 Enable Features(2018-10-12, Lubbuck).sql</FullPath>
         </FileNode>
         <FileNode Name="688. CheckForUploadStatus.sql">
           <AssociatedConnectionMoniker />
@@ -440,266 +446,260 @@
           <FullPath>688. CheckForUploadStatus.sql</FullPath>
         </FileNode>
         <FileNode Name="699. Enable Feature.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>699. Enable Feature.sql</FullPath>
         </FileNode>
         <FileNode Name="798. New Table PromoionChannel.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>798. New Table PromoionChannel.sql</FullPath>
         </FileNode>
         <FileNode Name="798. RollBack.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>798. RollBack.sql</FullPath>
         </FileNode>
         <FileNode Name="799. PreCal.pRefreshLookups.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>799. PreCal.pRefreshLookups.sql</FullPath>
         </FileNode>
         <FileNode Name="799. RollBack.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>799. RollBack.sql</FullPath>
         </FileNode>
         <FileNode Name="800. Playbook.pGetPromotionsByRouteIDWu.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>800. Playbook.pGetPromotionsByRouteIDWu.sql</FullPath>
         </FileNode>
         <FileNode Name="800. RollBack.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>800. RollBack.sql</FullPath>
         </FileNode>
         <FileNode Name="801. Playbook.pSaveDSDPromotion.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>801. Playbook.pSaveDSDPromotion.sql</FullPath>
         </FileNode>
         <FileNode Name="801. RollBack.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>801. RollBack.sql</FullPath>
         </FileNode>
         <FileNode Name="901. Reset Test.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>901. Reset Test.sql</FullPath>
         </FileNode>
         <FileNode Name="902. Operation.pGetMerchStoreDelivery.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>902. Operation.pGetMerchStoreDelivery.sql</FullPath>
         </FileNode>
         <FileNode Name="99.The Jobs.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>99.The Jobs.sql</FullPath>
         </FileNode>
         <FileNode Name="999. Job Status.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>999. Job Status.sql</FullPath>
         </FileNode>
         <FileNode Name="A0001. Notify.pGetNotifications.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>A0001. Notify.pGetNotifications.sql</FullPath>
         </FileNode>
-        <FileNode Name="A0001-1. Notify.pGetNotifications.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
-          <AssociatedConnUserName />
-          <FullPath>A0001-1. Notify.pGetNotifications.sql</FullPath>
-        </FileNode>
         <FileNode Name="A0002. Notify.pResetNotification.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>A0002. Notify.pResetNotification.sql</FullPath>
         </FileNode>
         <FileNode Name="A0003. Notify.p0InitalMerchCall.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>A0003. Notify.p0InitalMerchCall.sql</FullPath>
         </FileNode>
         <FileNode Name="A0004. Notify.p0DriverUpdate.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>A0004. Notify.p0DriverUpdate.sql</FullPath>
         </FileNode>
         <FileNode Name="A0005. PopulateParties.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>A0005. PopulateParties.sql</FullPath>
         </FileNode>
         <FileNode Name="A0006. Merch-GrandUserAccess.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>A0006. Merch-GrandUserAccess.sql</FullPath>
         </FileNode>
         <FileNode Name="Add Azure Linked Server.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Add Azure Linked Server.sql</FullPath>
         </FileNode>
         <FileNode Name="B001. Operation.pGetMerchStoreDelivery.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>B001. Operation.pGetMerchStoreDelivery.sql</FullPath>
         </FileNode>
         <FileNode Name="ETL.pLoadFromRM(NullAccountIssue).sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>ETL.pLoadFromRM(NullAccountIssue).sql</FullPath>
         </FileNode>
         <FileNode Name="GerPromotionByRoute_Forward.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>GerPromotionByRoute_Forward.sql</FullPath>
         </FileNode>
         <FileNode Name="GetPromotionByRoute_Rollback.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>GetPromotionByRoute_Rollback.sql</FullPath>
         </FileNode>
         <FileNode Name="Json Query Test.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Json Query Test.sql</FullPath>
         </FileNode>
         <FileNode Name="Mesh-Qureis.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Mesh-Qureis.sql</FullPath>
         </FileNode>
         <FileNode Name="Operation.pInsertMerchStopCheckIn.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Operation.pInsertMerchStopCheckIn.sql</FullPath>
         </FileNode>
         <FileNode Name="Playbook.pGetPromotionsByRouteID_UrgencyFixForCRQ 06921.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Playbook.pGetPromotionsByRouteID_UrgencyFixForCRQ 06921.sql</FullPath>
         </FileNode>
         <FileNode Name="Prod Issue for too many promotions.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Prod Issue for too many promotions.sql</FullPath>
         </FileNode>
         <FileNode Name="Prodution Trouble Shooting.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Prodution Trouble Shooting.sql</FullPath>
         </FileNode>
         <FileNode Name="Ragov's data.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Ragov's data.sql</FullPath>
         </FileNode>
         <FileNode Name="Readme.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Readme.sql</FullPath>
         </FileNode>
         <FileNode Name="Shared.PurgeLogs.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Shared.PurgeLogs.sql</FullPath>
         </FileNode>
         <FileNode Name="Test.pTestNB.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Test.pTestNB.sql</FullPath>
         </FileNode>
         <FileNode Name="Ticket 109 3.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Ticket 109 3.sql</FullPath>
         </FileNode>
         <FileNode Name="Ticket 109 Version 2.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Ticket 109 Version 2.sql</FullPath>
         </FileNode>
         <FileNode Name="Ticket 109.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Ticket 109.sql</FullPath>
         </FileNode>
         <FileNode Name="VMB-Prod.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>VMB-Prod.sql</FullPath>
         </FileNode>
         <FileNode Name="X01. Shared.pPurgePromotions.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>X01. Shared.pPurgePromotions.sql</FullPath>
         </FileNode>
         <FileNode Name="Y00. Shared.ImageTobeDeleted.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Y00. Shared.ImageTobeDeleted.sql</FullPath>
         </FileNode>
         <FileNode Name="Y01. Shared.pPurgePOIs.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Y01. Shared.pPurgePOIs.sql</FullPath>
         </FileNode>
         <FileNode Name="Z0. Shared.pPurgeLogs.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Z0. Shared.pPurgeLogs.sql</FullPath>
         </FileNode>
         <FileNode Name="Z1. PurgeJob.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Z1. PurgeJob.sql</FullPath>
         </FileNode>

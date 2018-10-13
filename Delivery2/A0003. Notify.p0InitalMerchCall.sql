@@ -41,7 +41,7 @@ As
 	Join DPSGSHAREDCLSTR.Merch.Setup.MerchGroup m on d.MerchGroupID = m.MerchGroupID
 	Left Join DPSGSHAREDCLSTR.Merch.Mesh.DeliveryStop ds on d.SAPAccountNumber = ds.SAPAccountNumber and ds.DeliveryDateUTC = d.DispatchDate
 	Left Join DPSGSHAREDCLSTR.Merch.Mesh.PlannedStop ps on d.SAPAccountNumber = ps.SAPAccountNumber and ps.DeliveryDateUTC = d.DispatchDate
-	Where SAPBranchID in(1120, 1138)
+	Where SAPBranchID in(1120, 1138, 1178)
 	And DispatchDate = Convert(Date, GetDate())
 	And InvalidatedBatchID is null
 

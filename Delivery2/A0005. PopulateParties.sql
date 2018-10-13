@@ -8,12 +8,12 @@ SELECT [PartyID]
 
 Merge [Merch].[Notify].[Party] as tar
 Using (
-Select m.GSN, p.Firstname, p.LastName, m.Phone, Null Email, 'Merchandiser' Role, -7 TimeZoneOffSet
+Select m.GSN, p.Firstname, p.LastName, m.Phone, Null Email, 'Merchandiser' Role, -5 TimeZoneOffSet
 From DPSGSHAREDCLSTR.Merch.Setup.Merchandiser m
 Join DPSGSHAREDCLSTR.Merch.Setup.MerchGroup mg on m.MerchGroupID = mg.MerchGroupID
 Join DPSGSHAREDCLSTR.Merch.Setup.Person p on m.GSN = p.GSN 
-Where SAPBranchID = 1138
-And M.Phone <> '' Order By GSN) Input 
+Where SAPBranchID = 1178
+And M.Phone <> '') Input 
 On Tar.PartyID = input.GSN
 When Matched
 Then Update
