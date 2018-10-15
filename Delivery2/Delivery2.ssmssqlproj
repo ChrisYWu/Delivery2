@@ -427,6 +427,12 @@
           <AssociatedConnUserName />
           <FullPath>670.6 Enable Features(2018-10-12, Lubbuck).sql</FullPath>
         </FileNode>
+        <FileNode Name="670.7 Remove Feature For Lubbock(2018-12-15).sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>670.7 Remove Feature For Lubbock(2018-12-15).sql</FullPath>
+        </FileNode>
         <FileNode Name="688. CheckForUploadStatus.sql">
           <AssociatedConnectionMoniker />
           <AssociatedConnSrvName />
