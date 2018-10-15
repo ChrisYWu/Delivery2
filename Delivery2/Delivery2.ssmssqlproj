@@ -67,15 +67,9 @@
     </LogicalFolder>
     <LogicalFolder Name="Queries" Type="0" Sorted="true">
       <Items>
-        <FileNode Name="-- 810- Shadow.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
-          <AssociatedConnUserName />
-          <FullPath>-- 810- Shadow.sql</FullPath>
-        </FileNode>
         <FileNode Name="!! PROD !!.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>!! PROD !!.sql</FullPath>
         </FileNode>
@@ -102,12 +96,6 @@
           <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>0003. Prod.RouteHasMultipleBreaks.sql</FullPath>
-        </FileNode>
-        <FileNode Name="0005. Test Emput file.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
-          <AssociatedConnUserName />
-          <FullPath>0005. Test Emput file.sql</FullPath>
         </FileNode>
         <FileNode Name="01. ETL.pLoadDeliveryPlanFromRN.sql">
           <AssociatedConnectionMoniker />
