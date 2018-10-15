@@ -64,7 +64,7 @@ Begin
 	Alter Table Operation.MerchStopcheckIn
 	Add CheckInDistanceInMiles Decimal(11,1)
 
-	Print 'CheckInDistanceInMiles column added to table Operation.MerchStopcheckIn'
+	Print 'CheckInDistanceInMiles column added to table Operation.MerchStopcheckIn at ' + convert(varchar(200), GetDate())
 End
 Go
 
@@ -86,7 +86,7 @@ Begin
 	Alter Table Operation.MerchStopcheckOut
 	Add CheckOutDistanceInMiles Decimal(11,1)
 
-	Print 'CheckOutDistanceInMiles column added to table Operation.MerchStopcheckOut'
+	Print 'CheckOutDistanceInMiles column added to table Operation.MerchStopcheckOut at ' + convert(varchar(200), GetDate())
 End
 Go
 
@@ -97,7 +97,7 @@ Join Operation.merchStopcheckOut o on chkIn.MerchStopID = o.MerchStopID
 Join SAP.Account acc on chkIn.SAPAccountNumber = acc.SAPAccountNumber
 Go
 
-Print 'Operation.merchStopcheckOut updated at ' + convert(varchar(200), GetDate())
+Print 'Operation.MerchStopcheckOut updated at ' + convert(varchar(200), GetDate())
 Go
 
 -------------------------------------------------------------------------------------------------
@@ -500,5 +500,5 @@ BEGIN
 	END
 Go
 
-Print 'Export.pInsertMerchStopCheckOut updated at ' + convert(varchar(200), GetDate())
+Print 'Operation.pInsertMerchStopCheckOut updated at ' + convert(varchar(200), GetDate())
 Go

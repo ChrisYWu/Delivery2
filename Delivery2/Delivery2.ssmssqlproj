@@ -212,8 +212,8 @@
           <FullPath>107. StoreServiceReport RC 1.sql</FullPath>
         </FileNode>
         <FileNode Name="108. Operation.pInsertMerchStopCheckIn.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>108. Operation.pInsertMerchStopCheckIn.sql</FullPath>
         </FileNode>
@@ -224,8 +224,8 @@
           <FullPath>109. Operation.pInsertMerchStopCheckOut.sql</FullPath>
         </FileNode>
         <FileNode Name="110. StoreServiceReport RC 2.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>110. StoreServiceReport RC 2.sql</FullPath>
         </FileNode>
