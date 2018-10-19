@@ -15,42 +15,13 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 /*
-exec Mesh.pGetDeliveryManifest @DeliveryDateUTC = '2018-02-15', @RouteID = 110901504
-exec Mesh.pGetDeliveryManifest @RouteID = 110901006
-exec Mesh.pGetDeliveryManifest @RouteID = 111501301
+Select *
+From Mesh.PlannedStop
+Where DeliveryDateUTC = '2018-10-19'
+And StopType Not In ('STP', 'B', 'PB')
 
-		Select *
-		From Mesh.DeliveryRoute
-		Where DeliveryDateUTC = '2018-04-16'
-		And RouteID = 111501301
 
 */
-
---Select *
---From Mesh.PlannedStop
---Where RouteID in (
---Select Distinct RouteID
---From Mesh.PlannedStop
---Where DeliveryDATEUTC = '2018-06-05'
---And TravelTotime = 0
---And SEquence > 0
---And StopType = 'STP'
---)
---And DeliveryDATEUTC = '2018-06-05'
-
-
---SElect *
---From Mesh.PlannedStop
---Where DeliveryDATEUTC = '2018-06-05'
---And SAPAccountNumber in (
---Select SAPAccountNumber
---From Mesh.PlannedStop
---Where DeliveryDATEUTC = '2018-06-05'
---And StopType = 'STP'
---Group By RouteID, SAPAccountNumber
---having Count(*) > 1
---)
---And TravelToTime = 0
 
 Create Proc Mesh.pGetDeliveryManifest
 (
@@ -134,6 +105,7 @@ As
 
 		Declare @LastSAPAccountNumber varchar(50)
 		Declare @SAPAccountNumber varchar(50)
+		Declare @StopType varchar(50)
 		Declare @TravelToTime int
 		Declare @ServiceTime int
 		Declare @Cur int
@@ -149,9 +121,23 @@ As
 			Set @Cur = @Cur + 1
 			Select @LastHitCur	= Max(Sequence) From @Conso Where Sequence < @Cur
 
-			Select @SAPAccountNumber = SAPAccountNumber, @TravelToTime = TravelToTime, @ServiceTime = ServiceTime From @Conso Where Sequence = @Cur
-			--Select @Cur Cur, @SAPAccountNumber SAPAccountNumber, @TravelToTime TravelToTime
+			Select	@SAPAccountNumber = SAPAccountNumber, 
+					@TravelToTime = TravelToTime, 
+					@ServiceTime = ServiceTime,
+					@StopType = StopType 
+			From @Conso Where Sequence = @Cur
 			
+			If (@StopType Not In ('STP', 'B', 'PB'))
+			Begin
+				Update @Conso Set TravelToTime = TravelToTime + @ServiceTime + @TravelToTime Where Sequence = @Cur + 1
+				Delete @Conso Where Sequence = @Cur				
+			End
+
+			If (@StopType = 'PB')
+			Begin
+				Update @Conso Set StopType= 'B' Where Sequence = @Cur
+			End
+
 			If ((@LastSAPAccountNumber = @SAPAccountNumber) And (@TravelToTime = 0))
 			Begin
 				--Select SAPAccountNumber, Sequence From @Conso
@@ -171,8 +157,6 @@ As
 		Select Row_Number() Over (Order By Sequence) As RNum, PlannedStopID
 		From @Conso) t
 		on c.PlannedStopID = t.PlannedStopID
-
-		--Select * From @Conso
 
 		----------------------------------------------------------
 		--ENDofCONSOLIDATE----ENDofCONSOLIDATE--ENDofCONSOLIDATE--
@@ -284,15 +268,28 @@ GO
 Print 'Mesh.pGetDeliveryManifest created'
 Go
 
+
+Declare @RouteIDInput int
+Set @RouteIDInput = 109402301
+
 --
-exec Mesh.pGetDeliveryManifest @RouteID = 108000513
-Go
+exec Mesh.pGetDeliveryManifest @RouteID = @RouteIDInput
 
 Select *
 From Mesh.PlannedStop
-Where DeliveryDATEUTC = '2018-06-05'
-And RouteID = 108000513
-Go
+Where DeliveryDAteUTC = '2018-10-19'
+And RouteID = @RouteIDInput
+Order By Sequence
+
+--
+--exec Mesh.pGetDeliveryManifest @RouteID = 108000513
+--Go
+
+--Select *
+--From Mesh.PlannedStop
+--Where DeliveryDATEUTC = '2018-06-05'
+--And RouteID = 108000513
+--Go
 
 
 

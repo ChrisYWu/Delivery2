@@ -236,8 +236,8 @@
           <FullPath>112. RollBack-Export.pGetStoreServiceReport.sql</FullPath>
         </FileNode>
         <FileNode Name="601. ETL.pLoadDeliverySchedulePeriodically.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>601. ETL.pLoadDeliverySchedulePeriodically.sql</FullPath>
         </FileNode>
@@ -277,9 +277,15 @@
           <AssociatedConnUserName />
           <FullPath>606. Mesh.pGetMaster.sql</FullPath>
         </FileNode>
+        <FileNode Name="607. Mesh.pGetDeliveryManifest(121 Rollback).sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>607. Mesh.pGetDeliveryManifest(121 Rollback).sql</FullPath>
+        </FileNode>
         <FileNode Name="607. Mesh.pGetDeliveryManifest.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>607. Mesh.pGetDeliveryManifest.sql</FullPath>
         </FileNode>
@@ -422,20 +428,20 @@
           <FullPath>670.2. DeploymentPackage.sql</FullPath>
         </FileNode>
         <FileNode Name="670.3 Mesh Deployment(2018-06-22).sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>670.3 Mesh Deployment(2018-06-22).sql</FullPath>
         </FileNode>
         <FileNode Name="670.4 Enable Features(2018-06-22).sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>670.4 Enable Features(2018-06-22).sql</FullPath>
         </FileNode>
         <FileNode Name="670.5 Enable Features(2018-09-10).sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>670.5 Enable Features(2018-09-10).sql</FullPath>
         </FileNode>

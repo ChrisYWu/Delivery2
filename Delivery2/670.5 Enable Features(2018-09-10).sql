@@ -20,7 +20,7 @@ Use Merch
 Go
 
 Update Setup.Config
-Set Value = '1120,1138'
+Set Value = '1002,1020,1034,1062,1090,1094,1120,1138,1178'
 Where ConfigID = 4
 Go
 
