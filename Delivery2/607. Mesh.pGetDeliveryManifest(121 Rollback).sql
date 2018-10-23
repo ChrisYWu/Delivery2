@@ -1,7 +1,7 @@
 Use Merch
 Go
 
-ALTER Proc [Mesh].[pGetDeliveryManifest]
+Alter Proc Mesh.pGetDeliveryManifest
 (
 	@RouteID int,
 	@DeliveryDateUTC date = null
@@ -100,8 +100,10 @@ As
 				Set @Cur = @Cur + 1
 				Select @LastHitCur	= Max(Sequence) From @Conso Where Sequence < @Cur
 
-				Select @SAPAccountNumber = SAPAccountNumber, @TravelToTime = TravelToTime, @ServiceTime = ServiceTime From @Conso Where Sequence = @Cur
-				--Select @Cur Cur, @SAPAccountNumber SAPAccountNumber, @TravelToTime TravelToTime
+				Select @SAPAccountNumber = SAPAccountNumber, 
+							@TravelToTime = TravelToTime, 
+							@ServiceTime = ServiceTime 
+				From @Conso Where Sequence = @Cur
 			
 				If ((@LastSAPAccountNumber = @SAPAccountNumber) And (@TravelToTime = 0))
 				Begin
@@ -122,8 +124,6 @@ As
 			Select Row_Number() Over (Order By Sequence) As RNum, PlannedStopID
 			From @Conso) t
 			on c.PlannedStopID = t.PlannedStopID
-
-			--Select * From @Conso
 
 			----------------------------------------------------------
 			--ENDofCONSOLIDATE----ENDofCONSOLIDATE--ENDofCONSOLIDATE--

@@ -1,29 +1,7 @@
 USE Merch
 GO
 
-If Exists (Select * From sys.procedures Where Name = 'pGetDeliveryManifest')
-Begin
-	Drop Proc Mesh.pGetDeliveryManifest
-	Print '* Mesh.pGetDeliveryManifest'
-End 
-Go
-
-----------------------------
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-
-/*
-Select *
-From Mesh.PlannedStop
-Where DeliveryDateUTC = '2018-10-19'
-And StopType Not In ('STP', 'B', 'PB')
-
-
-*/
-
-Create Proc Mesh.pGetDeliveryManifest
+Alter Proc Mesh.pGetDeliveryManifest
 (
 	@RouteID int,
 	@DeliveryDateUTC date = null
@@ -67,102 +45,104 @@ As
 		Where DeliveryDateUTC = @DeliveryDateUTC
 		And RouteID = @RouteID
 
-		--------------------------------------------------------
-		--CONSOLIDATE----CONSOLIDATE--CONSOLIDATE--CONSOLIDATE--
-		Declare @Conso Table
-		(
-			PlannedStopID int
-			,DeliveryDateUTC Date
-			,RouteID int
-			,Sequence int
-			,StopType varchar(20)
-			,SAPAccountNumber varchar(50)
-			,Quantity int
-			,PlannedArrival datetime2(0)
-			,ServiceTime int
-			,TravelToTime int
-			,LastModifiedBy varchar(50)
-			,LastModifiedUTC datetime2(0)
-			,LocalUpdateTime datetime2(0)
-		)
-
-		Insert Into @Conso
-		Select PlannedStopID
-			,DeliveryDateUTC
-			,RouteID
-			,Sequence + 1 Sequence
-			,StopType
-			,SAPAccountNumber
-			,Quantity
-			,PlannedArrival
-			,ServiceTime
-			,TravelToTime
-			,'Dispatcher' LastModifiedBy
-			,LastModifiedUTC
-			,GetDate() LocalUpdateTime
-		From Mesh.PlannedStop
-		Where DeliveryDateUTC = @DeliveryDateUTC And RouteID = @RouteID
-
-		Declare @LastSAPAccountNumber varchar(50)
-		Declare @SAPAccountNumber varchar(50)
-		Declare @StopType varchar(50)
-		Declare @TravelToTime int
-		Declare @ServiceTime int
-		Declare @Cur int
-		Declare @LastHitCur int
-		Declare @MaxCur int
-		Declare @Seq int
-		Set @Cur = 0
-		Select @MaxCur = Max(Sequence) From @Conso
-		Select @LastSAPAccountNumber = @SAPAccountNumber From @Conso Where Sequence = @Cur
-		
-		While @Cur < @MaxCur
-		Begin
-			Set @Cur = @Cur + 1
-			Select @LastHitCur	= Max(Sequence) From @Conso Where Sequence < @Cur
-
-			Select	@SAPAccountNumber = SAPAccountNumber, 
-					@TravelToTime = TravelToTime, 
-					@ServiceTime = ServiceTime,
-					@StopType = StopType 
-			From @Conso Where Sequence = @Cur
-			
-			If (@StopType Not In ('STP', 'B', 'PB'))
-			Begin
-				Update @Conso Set TravelToTime = TravelToTime + @ServiceTime + @TravelToTime Where Sequence = @Cur + 1
-				Delete @Conso Where Sequence = @Cur				
-			End
-
-			If (@StopType = 'PB')
-			Begin
-				Update @Conso Set StopType= 'B' Where Sequence = @Cur
-			End
-
-			If ((@LastSAPAccountNumber = @SAPAccountNumber) And (@TravelToTime = 0))
-			Begin
-				--Select SAPAccountNumber, Sequence From @Conso
-				Update @Conso Set ServiceTime = ServiceTime + @ServiceTime Where Sequence = @LastHitCur
-				Delete @Conso Where Sequence = @Cur
-			End
-			Select @LastSAPAccountNumber = @SAPAccountNumber
-
-		End
-
-		-- Need to adjust sequence ---
-		Update c
-		Set c.Sequence = t.RNum
-		From @Conso c
-		Join 
-		(
-		Select Row_Number() Over (Order By Sequence) As RNum, PlannedStopID
-		From @Conso) t
-		on c.PlannedStopID = t.PlannedStopID
-
-		----------------------------------------------------------
-		--ENDofCONSOLIDATE----ENDofCONSOLIDATE--ENDofCONSOLIDATE--
-
 		If (@IsStarted = 0)
 		Begin
+			--------------------------------------------------------
+			--CONSOLIDATE----CONSOLIDATE--CONSOLIDATE--CONSOLIDATE--
+			Declare @Conso Table
+			(
+				PlannedStopID int
+				,DeliveryDateUTC Date
+				,RouteID int
+				,Sequence int
+				,StopType varchar(20)
+				,SAPAccountNumber varchar(50)
+				,Quantity int
+				,PlannedArrival datetime2(0)
+				,ServiceTime int
+				,TravelToTime int
+				,LastModifiedBy varchar(50)
+				,LastModifiedUTC datetime2(0)
+				,LocalUpdateTime datetime2(0)
+			)
+
+			Insert Into @Conso
+			Select PlannedStopID
+				,DeliveryDateUTC
+				,RouteID
+				,Sequence + 1 Sequence
+				,StopType
+				,SAPAccountNumber
+				,Quantity
+				,PlannedArrival
+				,ServiceTime
+				,TravelToTime
+				,'Dispatcher' LastModifiedBy
+				,LastModifiedUTC
+				,GetDate() LocalUpdateTime
+			From Mesh.PlannedStop
+			Where DeliveryDateUTC = @DeliveryDateUTC And RouteID = @RouteID
+
+			Declare @LastSAPAccountNumber varchar(50)
+			Declare @SAPAccountNumber varchar(50)
+			Declare @StopType varchar(50)
+			Declare @TravelToTime int
+			Declare @ServiceTime int
+			Declare @Cur int
+			Declare @LastHitCur int
+			Declare @MaxCur int
+			Declare @Seq int
+			Set @Cur = 0
+			Select @MaxCur = Max(Sequence) From @Conso
+			Select @LastSAPAccountNumber = @SAPAccountNumber From @Conso Where Sequence = @Cur
+		
+			While @Cur < @MaxCur
+			Begin
+				Set @Cur = @Cur + 1
+				Select @LastHitCur	= Max(Sequence) From @Conso Where Sequence < @Cur
+
+				Select	@SAPAccountNumber = SAPAccountNumber, 
+						@TravelToTime = TravelToTime, 
+						@ServiceTime = ServiceTime,
+						@StopType = StopType 
+				From @Conso Where Sequence = @Cur
+			
+				If (@StopType Not In ('STP', 'B', 'PB'))
+				Begin
+					Update @Conso Set TravelToTime = TravelToTime + @ServiceTime + @TravelToTime 
+					Where Sequence = @Cur + 1
+					
+					Delete @Conso Where Sequence = @Cur				
+				End
+
+				If (@StopType = 'PB')
+				Begin
+					Update @Conso Set StopType= 'B' Where Sequence = @Cur
+				End
+
+				If ((@LastSAPAccountNumber = @SAPAccountNumber) And (@TravelToTime = 0))
+				Begin
+					--Select SAPAccountNumber, Sequence From @Conso
+					Update @Conso Set ServiceTime = ServiceTime + @ServiceTime Where Sequence = @LastHitCur
+					Delete @Conso Where Sequence = @Cur
+				End
+				Select @LastSAPAccountNumber = @SAPAccountNumber
+
+			End
+
+			-- Need to adjust sequence ---
+			Update c
+			Set c.Sequence = t.RNum
+			From @Conso c
+			Join 
+			(
+			Select Row_Number() Over (Order By Sequence) As RNum, PlannedStopID
+			From @Conso) t
+			on c.PlannedStopID = t.PlannedStopID
+
+			----------------------------------------------------------
+			--ENDofCONSOLIDATE----ENDofCONSOLIDATE--ENDofCONSOLIDATE--
+
 			Merge Mesh.DeliveryStop As t
 			Using @Conso as S
 			On t.DeliveryDateUTC = s.DeliveryDateUTC And t.RouteID = s.RouteID And t.PlannedStopID = s.PlannedStopID
@@ -208,6 +188,10 @@ As
 			   ,s.LastModifiedUTC
 			   ,s.LocalUpdateTime);
 
+			Update Mesh.DeliveryRoute
+			Set LastManifestFetched = SysDateTime()
+			Where RouteID = @RouteID and DeliveryDateUTC = @DeliveryDateUTC;
+			
 			--- Output ---
 			Select DeliveryStopID
 					,convert(varchar(10), DeliveryDateUTC) DeliveryDateUTC
@@ -265,21 +249,73 @@ As
 
 GO
 
-Print 'Mesh.pGetDeliveryManifest created'
+Print 'Mesh.pGetDeliveryManifest updated'
 Go
 
+--1. Find some routes from today's schedule that has special stops with types other than STP, B and PB
+Use Merch
+Go
+
+Select @@SERVERNAME ServerName
+Go
 
 Declare @RouteIDInput int
-Set @RouteIDInput = 109402301
+Declare @DeliveryDateUTC Date
+Set @DeliveryDateUTC = Convert(Date, GetDate())
+
+Select @DeliveryDateUTC DeliveryDateUTC
+
+/*
+Select Distinct RouteID
+From Mesh.PlannedStop
+Where DeliveryDateUTC = @DeliveryDateUTC 
+And StopType Not In ('STP', 'B', 'PB')
+Order By RouteID
+*/
+
+--2. Pick a RouteID
+Set @RouteIDInput = 101000003
+
+--3. Make sure the branch is enabled on the server side
+/*
+Select *
+From Setup.Config
+Where [Key] = 'MeshEnabledBranches'
+*/
+
+--3.1 If the branch is not enabled, either enable it with the code below, or go back and pick another one
+/*
+Update Setup.Config
+Set Value = '1002,1010,1020,1034,1062,1090,1094,1120,1138,1178' -- Make sure it looks sorted
+Where ConfigID = 4
+*/
+
+--3.2 If you want to verify it from Driver MyDay, enable the cliend side feature as well
+/*
+Use Portal_Data
+Go
+
+Select *
+From Shared.Feature_Authorization
+Where FeatureID = 6
+Order By BranchID
+
+Insert Shared.Feature_Authorization(FeatureID, BranchID, IsActive)
+Values(6, 1010, 1)
+Go
+*/
 
 --
+Use Merch
+
 exec Mesh.pGetDeliveryManifest @RouteID = @RouteIDInput
 
 Select *
 From Mesh.PlannedStop
-Where DeliveryDAteUTC = '2018-10-19'
+Where DeliveryDAteUTC = @DeliveryDateUTC
 And RouteID = @RouteIDInput
 Order By Sequence
+Go
 
 --
 --exec Mesh.pGetDeliveryManifest @RouteID = 108000513
