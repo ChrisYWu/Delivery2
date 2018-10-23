@@ -264,6 +264,11 @@ Declare @DeliveryDateUTC Date
 Set @DeliveryDateUTC = Convert(Date, GetDate())
 
 Select @DeliveryDateUTC DeliveryDateUTC
+Select RouteID, StopType
+From Mesh.PlannedStop
+Where DeliveryDateUTC = @DeliveryDateUTC 
+And StopType Not In ('STP', 'B')
+Order By StopType
 
 /*
 Select Distinct RouteID
