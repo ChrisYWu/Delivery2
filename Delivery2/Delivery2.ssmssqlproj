@@ -235,6 +235,12 @@
           <AssociatedConnUserName />
           <FullPath>112. RollBack-Export.pGetStoreServiceReport.sql</FullPath>
         </FileNode>
+        <FileNode Name="201. Skipping Sequence.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>201. Skipping Sequence.sql</FullPath>
+        </FileNode>
         <FileNode Name="601. ETL.pLoadDeliverySchedulePeriodically.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
@@ -456,6 +462,12 @@
           <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>670.7 Remove Feature For Lubbock(2018-12-15).sql</FullPath>
+        </FileNode>
+        <FileNode Name="670.8 Enable Everything.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>670.8 Enable Everything.sql</FullPath>
         </FileNode>
         <FileNode Name="688. CheckForUploadStatus.sql">
           <AssociatedConnectionMoniker />
