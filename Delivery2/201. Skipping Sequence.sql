@@ -69,3 +69,23 @@ With Schedule As
 Select *
 From Schedule
 Where Sequence <> NewSequence
+
+	--Select pd.DispatchDate, pd.MerchGroupID, pd.RouteID, pd.Sequence, pd.GSN, pd.SAPAccountNumber,
+	--	Row_Number() Over (Partition By pd.DispatchDate, pd.MerchGroupID, pd.RouteID Order By Sequence) NewSequence
+	--From Planning.PreDispatch pd
+	--Where pd.MerchGroupID = 73 --<<---- Replace it with users merch groupid
+	--And RouteID <> -1
+	--And DispatchDate >= Convert(Date, GetDate())
+
+
+	--Select *
+	--From Planning.Route
+	--Where RouteName = 'San Diego - 302' --652
+
+	--Select pd.*, a.AccountName, pd.DispatchDate, pd.MerchGroupID, pd.RouteID, pd.Sequence, pd.GSN, pd.SAPAccountNumber,
+	--Row_Number() Over (Partition By pd.DispatchDate, pd.MerchGroupID, pd.RouteID Order By Sequence) NewSequence
+	--From Planning.PreDispatch pd
+	--Join SAP.Account a on pd.SAPAccountNumber = a.SAPAccountNumber
+	--Where pd.MerchGroupID = 73 --<<---- Replace it with users merch groupid
+	--And RouteID = 652
+	--And DispatchDate = DateAdd(Day, 1, Convert(Date, GetDate()))

@@ -1,18 +1,12 @@
-/****** Script for SelectTopNRows command from SSMS  ******/
-SELECT [PartyID]
-      ,[Phone]
-      ,[Email]
-      ,[Role]
-      ,[TimeZoneOffset]
-  FROM [Merch].[Notify].[Party]
 
-Merge [Merch].[Notify].[Party] as tar
+
+Merge [Notify].[Party] as tar
 Using (
-Select m.GSN, p.Firstname, p.LastName, m.Phone, Null Email, 'Merchandiser' Role, -5 TimeZoneOffSet
+Select m.GSN, p.Firstname, p.LastName, m.Phone, Null Email, 'Merchandiser' Role, (Case When SAPBranchID = 1120 Then -7 Else -5 End) TimeZoneOffSet, SAPBranchID
 From DPSGSHAREDCLSTR.Merch.Setup.Merchandiser m
 Join DPSGSHAREDCLSTR.Merch.Setup.MerchGroup mg on m.MerchGroupID = mg.MerchGroupID
 Join DPSGSHAREDCLSTR.Merch.Setup.Person p on m.GSN = p.GSN 
-Where SAPBranchID = 1178
+Where SAPBranchID in (1120, 1138)
 And M.Phone <> '') Input 
 On Tar.PartyID = input.GSN
 When Matched
@@ -25,4 +19,9 @@ Then Insert([PartyID]
       ,[TimeZoneOffset])
 	  Values(input.GSN, input.Phone, input.Role, input.TimeZoneOffset);
 Go
+
+
+
+
+
 
