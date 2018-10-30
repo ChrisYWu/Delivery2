@@ -13,14 +13,13 @@ Where BranchName like 'Lub%'
 
 --SAPBranchID = 1178
 
-
-Insert Into Notify.Party
-Select GSN, Phone, Null, 'Merchandiser', -5
-From DPSGSHAREDCLSTR.Merch.Setup.Merchandiser m
-Join DPSGSHAREDCLSTR.Merch.Setup.MerchGroup g on m.MerchGroupID = g.MerchGroupID
-Where g.SAPBranchID = 1178
-And Phone <> ''
-And GSN Not in (Select PartyID From Notify.Party)
+--Insert Into Notify.Party
+--Select GSN, Phone, Null, 'Merchandiser', -5
+--From DPSGSHAREDCLSTR.Merch.Setup.Merchandiser m
+--Join DPSGSHAREDCLSTR.Merch.Setup.MerchGroup g on m.MerchGroupID = g.MerchGroupID
+--Where g.SAPBranchID = 1178
+--And Phone <> ''
+--And GSN Not in (Select PartyID From Notify.Party)
 
 -------------------------------------------
 Use Portal_Data
@@ -45,7 +44,7 @@ Use Merch
 Go
 
 Update Setup.Config
-Set Value = '1002,1120,1138,1178'
+Set Value = '1120,1138,1178'
 Where ConfigID = 4
 Go
 
@@ -55,3 +54,4 @@ Go
 
 Print '-- $$$$ Branch enabled [Waco,Las Vegas,Lubbock] $$$$--'
 Go
+
