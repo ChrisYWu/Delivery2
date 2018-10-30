@@ -120,10 +120,14 @@ As
 					Update @Conso Set StopType= 'B' Where Sequence = @Cur
 				End
 
-				If ((@LastSAPAccountNumber = @SAPAccountNumber) And (@TravelToTime = 0))
+				If (@LastSAPAccountNumber = @SAPAccountNumber) 
 				Begin
 					--Select SAPAccountNumber, Sequence From @Conso
-					Update @Conso Set ServiceTime = ServiceTime + @ServiceTime Where Sequence = @LastHitCur
+					Update @Conso 
+					Set ServiceTime = ServiceTime + @ServiceTime, 
+						TravelToTime = TravelToTime + @TravelToTime
+					Where Sequence = @LastHitCur
+					
 					Delete @Conso Where Sequence = @Cur
 				End
 				Select @LastSAPAccountNumber = @SAPAccountNumber
@@ -262,13 +266,19 @@ Go
 Declare @RouteIDInput int
 Declare @DeliveryDateUTC Date
 Set @DeliveryDateUTC = Convert(Date, GetDate())
+Set @DeliveryDateUTC = DateAdd(Day, 1, @DeliveryDateUTC)
 
 Select @DeliveryDateUTC DeliveryDateUTC
-Select RouteID, StopType
+
+Select RouteID, Count(*)
+From
+(Select RouteID, StopType
 From Mesh.PlannedStop
 Where DeliveryDateUTC = @DeliveryDateUTC 
-And StopType Not In ('STP', 'B')
-Order By StopType
+And StopType Not In ('STP', 'B', 'PW', 'PB', 'W')
+) t
+Group By RouteID
+Order By RouteID
 
 /*
 Select Distinct RouteID
@@ -279,7 +289,7 @@ Order By RouteID
 */
 
 --2. Pick a RouteID
-Set @RouteIDInput = 101000003
+Set @RouteIDInput = 112002021
 
 --3. Make sure the branch is enabled on the server side
 /*
@@ -311,26 +321,25 @@ Go
 */
 
 --
-Use Merch
+--Use Merch
 
-exec Mesh.pGetDeliveryManifest @RouteID = @RouteIDInput
+exec Mesh.pGetDeliveryManifest @RouteID = 112002021
+
+Select *
+From Mesh.DeliveryRoute
+Where RouteID =112002021
+And DeliveryDateUTC = '10-30-2018'
+
 
 Select *
 From Mesh.PlannedStop
-Where DeliveryDAteUTC = @DeliveryDateUTC
-And RouteID = @RouteIDInput
+Where DeliveryDAteUTC = '2018-10-30'
+And RouteID = 112002021
 Order By Sequence
 Go
 
---
---exec Mesh.pGetDeliveryManifest @RouteID = 108000513
---Go
 
---Select *
---From Mesh.PlannedStop
---Where DeliveryDATEUTC = '2018-06-05'
---And RouteID = 108000513
---Go
+
 
 
 

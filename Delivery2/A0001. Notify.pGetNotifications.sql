@@ -81,7 +81,10 @@ Go
 		Case When DNS = 1 Then '' Else Substring(Convert(varchar(30), DateAdd(Hour, TimeZoneOffSet, DepartureTime), 100), 13, 100) End MessageBody
 	From Notify.StoreDeliveryMechandiser sm
 	left Join Notify.Party p on sm.PartyID = p.PartyID
-	Join SAP.Account a on sm.SAPAccountNumber = a.SAPAccountNumber
-	Join SAP.Branch b on a.BranchID = b.BranchID
+	left Join SAP.Account a on sm.SAPAccountNumber = a.SAPAccountNumber
+	left Join SAP.Branch b on a.BranchID = b.BranchID
 	Where DeliveryDateUTC = Convert(Date, GetDate())
 	And (( Delta < -1800 ) Or ( Delta <> 0 And IsEstimated = 0))
+
+	Select *
+	From Notify.StoreDeliveryMechandiser

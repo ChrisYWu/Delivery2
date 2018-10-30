@@ -23,11 +23,14 @@ As
 	-- Get the latest party
 	Merge [Notify].[Party] as tar
 	Using (
-	Select m.GSN, p.Firstname, p.LastName, m.Phone, Null Email, 'Merchandiser' Role, (Case When SAPBranchID = 1120 Then -5 Else -7 End) TimeZoneOffSet, SAPBranchID
+	Select m.GSN, p.Firstname, p.LastName, m.Phone, Null Email, 'Merchandiser' Role, 
+		(Case When SAPBranchID = 1120 Then -5 
+			  When SAPBranchID = 1178 Then -5
+			  When SAPBranchID = 1138 Then -7 End) TimeZoneOffSet, SAPBranchID
 	From DPSGSHAREDCLSTR.Merch.Setup.Merchandiser m
 	Join DPSGSHAREDCLSTR.Merch.Setup.MerchGroup mg on m.MerchGroupID = mg.MerchGroupID
 	Join DPSGSHAREDCLSTR.Merch.Setup.Person p on m.GSN = p.GSN 
-	Where SAPBranchID in (1120, 1138)
+	Where SAPBranchID in (1120, 1138, 1178)
 	And M.Phone <> '') Input 
 	On Tar.PartyID = input.GSN
 	When Matched
@@ -48,8 +51,6 @@ As
 	Insert Into Notify.StoreDeliveryMechandiser(DeliveryDAteUTC, SAPAccountNumber, PartyID, DepartureTime, KnownDepartureTime, DNS, IsEstimated)
 	Select Distinct d.DispatchDate, d.SAPAccountNumber,  
 			d.GSN, 
-			--Case When d.GSN in ('LEAWG001', 'HAWAX504') Then 'WUXYX001' Else d.GSN End GSN, 
-			--'BINNX001' GSN, 
 			Coalesce(ds.CheckOutTime, ds.EstimatedDepartureTime, 
 				DateAdd(second, ds.ServiceTime, ds.PlannedArrival), 
 				DateAdd(second, ps.ServiceTime, ps.PlannedArrival)) DepartueTime, 
@@ -60,9 +61,16 @@ As
 	From DPSGSHAREDCLSTR.Merch.Planning.Dispatch d
 	Join DPSGSHAREDCLSTR.Merch.Setup.MerchGroup m on d.MerchGroupID = m.MerchGroupID
 	Left Join DPSGSHAREDCLSTR.Merch.Mesh.DeliveryStop ds on d.SAPAccountNumber = ds.SAPAccountNumber and ds.DeliveryDateUTC = d.DispatchDate
-	Left Join DPSGSHAREDCLSTR.Merch.Mesh.PlannedStop ps on d.SAPAccountNumber = ps.SAPAccountNumber and ps.DeliveryDateUTC = d.DispatchDate
+	Left Join (
+		Select DeliveryDateUTC, SAPAccountNumber, Min(PlannedArrival) PlannedArrival, Sum(ServiceTime) ServiceTime
+		From DPSGSHAREDCLSTR.Merch.Mesh.PlannedStop ps 
+		Where DeliveryDateUTC = Convert(Date, GetDate())
+		And SAPAccountNumber = 11278532
+		Group By DeliveryDateUTC, SAPAccountNumber
+	) ps on d.SAPAccountNumber = ps.SAPAccountNumber and ps.DeliveryDateUTC = d.DispatchDate
 	Where SAPBranchID in(1120, 1138, 1178)
 	And DispatchDate = Convert(Date, GetDate())
+	And ds.Sequence > 0
 	And InvalidatedBatchID is null
 
 	Delete Notify.StoreDeliveryMechandiser
@@ -85,5 +93,62 @@ Go
 Print 'Notify.p0InitialMerchCall created'
 Go
 
---exec Notify.p0InitialMerchCall
---Go
+exec Notify.p0InitialMerchCall
+Go
+
+--Select *
+--From Notify.StoreDeliveryTimeTrail
+
+--Select *
+--From Notify.StoreDeliveryMechandiser
+
+--Select *
+--From SAP.Branch
+--Where SAPBranchID = '1178'
+
+/*
+Msg 2627, Level 14, State 1, Line 48
+Violation of PRIMARY KEY constraint 'PK_StoreDeliveryMechandiser'. Cannot insert duplicate key in object 'Notify.StoreDeliveryMechandiser'. The duplicate key value is (2018-10-30, 11278532, RADRJ001).
+*/
+
+--	Select Distinct d.DispatchDate, d.SAPAccountNumber,  
+--			d.GSN, 
+--			--Case When d.GSN in ('LEAWG001', 'HAWAX504') Then 'WUXYX001' Else d.GSN End GSN, 
+--			--'BINNX001' GSN, 
+--			Coalesce(ds.CheckOutTime, ds.EstimatedDepartureTime, 
+--				DateAdd(second, ds.ServiceTime, ds.PlannedArrival), 
+--				DateAdd(second, ps.ServiceTime, ps.PlannedArrival)) DepartueTime, 
+--			Coalesce(ds.CheckOutTime, ds.EstimatedDepartureTime, 
+--			DateAdd(second, ds.ServiceTime, ds.PlannedArrival), 
+--			DateAdd(second, ps.ServiceTime, ps.PlannedArrival)) KnownDepartueTime, 0 DNS,
+--		Case When ds.CheckOutTime is null Then 1 Else 0 End IsEstimated 
+--	From DPSGSHAREDCLSTR.Merch.Planning.Dispatch d
+--	Join DPSGSHAREDCLSTR.Merch.Setup.MerchGroup m on d.MerchGroupID = m.MerchGroupID
+--	Left Join DPSGSHAREDCLSTR.Merch.Mesh.DeliveryStop ds on d.SAPAccountNumber = ds.SAPAccountNumber and ds.DeliveryDateUTC = d.DispatchDate
+--	Left Join 
+--	(
+--		Select DeliveryDateUTC, SAPAccountNumber, Min(PlannedArrival) PlannedArrival, Sum(ServiceTime) ServiceTime
+--		From DPSGSHAREDCLSTR.Merch.Mesh.PlannedStop ps 
+--		Where DeliveryDateUTC = Convert(Date, GetDate())
+--		And SAPAccountNumber = 11278532
+--		Group By DeliveryDateUTC, SAPAccountNumber
+--	) ps on d.SAPAccountNumber = ps.SAPAccountNumber and ps.DeliveryDateUTC = d.DispatchDate
+--	Where SAPBranchID in(1120, 1138, 1178)
+--	And DispatchDate = Convert(Date, GetDate())
+--	And InvalidatedBatchID is null
+--	And ds.SAPAccountNumber = 11278532
+
+/*
+Msg 2627, Level 14, State 1, Procedure p0InitialMerchCall, Line 36 [Batch Start Line 93]
+Violation of PRIMARY KEY constraint 'PK_StoreDeliveryMechandiser'. Cannot insert duplicate key in object 'Notify.StoreDeliveryMechandiser'. The duplicate key value is (2018-10-30, 12316802, WEIDL001).
+*/
+
+SElect *
+From DPSGSHAREDCLSTR.Merch.Mesh.PlannedStop
+Where DeliveryDateUTC = Convert(Date, GetDate())
+And SAPAccountNumber = 12316802
+
+SElect *
+From DPSGSHAREDCLSTR.Merch.Mesh.DeliveryStop
+Where DeliveryDateUTC = Convert(Date, GetDate())
+And SAPAccountNumber = 12316802
