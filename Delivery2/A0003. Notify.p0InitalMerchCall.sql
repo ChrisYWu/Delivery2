@@ -65,7 +65,6 @@ As
 		Select DeliveryDateUTC, SAPAccountNumber, Min(PlannedArrival) PlannedArrival, Sum(ServiceTime) ServiceTime
 		From DPSGSHAREDCLSTR.Merch.Mesh.PlannedStop ps 
 		Where DeliveryDateUTC = Convert(Date, GetDate())
-		And SAPAccountNumber = 11278532
 		Group By DeliveryDateUTC, SAPAccountNumber
 	) ps on d.SAPAccountNumber = ps.SAPAccountNumber and ps.DeliveryDateUTC = d.DispatchDate
 	Where SAPBranchID in(1120, 1138, 1178)

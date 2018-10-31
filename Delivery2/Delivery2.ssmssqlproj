@@ -523,6 +523,18 @@
           <AssociatedConnUserName />
           <FullPath>A0006. Merch-GrandUserAccess.sql</FullPath>
         </FileNode>
+        <FileNode Name="A0007. Check Notification Status.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>A0007. Check Notification Status.sql</FullPath>
+        </FileNode>
+        <FileNode Name="A0008. Check Manifest 20181031.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>A0008. Check Manifest 20181031.sql</FullPath>
+        </FileNode>
         <FileNode Name="Add Azure Linked Server.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
