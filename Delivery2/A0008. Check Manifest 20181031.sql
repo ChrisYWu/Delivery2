@@ -1,3 +1,11 @@
+Use Merch
+Go
+
+Select @@SERVERNAME Server, DB_Name() As [Database]
+Go
+
+
+
 use Merch
 Go
 

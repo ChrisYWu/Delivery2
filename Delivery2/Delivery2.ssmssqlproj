@@ -469,6 +469,12 @@
           <AssociatedConnUserName />
           <FullPath>670.8 Enable Everything.sql</FullPath>
         </FileNode>
+        <FileNode Name="670.9 Enable Denver(2018-11-07).sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>670.9 Enable Denver(2018-11-07).sql</FullPath>
+        </FileNode>
         <FileNode Name="688. CheckForUploadStatus.sql">
           <AssociatedConnectionMoniker />
           <AssociatedConnSrvName />
@@ -546,6 +552,18 @@
           <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>B001. Operation.pGetMerchStoreDelivery.sql</FullPath>
+        </FileNode>
+        <FileNode Name="C0001. Kevin181101.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>C0001. Kevin181101.sql</FullPath>
+        </FileNode>
+        <FileNode Name="C0002. Jim181106.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>C0002. Jim181106.sql</FullPath>
         </FileNode>
         <FileNode Name="Json Query Test.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
