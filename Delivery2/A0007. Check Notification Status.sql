@@ -5,6 +5,28 @@ Select @@SERVERNAME Server, DB_Name() As [Database]
 Go
 
 Select *
+From Mesh.DeliveryRoute
+Where RouteID = 110301880
+And DeliveryDateUTC = Convert(Date, GetDate())
+
+
+Select *
+From Mesh.DeliveryStop
+Where RouteID = 110301880
+And DeliveryDateUTC = Convert(Date, GetDate())
+Order By Sequence
+
+
+Select *
+From Mesh.PlannedStop
+Where RouteID = 110301880
+And DeliveryDateUTC = Convert(Date, GetDate())
+Order By Sequence
+
+
+
+
+Select *
 From [ETL].[DataLoadingLog]
 
 Select *
@@ -27,14 +49,14 @@ Where Branchname = 'Denver'
 -----------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------
 -- Who didn't start the route?
-Select GSN, dr.FirstName, dr.Lastname, RouteID, dr.LastManifestFetched --b.SAPBranchID, BranchName, DeliveryDateUTC, RouteID, dr.FirstName, dr.Lastname, DeliveryDateUTC DeliveryDate, dr.LastManifestFetched, IsStarted, ActualStartGSN
+Select dr.FirstName, dr.Lastname, RouteID, dr.LastManifestFetched, IsStarted, ActualStartGSN, ActualStartTime  --b.SAPBranchID, BranchName, DeliveryDateUTC, RouteID, dr.FirstName, dr.Lastname, DeliveryDateUTC DeliveryDate, dr.LastManifestFetched, IsStarted, ActualStartGSN
 From DPSGSHAREDCLSTR.Merch.Mesh.DeliveryRoute dr
-Left Join Portal_Data.Person.UserProfile up on dr.Lastname = up.LastName And dr.FirstName = up.FirstName
+Left Join Portal_Data.Person.UserProfile up on dr.ActualStartGSN = up.GSN
 Join SAP.Branch b on dr.SAPBranchID = b.SAPBranchID
 Where DeliveryDateUTC = dateadd(day, 0, convert(Date, GetUTCDate()))
-And b.SAPBranchID in ('1178')
+And b.SAPBranchID in ('1103')
 --And IsStarted = 0
-Order By dr.RouteID, dr.DeliveryDateUTC
+Order By IsStarted, dr.RouteID, dr.DeliveryDateUTC
 Go
 
 -- For the ones started, how are their stops look like?
@@ -58,9 +80,15 @@ Go
 -----------------------------------------------------------------------------------
 Select *
 From DPSGSHAREDCLSTR.Merch.Mesh.DeliveryStop dr
-Where DeliveryDateUTC = DateAdd(day, -1, Convert(Date, GetUTCDate()))
-And RouteID = 117800102
-Order By Sequence
+Where DeliveryDateUTC = DateAdd(day, 0, Convert(Date, GetUTCDate()))
+And RouteID in (110302862, 110302824)
+Order By RouteID, Sequence
+
+Select *
+From DPSGSHAREDCLSTR.Merch.Mesh.DeliveryRoute dr
+Where DeliveryDateUTC = DateAdd(day, 0, Convert(Date, GetUTCDate()))
+And FirstName = 'Dale'
+And RouteID like '1103%'
 
 Select RouteID, Sequence, StopType, SAPAccountNumber, TravelToTime, ServiceTime
 From DPSGSHAREDCLSTR.Merch.Mesh.DeliveryStop dr
@@ -145,13 +173,9 @@ Where (l.CorrelationID is not null or e.CorrelationID is not null)
 --And e.LogID is not null
 And DeliveryDateUTC = DateAdd( day, -0, convert(Date, GetUTCDate()))
 --and DeliveryDateUTC = Convert(Date, GetUTCDate())
-and RouteID in (
---117800010,
---117800011,
-117800021,
-117800022,
-117800023
---117800102
+and RouteID in
+(
+110302862, 110302824
 )
 Order by RouteID, coalesce(l.RequestTime, e.ServerInsertTime) Desc
 

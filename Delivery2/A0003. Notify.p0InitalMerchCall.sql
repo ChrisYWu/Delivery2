@@ -8,6 +8,11 @@ Begin
 End 
 Go
 
+--Select Distinct PartyID
+--From Notify.StoreDeliveryMechandiser
+--Where DeliveryDAteUTC = Convert(Date, GetDate())
+--And SAPBranchID = 1103
+
 ----------------------------
 SET ANSI_NULLS ON
 GO

@@ -278,8 +278,8 @@
           <FullPath>605. ETL.pLoadOrderPeriodically.sql</FullPath>
         </FileNode>
         <FileNode Name="606. Mesh.pGetMaster.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>606. Mesh.pGetMaster.sql</FullPath>
         </FileNode>
@@ -356,8 +356,8 @@
           <FullPath>617. Mesh.pUploadNewSequence.sql</FullPath>
         </FileNode>
         <FileNode Name="618. Mesh.pInsertInvoice.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>618. Mesh.pInsertInvoice.sql</FullPath>
         </FileNode>
@@ -386,26 +386,26 @@
           <FullPath>623. Planning.pGetPreDispatch.sql</FullPath>
         </FileNode>
         <FileNode Name="624. ETL.pFillDeliveryQuantity.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>624. ETL.pFillDeliveryQuantity.sql</FullPath>
         </FileNode>
         <FileNode Name="631. Operation.pInsertBlob.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>631. Operation.pInsertBlob.sql</FullPath>
         </FileNode>
         <FileNode Name="650. Check DeliveryRoute.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>650. Check DeliveryRoute.sql</FullPath>
         </FileNode>
         <FileNode Name="666. Mesh.pCopyCurrent0522.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>666. Mesh.pCopyCurrent0522.sql</FullPath>
         </FileNode>
@@ -530,8 +530,8 @@
           <FullPath>A0006. Merch-GrandUserAccess.sql</FullPath>
         </FileNode>
         <FileNode Name="A0007. Check Notification Status.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>A0007. Check Notification Status.sql</FullPath>
         </FileNode>
@@ -564,6 +564,24 @@
           <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>C0002. Jim181106.sql</FullPath>
+        </FileNode>
+        <FileNode Name="C0003. Suri181107.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>C0003. Suri181107.sql</FullPath>
+        </FileNode>
+        <FileNode Name="C0004. Denise181113.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>C0004. Denise181113.sql</FullPath>
+        </FileNode>
+        <FileNode Name="C0004.1 Planning.pGetPreDispatch1.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>C0004.1 Planning.pGetPreDispatch1.sql</FullPath>
         </FileNode>
         <FileNode Name="Json Query Test.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
