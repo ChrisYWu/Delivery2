@@ -1,10 +1,10 @@
 USE Merch
 GO
 
-If Exists (Select * From sys.procedures Where Name = 'pGetPreDispatch1')
+If Exists (Select * From sys.procedures Where Name = 'pGetPreDispatch')
 Begin
-	Drop Proc Planning.pGetPreDispatch1
-	Print '* Planning.pGetPreDispatch1'
+	Drop Proc Planning.pGetPreDispatch
+	Print '* Planning.pGetPreDispatch'
 End 
 Go
 
@@ -190,6 +190,8 @@ Begin
 			Select * From @StoreDelivery
 		End
 
+		-- // TODO: Update from Operation.StoreDelivery table, so if the route runs in classical mode, at lease the delivery time is captured as Route Manager's invoicing time.
+
 	End
 	Else
 	Begin
@@ -286,3 +288,11 @@ Go
 --From mesh.DeliveryRoute
 --Where RouteID = 110302884
 --And DeliveryDAteUTC = Convert(Date, GetDate())
+
+
+--Select *
+----From Person.userProfile
+--From Portal_Data.STaging.ADExtractData
+----Where Lastname = 'Paape'
+--Where UserID = 'PAASX001'
+
