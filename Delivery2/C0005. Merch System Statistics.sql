@@ -90,3 +90,75 @@ Join SAP.Account a  on a.SAPAccountNumber = inn.SAPAccountNumber
 And Inn.DispatchDate = Convert(DAte, GEtDAte())
 Order By GroupName
 
+Go
+
+With BuildToday
+As
+(
+	Select dt.Description, rp.PromotionName, db.PromotionID, db.SAPAccountNumber, db.LastModified, BuildStatusDate --, db.*
+	From Operation.DisplayBuild db
+	Join Operation.DisplayBuildExecution dbe on db.LatestExecutionID = dbe.DisplayBuildExecutionID	
+	Join Portal_Data.Shared.DisplayType dt on db.DisplayTypeID = dt.DisplayTypeID
+	Join Portal_Data.Playbook.RetailPromotion rp on rp.PromotionID = db.PromotionID
+	Where dbe.BuildStatusID = 2 and dbe.BuildStatusDate = Convert(Date, GetDate())
+	--Order By dbe.LastModified desc
+)
+--Select * From BuildToday
+
+Select GroupName, inn.SAPAccountNumber, AccountName, a.State, btd.*
+From Operation.MerchStopCheckIn inn 
+Join SEtup.MerchGroup m on inn.MerchGroupID = m.MerchGroupID
+Join SAP.Account a on a.SAPAccountNumber = inn.SAPAccountNumber
+Join BuildToDay btd on a.SAPAccountNumber = btd.SAPAccountNumber and btd.BuildStatusDate = inn.DispatchDate
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--Select *
+--From Portal_Data.Playbook.DisplayType
+
+--Select * From
+--Portal_Data.[Playbook].[PromotionType]
+
+--use Portal_Data
+--Go
+
+--select s.name schemaName, t.name tableName, c.name columnName
+--from sys.columns c join 
+--sys.tables t on c.object_id = t.object_id
+--join sys.schemas s on t.schema_id = s.schema_id
+--where c.name = 'DisplayTypeID'
+--order by s.name,t.name
+
+--Select *
+--From Shared.DisplayType
+
+--Select *
+--From BCMyDay.DisplayTypeMaster
+
+--select *
+--from sys.tables
+--where object_id = 1906105831
