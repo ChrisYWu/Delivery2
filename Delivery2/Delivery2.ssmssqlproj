@@ -530,8 +530,8 @@
           <FullPath>A0006. Merch-GrandUserAccess.sql</FullPath>
         </FileNode>
         <FileNode Name="A0007. Check Notification Status.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>A0007. Check Notification Status.sql</FullPath>
         </FileNode>
