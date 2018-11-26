@@ -4,6 +4,16 @@ Go
 Select @@SERVERNAME Server, DB_Name() As [Database]
 Go
 
+Select distinct LocalChainName
+From SAP.LocalChain lc
+Join SAP.Account a on lc.LocalChainID = a.LocalChainID
+Where a.State = 'NY'
+And a.Active = 1
+Order by LocalChainname
+
+
+
+
 /*
 1. Collecting 35K images every day, total of 11 milion images
 */
