@@ -32,11 +32,12 @@ As
 		(Case When SAPBranchID = 1120 Then -6 
 			  When SAPBranchID = 1178 Then -6
 			  When SAPBranchID = 1103 Then -7
+			  When SAPBranchID = 1104 Then -7
 			  When SAPBranchID = 1138 Then -8 End) TimeZoneOffSet, SAPBranchID
 	From DPSGSHAREDCLSTR.Merch.Setup.Merchandiser m
 	Join DPSGSHAREDCLSTR.Merch.Setup.MerchGroup mg on m.MerchGroupID = mg.MerchGroupID
 	Join DPSGSHAREDCLSTR.Merch.Setup.Person p on m.GSN = p.GSN 
-	Where SAPBranchID in (1103, 1120, 1138, 1178)
+	Where SAPBranchID in (1103, 1104, 1120, 1138, 1178)
 	And M.Phone <> '') Input 
 	On Tar.PartyID = input.GSN
 	When Matched
@@ -73,7 +74,7 @@ As
 		Where DeliveryDateUTC = Convert(Date, GetDate())
 		Group By DeliveryDateUTC, SAPAccountNumber
 	) ps on d.SAPAccountNumber = ps.SAPAccountNumber and ps.DeliveryDateUTC = d.DispatchDate
-	Where SAPBranchID in(1103, 1120, 1138, 1178)
+	Where SAPBranchID in(1103, 1104, 1120, 1138, 1178)
 	And DispatchDate = Convert(Date, GetDate())
 	And (ds.Sequence Is NUll OR ds.Sequence > 0)
 	And InvalidatedBatchID is null
@@ -98,8 +99,8 @@ Go
 Print 'Notify.p0InitialMerchCall created'
 Go
 
-exec Notify.p0InitialMerchCall
-Go
+--exec Notify.p0InitialMerchCall
+--Go
 
 --Select *
 --From Notify.StoreDeliveryTimeTrail

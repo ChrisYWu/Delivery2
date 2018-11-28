@@ -421,59 +421,65 @@
           <AssociatedConnUserName />
           <FullPath>667. Reset Today .sql</FullPath>
         </FileNode>
-        <FileNode Name="670.1. DeploymentPackage.sql">
+        <FileNode Name="670.01. DeploymentPackage.sql">
           <AssociatedConnectionMoniker />
           <AssociatedConnSrvName />
           <AssociatedConnUserName />
-          <FullPath>670.1. DeploymentPackage.sql</FullPath>
+          <FullPath>670.01. DeploymentPackage.sql</FullPath>
         </FileNode>
-        <FileNode Name="670.2. DeploymentPackage.sql">
+        <FileNode Name="670.02. DeploymentPackage.sql">
           <AssociatedConnectionMoniker />
           <AssociatedConnSrvName />
           <AssociatedConnUserName />
-          <FullPath>670.2. DeploymentPackage.sql</FullPath>
+          <FullPath>670.02. DeploymentPackage.sql</FullPath>
         </FileNode>
-        <FileNode Name="670.3 Mesh Deployment(2018-06-22).sql">
+        <FileNode Name="670.03 Mesh Deployment(2018-06-22).sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
           <AssociatedConnUserName />
-          <FullPath>670.3 Mesh Deployment(2018-06-22).sql</FullPath>
+          <FullPath>670.03 Mesh Deployment(2018-06-22).sql</FullPath>
         </FileNode>
-        <FileNode Name="670.4 Enable Features(2018-06-22).sql">
+        <FileNode Name="670.04 Enable Features(2018-06-22).sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
           <AssociatedConnUserName />
-          <FullPath>670.4 Enable Features(2018-06-22).sql</FullPath>
+          <FullPath>670.04 Enable Features(2018-06-22).sql</FullPath>
         </FileNode>
-        <FileNode Name="670.5 Enable Features(2018-09-10).sql">
+        <FileNode Name="670.05 Enable Features(2018-09-10).sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
           <AssociatedConnUserName />
-          <FullPath>670.5 Enable Features(2018-09-10).sql</FullPath>
+          <FullPath>670.05 Enable Features(2018-09-10).sql</FullPath>
         </FileNode>
-        <FileNode Name="670.6 Enable Features(2018-10-12, Lubbuck).sql">
+        <FileNode Name="670.06 Enable Features(2018-10-12, Lubbuck).sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
-          <FullPath>670.6 Enable Features(2018-10-12, Lubbuck).sql</FullPath>
+          <FullPath>670.06 Enable Features(2018-10-12, Lubbuck).sql</FullPath>
         </FileNode>
-        <FileNode Name="670.7 Remove Feature For Lubbock(2018-12-15).sql">
+        <FileNode Name="670.07 Remove Feature For Lubbock(2018-10-15).sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
-          <FullPath>670.7 Remove Feature For Lubbock(2018-12-15).sql</FullPath>
+          <FullPath>670.07 Remove Feature For Lubbock(2018-10-15).sql</FullPath>
         </FileNode>
-        <FileNode Name="670.8 Enable Everything.sql">
+        <FileNode Name="670.08 Enable Everything.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
-          <FullPath>670.8 Enable Everything.sql</FullPath>
+          <FullPath>670.08 Enable Everything.sql</FullPath>
         </FileNode>
-        <FileNode Name="670.9 Enable Denver(2018-11-07).sql">
+        <FileNode Name="670.09 Enable Denver(2018-11-07).sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
-          <FullPath>670.9 Enable Denver(2018-11-07).sql</FullPath>
+          <FullPath>670.09 Enable Denver(2018-11-07).sql</FullPath>
+        </FileNode>
+        <FileNode Name="670.10 Enable Albuquerque(2018-11-27).sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>670.10 Enable Albuquerque(2018-11-27).sql</FullPath>
         </FileNode>
         <FileNode Name="688. CheckForUploadStatus.sql">
           <AssociatedConnectionMoniker />
