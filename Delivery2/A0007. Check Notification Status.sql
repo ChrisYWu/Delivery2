@@ -4,49 +4,18 @@ Go
 Select @@SERVERNAME Server, DB_Name() As [Database]
 Go
 
-Update Mesh.DeliveryRoute
-Set ActualStartTime = null
-Where RouteID = 117800010
-And DeliveryDateUTC = Convert(Date, GetDate())
+--Select *
+--From [ETL].[DataLoadingLog]
 
 Select *
-From Mesh.DeliveryRoute
-Where RouteID = 117800010
-And DeliveryDateUTC = Convert(Date, GetDate())
-
-Delete Mesh.DeliveryStop
-Where RouteID = 117800010
-And DeliveryDateUTC = Convert(Date, GetDate())
-
-
-Select *
-From Mesh.DeliveryStop
-Where RouteID = 110301880
-And DeliveryDateUTC = Convert(Date, GetDate())
-Order By Sequence
-
-
-Select *
-From Mesh.PlannedStop
-Where RouteID = 110301880
-And DeliveryDateUTC = Convert(Date, GetDate())
-Order By Sequence
-
-
-
-
-Select *
-From [ETL].[DataLoadingLog]
-
-Select *
-From [Mesh].[PlannedStop]
+From [Mesh].DeliveryRoute
 Where DeliveryDateUTC = Convert(Date, GetUTCDate())
-And RouteID like '1178%'
+And RouteID like '1104%'
 
 
 Select *
 From SAP.Branch
-Where Branchname = 'Denver'
+Where Branchname = 'Albuquerque'
 
 --Select *
 --From Notify.StoreDeliveryMechandiser
@@ -63,7 +32,7 @@ From DPSGSHAREDCLSTR.Merch.Mesh.DeliveryRoute dr
 Left Join Portal_Data.Person.UserProfile up on dr.ActualStartGSN = up.GSN
 Join SAP.Branch b on dr.SAPBranchID = b.SAPBranchID
 Where DeliveryDateUTC = dateadd(day, 0, convert(Date, GetUTCDate()))
-And b.SAPBranchID in ('1103')
+And b.SAPBranchID in ('1104')
 --And IsStarted = 0
 Order By IsStarted, dr.RouteID, dr.DeliveryDateUTC
 Go

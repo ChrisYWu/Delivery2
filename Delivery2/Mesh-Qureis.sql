@@ -1,6 +1,7 @@
 use Merch
 Go
 
+
 -- Get request details --
 Select Top 100 convert(Datetime2(1), l.RequestTime) ActivityTime, l.DeliveryDateUTC, l.GSN, l.RouteID,
 	Case When e.LogID is null then 'Successful'
@@ -16,8 +17,8 @@ Where (l.CorrelationID is not null or e.CorrelationID is not null)
 --And RouteID = 111501303
 --And WEbEndPoint = 'UploadNewSequence'
 --And e.LogID is not null
-and DeliveryDateUTC = '2018-07-02'
-and RouteID = 112001013
+and DeliveryDateUTC = Convert(Date, GetDate())
+and RouteID Like '1178%'
 Order by coalesce(l.RequestTime, e.ServerInsertTime) Desc
 
 Exec Mesh.pGetDeliveryManifest @RouteID = 112002021, @DeliveryDateUTC = '112002201'
