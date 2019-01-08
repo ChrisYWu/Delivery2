@@ -195,13 +195,16 @@ Create proc APNSMerch.pUpsertDeliveries
 )
 As
 Begin
+	With CTE As
+	(
+		Select @DeliveryDateUTC DeliveryDateUTC, @GSN GSN, SAPAccountNumber, DepartureTime, IsEstimated, DNS, SysdateTime() LastModified
+		From @Known
+	)
 	--Update DeliveryInfo
 	Update t
 	Set t.DepartureTime = s.DepartureTime, t.DNS = s.DNS, t.IsEstimated = s.IsEstimated, t.LastModifiedBy = s.GSN, t.LastModified = SysDateTime() 
 	From APNSMerch.DeliveryInfo t
-	Join (
-		Select @DeliveryDateUTC DeliveryDateUTC, @GSN GSN, SAPAccountNumber, DepartureTime, DNS, IsEstimated
-		From @Known) s 
+	Join CTE s
 	On t.DeliveryDateUTC = s.DeliveryDateUTC And t.SAPAccountNumber = s.SAPAccountNumber
 
 	--Update Trace
@@ -217,30 +220,30 @@ Begin
 
 	--Get the Message
 	Select 
-	p.PartyID,
-	sm.SAPAccountNumber,
 	DeliveryDateUTC,
-	Phone, 
-	--TimeZoneOffSet, 
-	--a.AccountName, 
-	--A.Address, 
-	--A.City, 
+	sm.SAPAccountNumber,
+	p.GSN,
 	'[' + b.BranchName + ']' + 
 	Case 
-	When DNS = 1 Then 'The delivery for ' When IsEstimated = 1 Then 'The new estimated delivery for ' Else 'Delivery for ' End 
-	--Case When IsEstimated = 1 Then '[Delay Notification:1 Hour Late Or More] The new estimated delivery for ' Else '[Delay Notification:1 Hour Late Or More] Delivery for ' End 
+		When sm.DNS = 1 Then 'Delivery for ' 
+		When sm.IsEstimated = 1 Then 'The new estimated delivery for ' 
+		Else 'Delivery for ' End 
 	+
 	Concat(A.AccountName, '(' + Convert(Varchar(12), A.SAPAccountNumber), + ')' + ', ', A.Address, ', ', a.City, ' ')
 	+
-	Case When DNS = 1 Then 'is canceled'  When IsEstimated = 1 Then 'is ' Else 'is made at ' End 
+	Case When sm.DNS = 1 Then 'is canceled'  
+		When sm.IsEstimated = 1 Then 'is ' 
+		Else 'is made at ' End 
 	+
-	Case When DNS = 1 Then '' Else Substring(Convert(varchar(30), DateAdd(Hour, TimeZoneOffSet, DepartureTime), 100), 13, 100) End MessageBody
-	From Notify.StoreDeliveryMechandiser sm
-	Join Notify.Party p on sm.PartyID = p.PartyID
+	Case When sm.DNS = 1 Then '' 
+		Else Substring(Convert(varchar(30), DateAdd(Hour, TimeZoneOffSet, sm.DepartureTime), 100), 13, 100) End Message
+	From APNSMerch.DeliveryInfo sm
+	Join @Known k on sm.SAPAccountNumber = k.SAPAccountNumber
+	Join Setup.Merchandiser p on sm.MerchandiserGSN = p.GSN
 	Join SAP.Account a on sm.SAPAccountNumber = a.SAPAccountNumber
 	Join SAP.Branch b on a.BranchID = b.BranchID
-	Where DeliveryDateUTC = Convert(Date, GetDate())
-	And (( Delta < -1800 ) Or ( Delta <> 0 And IsEstimated = 0))
+	Where DeliveryDateUTC = @DeliveryDateUTC
+	And (( Delta < -1800 ) Or ( Delta <> 0 And sm.IsEstimated = 0))
 
 End
 Go
