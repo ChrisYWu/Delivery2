@@ -236,8 +236,8 @@
           <FullPath>601. ETL.pLoadDeliverySchedulePeriodically.sql</FullPath>
         </FileNode>
         <FileNode Name="601. Types.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>601. Types.sql</FullPath>
         </FileNode>
@@ -314,8 +314,8 @@
           <FullPath>612. Mesh.pDeleteStop.sql</FullPath>
         </FileNode>
         <FileNode Name="613. Mesh.pUpdateEstimatedArrivals.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>613. Mesh.pUpdateEstimatedArrivals.sql</FullPath>
         </FileNode>
@@ -607,6 +607,24 @@
           <AssociatedConnUserName />
           <FullPath>C0008. Split Invoice on the same item.sql</FullPath>
         </FileNode>
+        <FileNode Name="D0001. APNS-Schema.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>D0001. APNS-Schema.sql</FullPath>
+        </FileNode>
+        <FileNode Name="D0002. APNSMerch-Schema.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>D0002. APNSMerch-Schema.sql</FullPath>
+        </FileNode>
+        <FileNode Name="D0003. Merch-schema.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>D0003. Merch-schema.sql</FullPath>
+        </FileNode>
         <FileNode Name="Json Query Test.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
@@ -628,7 +646,14 @@
       </Items>
     </LogicalFolder>
     <LogicalFolder Name="Miscellaneous" Type="3" Sorted="true">
-      <Items />
+      <Items>
+        <FileNode Name="APNSTest2Certificate.p12">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>APNSTest2Certificate.p12</FullPath>
+        </FileNode>
+      </Items>
     </LogicalFolder>
   </Items>
 </SqlWorkbenchSqlProject>
