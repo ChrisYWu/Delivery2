@@ -26,10 +26,10 @@ Create Table APNSMerch.DeliveryInfo(
 	DeliveryDateUTC date NOT NULL,
 	SAPAccountNumber int NOT NULL,
 	MerchandiserGSN varchar(50) NOT NULL,
-	DepartureTime datetime2(0) NULL,
-	KnownDepartureTime datetime2(0) NULL,
+	ArrivalTime datetime2(0) NULL,
+	KnownArrivalTime datetime2(0) NULL,
 	IsEstimated bit NOT NULL,
-	Delta As (datediff(second,KnownDepartureTime,DepartureTime)),
+	Delta As (datediff(second,KnownArrivalTime,ArrivalTime)),
 	DNS bit NULL,
 	KnownDNS bit null,
 	LastModifiedBy varchar(50) NOT NULL,
@@ -59,12 +59,11 @@ Go
 Create Table APNSMerch.StoreDeliveryTimeTrace(
 	DeliveryDateUTC date NOT NULL,
 	SAPAccountNumber int NOT NULL,
-	DepartureTime datetime2(0) NULL,
+	ArrivalTime datetime2(0) NULL,
 	IsEstimated bit NOT NULL,
 	DNS bit NULL,
 	ReportTimeLocal datetime2(0) NOT NULL,
-	LastModifiedBy varchar(50) NOT NULL,
-	LastModified DateTime2(0) Not Null
+	LastModifiedBy varchar(50) NOT NULL
 	Constraint PK_StoreDeliveryTimeTrace Primary Key Clustered 
 	(
 		DeliveryDateUTC DESC,
@@ -96,7 +95,7 @@ Go
 
 Create Type APNSMerch.tKnownDeliveries AS TABLE(
 	SAPAccountNumber int NOT NULL,
-	KnownDepartureTime datetime2(0) NULL,
+	KnownArrivalTime datetime2(0) NULL,
 	KnownDNS bit Null,
 	Primary Key Clustered
 	(
@@ -129,14 +128,14 @@ As
 Begin
 	Merge APNSMerch.DeliveryInfo t
 	Using (
-		Select @DeliveryDateUTC DeliveryDateUTC, @GSN GSN, SAPAccountNumber, KnownDepartureTime, KnownDNS 
+		Select @DeliveryDateUTC DeliveryDateUTC, @GSN GSN, SAPAccountNumber, KnownArrivalTime, KnownDNS 
 		From @Known) s 
 	On t.DeliveryDateUTC = s.DeliveryDateUTC And t.MerchandiserGSN = s.GSN And t.SAPAccountNumber = s.SAPAccountNumber
 	When Matched Then Update
-		Set t.KnownDepartureTime = s.KnownDepartureTime, t.KnownDNS = s.KnownDNS, t.LastModifiedBy = s.GSN, t.LastModified = SysDateTime()
+		Set t.KnownArrivalTime = s.KnownArrivalTime, t.KnownDNS = s.KnownDNS, t.LastModifiedBy = s.GSN, t.LastModified = SysDateTime()
 	When Not Matched By Target Then
-		Insert(DeliveryDateUTC, SAPAccountNumber, MerchandiserGSN, KnownDepartureTime, KnownDNS, LastModifiedBy, LastModified)
-		Values(s.DeliveryDateUTC, s.SAPAccountNumber, s.GSN, s.KnownDepartureTime, s.KnownDNS, s.GSN, SysDateTime());
+		Insert(DeliveryDateUTC, SAPAccountNumber, MerchandiserGSN, KnownArrivalTime, KnownDNS, isEstimated, LastModifiedBy, LastModified)
+		Values(s.DeliveryDateUTC, s.SAPAccountNumber, s.GSN, s.KnownArrivalTime, s.KnownDNS, 0, s.GSN, SysDateTime());
 
 End
 Go
@@ -148,11 +147,11 @@ Go
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 If TYPE_ID(N'APNSMerch.tDeliveries') IS Not NULL
 Begin
-	If Exists (Select * From sys.procedures p join sys.schemas s on p.schema_id = s.schema_id and p.name = 'pUpsertDeliveries' and s.name = 'APNSMerch')
+	If Exists (Select * From sys.procedures p join sys.schemas s on p.schema_id = s.schema_id and p.name = 'pUpdateDeliveries' and s.name = 'APNSMerch')
 	Begin
-		Drop proc APNSMerch.pUpsertDeliveries
+		Drop proc APNSMerch.pUpdateDeliveries
 		Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
-		+  '* Dropping proc APNSMerch.pUpsertDeliveries'
+		+  '* Dropping proc APNSMerch.pUpdateDeliveries'
 	End
 
 	Drop Type APNSMerch.tDeliveries
@@ -162,14 +161,8 @@ End
 Go
 
 CREATE TYPE APNSMerch.tDeliveries AS TABLE(
-	SAPAccountNumber int NOT NULL,
-	DepartureTime datetime2(0) NULL,
-	IsEstimated bit NOT NULL,
-	DNS bit Null,
-	Primary Key Clustered
-	(
-		SAPAccountNumber ASC
-	) WITH (IGNORE_DUP_KEY = OFF)
+	DeliveryStopID int NULL,
+	SAPAccountNumber varchar(20) NULL -- Reserved for the future for one less DB join
 )
 GO
 
@@ -179,75 +172,91 @@ Go
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 /* This is called from driver delivery service */
-If Exists (Select * From sys.procedures p join sys.schemas s on p.schema_id = s.schema_id and p.name = 'pUpsertDeliveries' and s.name = 'APNSMerch')
+If Exists (Select * From sys.procedures p join sys.schemas s on p.schema_id = s.schema_id and p.name = 'pUpdateDeliveries' and s.name = 'APNSMerch')
 Begin
-	Drop proc APNSMerch.pUpsertDeliveries
+	Drop proc APNSMerch.pUpdateDeliveries
 	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
-	+  '* Dropping proc APNSMerch.pUpsertDeliveries'
+	+  '* Dropping proc APNSMerch.pUpdateDeliveries'
 End 
 Go
 
-Create proc APNSMerch.pUpsertDeliveries
+Create proc APNSMerch.pUpdateDeliveries
 (
-	@Known APNSMerch.tDeliveries ReadOnly,
-	@DeliveryDateUTC Date,
-	@GSN varchar(50)
+	@Known APNSMerch.tDeliveries ReadOnly
 )
 As
 Begin
-	With CTE As
+	Declare @DeliveryInfo Table
 	(
-		Select @DeliveryDateUTC DeliveryDateUTC, @GSN GSN, SAPAccountNumber, DepartureTime, IsEstimated, DNS, SysdateTime() LastModified
-		From @Known
+		DeliveryDateUTC date NOT NULL,
+		SAPAccountNumber int NOT NULL,
+		ArrivalTime datetime2(0) NULL,
+		IsEstimated bit NOT NULL,
+		DNS bit NULL,
+		LastModifiedBy varchar(50) NOT NULL
 	)
+
+	-- The stop type other than STP will be filtred out by the field SAPAccountNumber
+	Insert Into @DeliveryInfo
+	Select ds.DeliveryDateUTC, 
+		ds.SAPAccountNumber, 
+		Coalesce(ds.ArrivalTime, ds.EstimatedArrivalTime, ds.PlannedArrival) ArrivalTime, 		
+		Case When ds.ArrivalTime Is Null Then 1 Else 0 End IsEstimated,
+		ds.DNS, 
+		ds.LastModifiedBy
+	From Mesh.DeliveryStop ds
+	Where DeliveryStopID in (Select DeliveryStopID From @Known)
+	And StopType = 'STP'
+	And SAPAccountNumber is not null
+
 	--Update DeliveryInfo
 	Update t
-	Set t.DepartureTime = s.DepartureTime, t.DNS = s.DNS, t.IsEstimated = s.IsEstimated, t.LastModifiedBy = s.GSN, t.LastModified = SysDateTime() 
+	Set t.ArrivalTime = s.ArrivalTime, t.DNS = s.DNS, t.IsEstimated = s.IsEstimated, t.LastModifiedBy = s.LastModifiedBy, t.LastModified = SysDateTime() 
 	From APNSMerch.DeliveryInfo t
-	Join CTE s
+	Join @DeliveryInfo s
 	On t.DeliveryDateUTC = s.DeliveryDateUTC And t.SAPAccountNumber = s.SAPAccountNumber
 
 	--Update Trace
 	Insert Into APNSMerch.StoreDeliveryTimeTrace
         (DeliveryDateUTC
         ,SAPAccountNumber
-        ,DepartureTime
+        ,ArrivalTime
         ,IsEstimated
         ,DNS
-        ,ReportTimeLocal)
-	Select @DeliveryDateUTC DeliveryDateUTC, SAPAccountNumber, DepartureTime, IsEstimated, DNS, SysdateTime() 
-	From @Known
+		,LastModifiedBy
+		,ReportTimeLocal
+	)
+	Select *, SYSDATETIME() From @DeliveryInfo
 
 	--Get the Message
 	Select 
-	DeliveryDateUTC,
+	sm.DeliveryDateUTC,
 	sm.SAPAccountNumber,
 	p.GSN,
 	'[' + b.BranchName + ']' + 
 	Case 
 		When sm.DNS = 1 Then 'Delivery for ' 
-		When sm.IsEstimated = 1 Then 'The new estimated delivery for ' 
+		When sm.IsEstimated = 1 Then 'The new estimated delivery arrival for ' 
 		Else 'Delivery for ' End 
 	+
 	Concat(A.AccountName, '(' + Convert(Varchar(12), A.SAPAccountNumber), + ')' + ', ', A.Address, ', ', a.City, ' ')
 	+
 	Case When sm.DNS = 1 Then 'is canceled'  
 		When sm.IsEstimated = 1 Then 'is ' 
-		Else 'is made at ' End 
+		Else 'is arrived at ' End 
 	+
 	Case When sm.DNS = 1 Then '' 
-		Else Substring(Convert(varchar(30), DateAdd(Hour, TimeZoneOffSet, sm.DepartureTime), 100), 13, 100) End Message
-	From APNSMerch.DeliveryInfo sm
-	Join @Known k on sm.SAPAccountNumber = k.SAPAccountNumber
+		Else Substring(Convert(varchar(30), DateAdd(Hour, TimeZoneOffSet, sm.ArrivalTime), 100), 13, 100) End Message
+	From @DeliveryInfo ds
+	Join APNSMerch.DeliveryInfo sm on sm.SAPAccountNumber = ds.SAPAccountNumber And ds.DeliveryDateUTC = sm.DeliveryDateUTC
 	Join Setup.Merchandiser p on sm.MerchandiserGSN = p.GSN
 	Join SAP.Account a on sm.SAPAccountNumber = a.SAPAccountNumber
 	Join SAP.Branch b on a.BranchID = b.BranchID
-	Where DeliveryDateUTC = @DeliveryDateUTC
-	And (( Delta < -1800 ) Or ( Delta <> 0 And sm.IsEstimated = 0))
+	And (( Delta > 1800 ) Or ( Delta <> 0 And sm.IsEstimated = 0))
 
 End
 Go
 
 Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
-+  'Proc APNS.pUpsertDeliveries Created'
++  'Proc APNS.pUpdateDeliveries Created'
 Go

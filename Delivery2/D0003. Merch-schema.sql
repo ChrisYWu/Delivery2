@@ -44,3 +44,4 @@ Go
 Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
 +  'Procedure Operation.pUpsertMerchPhoneNumber updated'
 Go
+
