@@ -37,7 +37,7 @@ Go
 Create Table APNS.App
 ( 
 	AppID int not null identity(1,1),
-	AppName varchar(128) not null,
+	BundleID varchar(128) not null,
 	CONSTRAINT PK_App PRIMARY KEY CLUSTERED 
 	(
 		AppID ASC
@@ -48,8 +48,8 @@ Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120
 +  'Table APNS.App created'
 Go
 
-Insert APNS.App(AppName)
-Values('Merchandiser MyDay')
+Insert APNS.App(BundleID)
+Values('com.dpsg.internal.MerchMyDayTest')
 Go
 Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
 +  'Merchandiser MyDay inserted into APNS.app'
@@ -70,7 +70,9 @@ Create Table APNS.Cert
 	AppID int,
 	CertType varchar(20),
 	P12 varbinary(max),
-	LastModified DateTime,
+	P12Len as Len(P12),
+	ExpirationDate DateTime2(0),
+	LastModified DateTime2(0),
 	CONSTRAINT PK_Cert PRIMARY KEY CLUSTERED 
 	(
 		CertID ASC
@@ -95,18 +97,23 @@ Begin
 	Select BulkColumn From OpenRowSet(Bulk N'\\BSCCAP108\Test\test.txt', SINGLE_CLOB) As Document
 	*/
 
-	Insert APNS.Cert(AppID, CertType, P12, LastModified)
-	Select AppID, CertType, P12, LastModified From BSCCAP108.Merch.APNS.Cert
+	Insert APNS.Cert(AppID, CertType, P12, ExpirationDate, LastModified)
+	Select AppID, CertType, P12, ExpirationDate, LastModified From BSCCAP108.Merch.APNS.Cert
 End
 Else
 Begin
-	Insert APNS.Cert(AppID, CertType, P12, LastModified)
-	Select 1, 'Sandbox', BulkColumn, SysDateTime() From OpenRowSet(Bulk N'\\BSCCAP108\Test\APNSTest2Certificate.p12', SINGLE_BLOB) As Document
+	Insert APNS.Cert(AppID, CertType, P12, ExpirationDate, LastModified)
+--	Select 1, 'SandboxB', BulkColumn, '2020-01-17 9:54:43', SysDateTime() From OpenRowSet(Bulk N'\\BSCCAP108\Test\Sandbox-p12-B.p12', SINGLE_BLOB) As Document
+	
+	Select 1, 'Sandbox', BulkColumn, '2020-01-17 9:54:43', SysDateTime() From OpenRowSet(Bulk N'\\BSCCAP108\Test\MerchMyDayTest-Dev.p12', SINGLE_BLOB) As Document
+	Union
+	Select 1, 'Prod', BulkColumn, '2020-02-16 10:01:34', SysDateTime() From OpenRowSet(Bulk N'\\BSCCAP108\Test\MerchMyDayTest-Prod.p12', SINGLE_BLOB) As Document
+
 End
 Go
 
 Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
-+  'Sandbox Cert Inserted'
++  'Sandbox/Prod Cert Inserted'
 Go
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
@@ -189,33 +196,48 @@ Go
 
 Create proc APNS.pUpsertAppTokenForUser
 (
-	@AppID int, 
+	@BundleID varchar(128), 
 	@GSN varchar(20),
 	@Token varchar(max)
 )
 As
 Begin
+	Declare @AppID int
+
+	Select @AppID = AppID
+	From APNS.App
+	Where BundleID = @BundleID
+
+	If @AppID is null
+	Begin
+		Insert APNS.App(BundleID) Values (@BundleID)
+		Select @AppID = SCOPE_IDENTITY()
+	End
+
 	Declare @AppUserTokenID Int
 	
-	Select @AppUserTokenID = Token From APNS.AppUserToken Where AppID = @AppID And @GSN = GSN
+	Select @AppUserTokenID = AppUserTokenID From APNS.AppUserToken Where AppID = @AppID And @GSN = GSN
 
 	If @AppUserTokenID is null 
 	Begin
 		Insert APNS.AppUserToken(AppID, GSN, Token, LastModified)
-		Values(@AppID, @GSN, @Token, SysDateTime())
+		Values(@AppID, Upper(@GSN), @Token, SysDateTime())
 	End
 	Else
 	Begin
 		Update APNS.AppUserToken
-		Set @Token = Token, LastModified = SysDateTime()
+		Set Token = @Token, LastModified = SysDateTime()
 		Where AppUserTokenID = @AppUserTokenID
 	End
+
+	Delete APNS.AppUserToken
+	Where Token = @Token
+	And GSN != @GSN
 End
 Go
 
---exec APNS.pUpsertAppTokenForUser @AppID =1, @GSN= 'WUXYX001', @Token='07fe4f023fe8a573648669f7ab7815189c7d8a2b23f71b3e52c4034bfb3ae12b'
 Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
-+  'Proc APNS.pUpsertAppTokenForUser Created'
++  'Proc APNS.pUpsertAppTokenForUser created'
 Go
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
@@ -252,6 +274,63 @@ Go
 
 Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
 +  'Table APNS.NotificationQueue created'
+Go
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
+IF TYPE_ID(N'APNS.tDeliveryMessage') IS Not NULL
+Begin
+	If Exists (Select * From sys.procedures p join sys.schemas s on p.schema_id = s.schema_id and p.name = 'pEnqueueDeliveryMessages' and s.name = 'APNS')
+	Begin
+		Drop proc APNS.pEnqueueDeliveryMessages
+		Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+		+  '* Dropping proc APNS.pEnqueueDeliveryMessages'
+	End
+
+	Drop Type APNS.tDeliveryMessage
+	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+	+ '* APNS.tDeliveryMessage'
+End
+GO
+
+CREATE TYPE APNS.tDeliveryMessage AS TABLE(
+	GSN varchar(20) not null,
+	Message nvarchar(2048) not null,
+	SAPAccountNumber varchar(50) not null
+	PRIMARY KEY CLUSTERED 
+	(
+		GSN ASC, SAPAccountNumber ASC
+	)WITH (IGNORE_DUP_KEY = OFF)
+)
+GO
+
+Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
++ 'Type APNS.tDeliveryMessage created'
+Go
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
+/* This is called from driver service */
+If Exists (Select * From sys.procedures p join sys.schemas s on p.schema_id = s.schema_id and p.name = 'pEnqueueDeliveryMessages' and s.name = 'APNS')
+Begin
+	Drop proc APNS.pEnqueueDeliveryMessages
+	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+	+  '* Dropping proc APNS.pEnqueueDeliveryMessages'
+End 
+Go
+
+Create proc APNS.pEnqueueDeliveryMessages
+(
+	@Items APNS.tDeliveryMessage ReadOnly
+)
+As
+Begin
+	Insert Into APNS.NotificationQueue(GSN, Message, MessageType, SubjectIdentifier, EnqueueDate)
+	Select GSN, Message, 'MerchandiserDeliveryUpdate', SAPAccountNumber, SysDateTime()
+	From @Items
+End
+Go
+
+Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
++  'Proc APNS.pEnqueueDeliveryMessages Created'
 Go
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
@@ -293,26 +372,34 @@ Begin
 End 
 Go
 
+--exec  APNS.pGetMessagesForNotification @LockerID='00', @Debug=1
+
 Create proc APNS.pGetMessagesForNotification
 (
 	@LockerID varchar(50),
 	@DelayThreshold int = 60,
-	@LonerThreshhold int = 240
+	@LonerThreshhold int = 240,
+	@Debug bit = 0
 )
 As
 Begin
 	Declare @Lastest DateTime2(0)
-	Select @Lastest = Max(EnqueueDate)
+	Select @Lastest = Max(IsNull(EnqueueDate, '2000-01-01'))
 	From APNS.NotificationQueue
 	Where LockerID is Null
 
 	Declare @LastestSent DateTime2(0)
-	Select @LastestSent = Max(DeliveredDate)
+	Select @LastestSent = IsNull(Max(IsNull(DeliveredDate, '2000-01-01')), '2000-01-01')
 	From APNS.NotificationQueue
 	Where LockerID is Not Null
 
 	Declare @LockDate DateTime2(3)
 	Select @LockDate = Convert(DateTime2(3), SysDateTime())
+
+	If (@Debug = 1) 
+	Begin
+		Select @Lastest Lastest, @LastestSent LastestSent, @LockDate LockDate, @LockerID LockerID  
+	End
 
 	Update APNS.NotificationQueue
 	Set LockerID = @LockerID, LockDate = @LockDate 
@@ -325,8 +412,9 @@ Begin
 	And LockerID is null
 	And DateDiff(s, EnqueueDate, SysDateTime()) < 86400   --Only interested in notifications within a day
 
-	Select ItemID, GSN, Message, MessageType, SubjectIdentifier
-	From APNS.NotificationQueue
+	Select ItemID, Message, Token
+	From APNS.NotificationQueue q
+	Join APNS.AppUserToken t on q.GSN = t.GSN
 	Where LockerID = @LockerID And LockDate = @LockDate
 	Order By ItemID
 End
@@ -339,6 +427,13 @@ Go
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 IF TYPE_ID(N'APNS.tNotificationItems') IS Not NULL
 Begin
+	If Exists (Select * From sys.procedures p join sys.schemas s on p.schema_id = s.schema_id and p.name = 'pUnlockItems' and s.name = 'APNS')
+	Begin
+		Drop proc APNS.pUnlockItems
+		Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+		+  '* Dropping proc APNS.pUnlockItems'
+	End
+
 	If Exists (Select * From sys.procedures p join sys.schemas s on p.schema_id = s.schema_id and p.name = 'pSetMessagesDelivered' and s.name = 'APNS')
 	Begin
 		Drop proc APNS.pSetMessagesDelivered
@@ -367,6 +462,34 @@ Go
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 /* This is called from driver service */
+If Exists (Select * From sys.procedures p join sys.schemas s on p.schema_id = s.schema_id and p.name = 'pUnlockItems' and s.name = 'APNS')
+Begin
+	Drop proc APNS.pUnlockItems
+	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+	+  '* Dropping proc APNS.pUnlockItems'
+End 
+Go
+
+Create proc APNS.pUnlockItems
+(
+	@Items APNS.tNotificationItems readonly
+)
+As
+Begin
+	Set Nocount On
+
+	Update APNS.NotificationQueue
+	Set LockerID = null, LockDate = null, DeliveredDate = null
+	Where ItemID In (Select ItemID From @Items)
+End
+Go
+
+Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
++  'Proc APNS.pUnlockItems Created'
+Go
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
+/* This is called from driver service */
 If Exists (Select * From sys.procedures p join sys.schemas s on p.schema_id = s.schema_id and p.name = 'pSetMessagesDelivered' and s.name = 'APNS')
 Begin
 	Drop proc APNS.pSetMessagesDelivered
@@ -390,3 +513,13 @@ Go
 Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
 +  'Proc APNS.pSetMessagesDelivered Created'
 Go
+
+--Declare @Its APNS.tNotificationItems
+--Insert @Its Values(7)
+--Insert @Its Values(8)
+--Insert @Its Values(9)
+
+--exec APNS.pUnlockItems @Items = @Its
+--Select * From APNS.NotificationQueue
+
+

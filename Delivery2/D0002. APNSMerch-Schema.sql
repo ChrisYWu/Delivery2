@@ -246,7 +246,7 @@ Begin
 		Else 'is arrived at ' End 
 	+
 	Case When sm.DNS = 1 Then '' 
-		Else Substring(Convert(varchar(30), DateAdd(Hour, TimeZoneOffSet, sm.ArrivalTime), 100), 13, 100) End Message
+		Else Ltrim(Substring(Convert(varchar(30), DateAdd(Hour, TimeZoneOffSet, sm.ArrivalTime), 100), 13, 100)) End Message
 	From @DeliveryInfo ds
 	Join APNSMerch.DeliveryInfo sm on sm.SAPAccountNumber = ds.SAPAccountNumber And ds.DeliveryDateUTC = sm.DeliveryDateUTC
 	Join Setup.Merchandiser p on sm.MerchandiserGSN = p.GSN

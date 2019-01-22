@@ -16,6 +16,10 @@ From SEtup.WebAPILog
 Order By LogiD desc
 
 Select *
+From APNS.NotificationQueue
+
+
+Select *
 From APNSMerch.StoreDeliveryTimeTrace
 
 Select *
@@ -139,3 +143,40 @@ Select *
 Where GSN Not in (Select GSN From SEtup.Person)
 GO
 
+exec APNS.pGetMessagesForNotification @LockerID = 'T', @Debug =1
+Select SYSDATETIME()
+Go
+
+
+
+Select DateDiff(s,'2019-01-10 14:38:09', SysDateTime()) 
+
+
+
+DEclare @Its APNS.tNotificationItems
+Insert @Its Values(108)
+
+exec APNS.pUnlockItems @Its
+
+Update APNS.NotificationQueue
+Set Message = 'Certainly got another one.'
+Where LockerID is null
+And ItemID = 108
+
+Select *
+From APNS.NotificationQueue
+
+Delete APNS.NotificationQueue
+Where ItemID < 100
+
+
+Select *
+From DPSGSharedclstr.Portal_Data.Staging.ADExtractData
+Where OrgUnit = 'Information Technology'
+Order By LastName
+
+
+
+Select Top 20 *
+From Setup.WebAPILog
+Order By Logid desc
