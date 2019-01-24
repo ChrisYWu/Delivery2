@@ -33,15 +33,38 @@ From Setup.WebAPILog
 Order By LogID Desc
 
 Select *
-From APNS.NotificationQueue
-
-Delete APNS.NotificationQueue
-Where ItemID > 11
-
+From Mesh.DeliveryStop
+Where DeliveryStopID = 66474
 
 Select *
-From APNSMerch.DeliveryInfo
+From APNS.NotificationQueue
 
+Update APNS.NotificationQueue
+Set LockerID = null, LockDate = null
+Where ItemID in (18, 19)
+
+Update APNS.NotificationQueue
+Set EnqueueDate = DateAdd(MINUTE, 1, EnqueueDate), DeliveredDate=DATEADD(Minute, 1, DeliveredDate)
+Where ItemID = 17
+
+exec  APNS.pGetMessagesForNotification @LockerID='00', @Debug=1
+Select * From APNS.NotificationQueue Where ItemID = 17
+
+Delete 
+From APNS.NotificationQueue
+Where itemID > 13
+
+Update APNS.NotificationQueue
+Set DeliveredDate=DATEADD(Minute, 6, DeliveredDate)
+Where ItemID = 17
+
+
+--Delete APNS.NotificationQueue
+--Where ItemID > 11
+
+--Delete
+--From APNSMerch.DeliveryInfo
+--Where DeliveryDateUTC = '2019-01-23' And MerchandiserGSN = 'ADEAX015'
 
 Select *
 From Mesh.DeliveryStop
@@ -51,9 +74,9 @@ Select DateDiff(HOUR, '2019-1-18', GetDAte())
 
 
 Declare @T APNSMerch.tKnownDeliveries 
-Insert @T Values(11321447, '2019-01-18 14:09:06', 0)
+Insert @T Values(11321447, '2019-01-24 14:09:06', 0)
 
-exec APNSMerch.pUpsertKnownDeliveries @Known = @T, @DeliveryDateUTC = '2019-01-18', @GSN = 'ADEAX015'
+exec APNSMerch.pUpsertKnownDeliveries @Known = @T, @DeliveryDateUTC = '2019-01-24', @GSN = 'WUXYX001'
 
 Select *
 From APNSMerch.DeliveryInfo
@@ -64,7 +87,7 @@ From APNSMerch.DeliveryInfo
 Where MerchandiserGSN = 'ADEAX015'
 
 
-Delete From APNS.NotificationQueue
+Select * From APNS.NotificationQueue
 
 
 
@@ -188,7 +211,33 @@ From BSCCAP108.Merch.APNS.Cert
 --Where AppID = 2 And CertID = 3
 
 Select *
+From Merch.Setup.Merchandiser
+Where GSN in 
+(
+	Select GSN
+	From APNS.AppUserToken
+)
+
+Select *
 From APNS.AppUserToken
+
 
 Select *
 From APNS.App
+
+'dd6299e259ef3ea8eb9bf761976f2fa927aa8fd4deb596f7db5d7eb74ac22b5d'
+
+2665aea92c99e48b86efee1f84ba2a0d0d5b08de59fa18bac27656fc9b146cab
+
+20d8d026c800d66f1a0a145a1db96d562dd6d24103bb4793fb4dd829b0516b7c
+
+6b87ec7a3e9263e92d4b2366db874bef5a037fb67b45ff25685189e326e70b70
+
+Delete
+From Setup.ProfileImage
+Where GSN = 'WUXYX001'
+
+Delete
+From Operation.AzureBlobStorage
+Where BlobID = 9191
+

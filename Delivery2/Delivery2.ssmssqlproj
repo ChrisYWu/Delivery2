@@ -607,11 +607,11 @@
           <AssociatedConnUserName />
           <FullPath>C0008. Split Invoice on the same item.sql</FullPath>
         </FileNode>
-        <FileNode Name="C0009.Barbara - Watson.sql">
+        <FileNode Name="C0009. Barbara - Watson.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
-          <FullPath>C0009.Barbara - Watson.sql</FullPath>
+          <FullPath>C0009. Barbara - Watson.sql</FullPath>
         </FileNode>
         <FileNode Name="D0001. APNS-Schema.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>

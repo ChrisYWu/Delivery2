@@ -50,6 +50,10 @@ Go
 
 Insert APNS.App(BundleID)
 Values('com.dpsg.internal.MerchMyDayTest')
+Insert APNS.App(BundleID)
+Values('com.dpsg.internal.MerchMyDayBeta')
+Insert APNS.App(BundleID)
+Values('com.dpsg.internal.MerchMyDay')
 Go
 Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
 +  'Merchandiser MyDay inserted into APNS.app'
@@ -88,7 +92,7 @@ Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120
 +  'Table APNS.Cert created'
 Go
 
-If @@ServerName = 'BSCCSQ07' 
+If @@ServerName <> 'BSCCAP108' 
 Begin
 	/* Make sure a local folder is created to contain the file of p12 and a network share is created 
 		that gives everyone in domain full control and every local user full control
@@ -103,11 +107,11 @@ End
 Else
 Begin
 	Insert APNS.Cert(AppID, CertType, P12, ExpirationDate, LastModified)
---	Select 1, 'SandboxB', BulkColumn, '2020-01-17 9:54:43', SysDateTime() From OpenRowSet(Bulk N'\\BSCCAP108\Test\Sandbox-p12-B.p12', SINGLE_BLOB) As Document
-	
-	Select 1, 'Sandbox', BulkColumn, '2020-01-17 9:54:43', SysDateTime() From OpenRowSet(Bulk N'\\BSCCAP108\Test\MerchMyDayTest-Dev.p12', SINGLE_BLOB) As Document
+	Select 1, 'Prod', BulkColumn, '2020-02-21 12:31:18', SysDateTime() From OpenRowSet(Bulk N'\\BSCCAP108\Test\Test-Prod.p12', SINGLE_BLOB) As Document
 	Union
-	Select 1, 'Prod', BulkColumn, '2020-02-16 10:01:34', SysDateTime() From OpenRowSet(Bulk N'\\BSCCAP108\Test\MerchMyDayTest-Prod.p12', SINGLE_BLOB) As Document
+	Select 2, 'Prod', BulkColumn, '2020-02-22 12:16:58', SysDateTime() From OpenRowSet(Bulk N'\\BSCCAP108\Test\Beta-Prod.p12', SINGLE_BLOB) As Document
+	Union
+	Select 3, 'Prod', BulkColumn, '2020-02-21 12:57:16', SysDateTime() From OpenRowSet(Bulk N'\\BSCCAP108\Test\Prod-Prod.p12', SINGLE_BLOB) As Document
 
 End
 Go
@@ -401,22 +405,42 @@ Begin
 		Select @Lastest Lastest, @LastestSent LastestSent, @LockDate LockDate, @LockerID LockerID  
 	End
 
-	Update APNS.NotificationQueue
-	Set LockerID = @LockerID, LockDate = @LockDate 
-	Where 
-	(
-		(DateDiff(s, @Lastest, SysDateTime()) > @DelayThreshold)
-			Or
-		(DateDiff(s, @LastestSent, SysDateTime()) > @LonerThreshhold)
-	)
-	And LockerID is null
-	And DateDiff(s, EnqueueDate, SysDateTime()) < 86400   --Only interested in notifications within a day
+	If (@Debug = 1) 
+	Begin
+		Select DateDiff(s, @Lastest, SysDateTime()) LastEnqueue, @DelayThreshold DelayThreshold
+		Select DateDiff(s, @LastestSent, SysDateTime()) LastestSent, @LonerThreshhold LonerThreshhold
 
-	Select ItemID, Message, Token
-	From APNS.NotificationQueue q
-	Join APNS.AppUserToken t on q.GSN = t.GSN
-	Where LockerID = @LockerID And LockDate = @LockDate
-	Order By ItemID
+		Select *
+		From APNS.NotificationQueue
+		Where 
+		(
+			(DateDiff(s, @Lastest, SysDateTime()) > @DelayThreshold)
+				Or
+			(DateDiff(s, @LastestSent, SysDateTime()) > @LonerThreshhold)
+		)
+		And LockerID is null
+		And DateDiff(s, EnqueueDate, SysDateTime()) < 86400   --Only interested in notifications within a day
+	End
+
+	If (@Debug <> 1 )
+	Begin
+		Update APNS.NotificationQueue
+		Set LockerID = @LockerID, LockDate = @LockDate 
+		Where 
+		(
+			(DateDiff(s, @Lastest, SysDateTime()) > @DelayThreshold)
+				Or
+			(DateDiff(s, @LastestSent, SysDateTime()) > @LonerThreshhold)
+		)
+		And LockerID is null
+		And DateDiff(s, EnqueueDate, SysDateTime()) < 86400   --Only interested in notifications within a day
+
+		Select ItemID, Message, Token
+		From APNS.NotificationQueue q
+		Join APNS.AppUserToken t on q.GSN = t.GSN
+		Where LockerID = @LockerID And LockDate = @LockDate
+		Order By ItemID
+	End
 End
 Go
 
@@ -521,5 +545,4 @@ Go
 
 --exec APNS.pUnlockItems @Items = @Its
 --Select * From APNS.NotificationQueue
-
 
