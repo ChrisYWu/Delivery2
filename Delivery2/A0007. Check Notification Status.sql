@@ -10,18 +10,35 @@ Go
 Select *
 From [Mesh].DeliveryRoute
 Where DeliveryDateUTC = Convert(Date, GetUTCDate())
-And RouteID like '1104%'
+And RouteID like '1116%'
 
 
 Select *
 From SAP.Branch
-Where Branchname = 'Albuquerque'
+Where Branchname = 'San Antonio'
 
 --Select *
 --From Notify.StoreDeliveryMechandiser
 --Where DeliveryDateUTC = Convert(Date, GetUTCDate())
 --Order By Delta
 --Go
+
+Select *
+From Mesh.DeliveryStop
+Where RouteID = 111601563
+
+Select *
+From Mesh.DeliveryStop
+Where RouteID = 111603101
+
+Select *
+From Mesh.DeliveryStop
+Where RouteID = 111603102
+
+Select *
+From Mesh.DeliveryStop
+Where RouteID = 111601506
+
 
 
 -----------------------------------------------------------------------------------
@@ -32,7 +49,7 @@ From DPSGSHAREDCLSTR.Merch.Mesh.DeliveryRoute dr
 Left Join Portal_Data.Person.UserProfile up on dr.ActualStartGSN = up.GSN
 Join SAP.Branch b on dr.SAPBranchID = b.SAPBranchID
 Where DeliveryDateUTC = dateadd(day, 0, convert(Date, GetUTCDate()))
-And b.SAPBranchID in ('1104')
+And b.SAPBranchID in ('1116')
 --And IsStarted = 0
 Order By IsStarted, dr.RouteID, dr.DeliveryDateUTC
 Go

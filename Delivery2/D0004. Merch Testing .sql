@@ -135,6 +135,7 @@ Insert Mesh.DeliveryStop
 Select DeliveryStopID, PlannedStopID, DeliveryDateUTC, RouteID, Sequence, StopType, SAPAccountNumber, IsAddedByDriver, Quantity, PlannedArrival, ServiceTime, TravelToTime, LastModifiedBy, LastModifiedUTC, LocalUpdateTime
 From DPSGSHAREDCLSTR.Merch.Mesh.DeliveryStop 
 Where DeliveryStopID in (66471,66472,66474, 66470, 66477, 66473, 66475)
+And DelieryStopID = 66474
 
 SET IDENTITY_INSERT Mesh.DeliveryStop Off
 

@@ -28,6 +28,11 @@ CheckInDistance = Null,
 ArrivalTime = null
 Where DeliveryStopID = 66474
 
+Select *
+From Mesh.DeliveryStop
+Where DeliveryStopID = 66474
+
+
 Select Top 50 *
 From Setup.WebAPILog
 Order By LogID Desc

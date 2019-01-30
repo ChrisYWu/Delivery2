@@ -469,6 +469,12 @@
           <AssociatedConnUserName />
           <FullPath>670.10 Enable Albuquerque(2018-11-27).sql</FullPath>
         </FileNode>
+        <FileNode Name="670.11 Enable San Antonio(2019-01-24).sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>670.11 Enable San Antonio(2019-01-24).sql</FullPath>
+        </FileNode>
         <FileNode Name="688. CheckForUploadStatus.sql">
           <AssociatedConnectionMoniker />
           <AssociatedConnSrvName />
@@ -613,9 +619,27 @@
           <AssociatedConnUserName />
           <FullPath>C0009. Barbara - Watson.sql</FullPath>
         </FileNode>
+        <FileNode Name="C0010. Predictive Order.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP108:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP108</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>C0010. Predictive Order.sql</FullPath>
+        </FileNode>
+        <FileNode Name="C0011. PredictiveOrder Calcualtion.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP108:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP108</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>C0011. PredictiveOrder Calcualtion.sql</FullPath>
+        </FileNode>
+        <FileNode Name="C0012. Predictive Verification.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>C0012. Predictive Verification.sql</FullPath>
+        </FileNode>
         <FileNode Name="D0001. APNS-Schema.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>D0001. APNS-Schema.sql</FullPath>
         </FileNode>
@@ -660,6 +684,24 @@
           <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>D0008. TestFromDevice.sql</FullPath>
+        </FileNode>
+        <FileNode Name="D0009. QA Deployment Test.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>D0009. QA Deployment Test.sql</FullPath>
+        </FileNode>
+        <FileNode Name="D0010. INT Development Test.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>D0010. INT Development Test.sql</FullPath>
+        </FileNode>
+        <FileNode Name="D0012. LoadDelivery.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>D0012. LoadDelivery.sql</FullPath>
         </FileNode>
         <FileNode Name="Json Query Test.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>

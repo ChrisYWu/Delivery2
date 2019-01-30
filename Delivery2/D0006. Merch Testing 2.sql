@@ -1,6 +1,10 @@
 use Merch
 Go
 
+Select Top 100 *
+From Merch.ETL.DataLoadingLog
+
+
 Select *
 From APNSMerch.DeliveryInfo
 Where DeliveryDateUTC = '2019-01-09'

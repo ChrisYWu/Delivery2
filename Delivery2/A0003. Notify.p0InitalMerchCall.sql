@@ -30,6 +30,7 @@ As
 	Using (
 	Select m.GSN, p.Firstname, p.LastName, m.Phone, Null Email, 'Merchandiser' Role, 
 		(Case When SAPBranchID = 1120 Then -6 
+			  When SAPBranchID = 1116 Then -6
 			  When SAPBranchID = 1178 Then -6
 			  When SAPBranchID = 1103 Then -7
 			  When SAPBranchID = 1104 Then -7
@@ -74,7 +75,7 @@ As
 		Where DeliveryDateUTC = Convert(Date, GetDate())
 		Group By DeliveryDateUTC, SAPAccountNumber
 	) ps on d.SAPAccountNumber = ps.SAPAccountNumber and ps.DeliveryDateUTC = d.DispatchDate
-	Where SAPBranchID in(1103, 1104, 1120, 1138, 1178)
+	Where SAPBranchID in(1103, 1104, 1116, 1120, 1138, 1178)
 	And DispatchDate = Convert(Date, GetDate())
 	And (ds.Sequence Is NUll OR ds.Sequence > 0)
 	And InvalidatedBatchID is null

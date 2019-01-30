@@ -381,7 +381,7 @@ Go
 Create proc APNS.pGetMessagesForNotification
 (
 	@LockerID varchar(50),
-	@DelayThreshold int = 60,
+	@DelayThreshold int = 1,
 	@LonerThreshhold int = 240,
 	@Debug bit = 0
 )

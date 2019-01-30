@@ -14,11 +14,11 @@ Full outer join Setup.WebAPILog e on l.CorrelationID = e.CorrelationID
 Where (l.CorrelationID is not null or e.CorrelationID is not null)
 --And (l.GetParemeters like '%111501301%'  Or l.PostJson like '%111501301%'  )
 --And e.LogID is Null
---And RouteID = 111501303
+And RouteID in (111601563, 111603101, 111603102)
 --And WEbEndPoint = 'UploadNewSequence'
 --And e.LogID is not null
 and DeliveryDateUTC = Convert(Date, GetDate())
-and RouteID Like '1178%'
+--and RouteID Like '1116%'
 Order by coalesce(l.RequestTime, e.ServerInsertTime) Desc
 
 Exec Mesh.pGetDeliveryManifest @RouteID = 112002021, @DeliveryDateUTC = '112002201'
