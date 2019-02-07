@@ -1,5 +1,6 @@
 Use Merch
 Go
+
 Select Top 100 *
 From Setup.WebAPILog
 Order By LogID desc
@@ -18,6 +19,28 @@ From Operation.StoreDelivery s
 Join SAP.Account a on s.SAPAccountNumber = a.SAPAccountNumber
 Where DeliveryDate = '2019-01-30'
 And a.BranchID = 161
+
+Select *
+From Setup.Store
+Where SAPAccountNumber in 
+(
+	Select Distinct SAPAccountNumber
+	From Mesh.PlannedStop
+	Where DeliveryDateUTC = Convert(Date, GetDate())
+	And RouteID = 113802310
+	And SAPAccountNumber is not null
+)
+
+Select *
+From SAP.Account
+Where SAPAccountNumber in 
+(
+	Select Distinct SAPAccountNumber
+	From Mesh.PlannedStop
+	Where DeliveryDateUTC = Convert(Date, GetDate())
+	And RouteID = 113802310
+	And SAPAccountNumber is not null
+)
 
 Select *
 From Setup.Config
@@ -53,7 +76,7 @@ From Mesh.DeliveryRoute
 Where DeliveryDateUTC = '2019-01-24'
 
 Update Setup.Merchandiser
-Set TimeZoneOffSet = 0, MerchGroupID = 38
+Set TimeZoneOffSet = -6, MerchGroupID = 12
 Where GSN = 'WUXYX001'
 
 Select *

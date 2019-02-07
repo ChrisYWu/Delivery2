@@ -233,13 +233,14 @@ Begin
 	sm.DeliveryDateUTC,
 	sm.SAPAccountNumber,
 	p.GSN,
-	'[' + b.BranchName + ']' + 
+	--'[' + b.BranchName + ']' + 
 	Case 
 		When sm.DNS = 1 Then 'Delivery for ' 
 		When sm.IsEstimated = 1 Then 'The new estimated delivery arrival for ' 
 		Else 'Delivery for ' End 
 	+
-	Concat(A.AccountName, '(' + Convert(Varchar(12), A.SAPAccountNumber), + ')' + ', ', A.Address, ', ', a.City, ' ')
+	--Concat(A.AccountName, '(' + Convert(Varchar(12), A.SAPAccountNumber), + ')' + ', ', A.Address, ', ', a.City, ' ')
+	Concat(A.AccountName, ', ', A.Address, ', ', a.City, ' ')
 	+
 	Case When sm.DNS = 1 Then 'is canceled'  
 		When sm.IsEstimated = 1 Then 'is ' 
