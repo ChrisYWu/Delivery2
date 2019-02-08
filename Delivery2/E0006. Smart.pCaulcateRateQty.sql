@@ -57,7 +57,7 @@ Begin
 	Set Comp = (@SampleSize - Cnt) * Square(Mean)
 
 	Update Smart.Daily
-	Set STD = Sqrt((DiffSQR + Comp)/@Bessel), Error = STD/9.48683298050514, Rate = Mean - @Zscore*STD/9.48683298050514
+	Set STD = Sqrt((DiffSQR + Comp)/@Bessel)
 
 	Update Smart.Daily
 	Set Error = STD/9.48683298050514, Rate = Mean - @Zscore*STD/9.48683298050514
@@ -72,6 +72,6 @@ Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120
 +  'Proc Smart.pCaulcateRateQty created'
 Go
 
-exec Smart.pCaulcateRateQty
-Go
+--exec Smart.pCaulcateRateQty
+--Go
 

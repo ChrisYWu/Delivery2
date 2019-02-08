@@ -17,7 +17,7 @@ Go
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 If Exists (Select * From sys.tables t Join sys.schemas s on t.schema_id = s.schema_id Where t.name = 'SalesHistory' and s.name = 'Smart')
 Begin
-	--Drop Table Smart.SalesHistory
+	Drop Table Smart.SalesHistory
 	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
 	+  '* Dropping table Smart.SalesHistory'
 End

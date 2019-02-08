@@ -1,56 +1,56 @@
-use Portal_Data
+Use Portal_Data
 Go
 
-If Not Exists (Select * From sys.schemas Where Name = 'Smart')
-Begin
-	exec('Create Schema Smart')
-End
+Select @@SERVERNAME Server, DB_Name() As [Database]
 Go
 
---~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
-If Exists (Select * From sys.tables t Join sys.schemas s on t.schema_id = s.schema_id Where t.name = 'SaleHistory' and s.name = 'Smart')
-Begin
-	Drop Table Smart.SaleHistory
-	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
-	+  '* Dropping table Smart.SaleHistory'
-End
-Go
 
-Create Table Smart.SaleHistory
-( 
-	DeliveryDate Date,
-	SAPAccountNumber bigint,
-	SAPMaterialID varchar(12),
-	Quantity Float
-)
-Go
+Select DeliveryDate, Count(*) Cnt, DATENAME(dw, DeliveryDate) DayOfWeek
+From Smart.SalesHistory 
+Group By DeliveryDate
+Order By DeliveryDate
 
-Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
-+  'Table Smart.SaleHistory created'
-Go
+
 
 /*
 0107	201902070933	5mins -- need to redo
 0108	201902070959    7mins -- need to redo
-
+.
+.
+.
+0205    201902081100	6mins -- all done
 */
-Insert Into Smart.SaleHistory 
-Select * From OpenQuery(RM, 
-'SELECT IV.DELIVERY_DATE DELIVERY_DATE, IV.CUSTOMER_NUMBER ACCOUNT_NUMBER, ID.ITEM_NUMBER, SUM(ID.CASEQTY) DELIVERYCASEQTY 
-FROM ACEUSER.INVOICE_MASTER IV, ACEUSER.INVOICE_DETAIL ID, ACEUSER.ITEM_MASTER IM 
-WHERE TO_CHAR(IV.DELIVERY_DATE, ''YYYY-MM-DD'') = ''2019-01-08'' 
-AND IV.ORDER_STATUS IN (6,7) 
-AND SUBSTR(ID.ITEM_NUMBER, 1, 1) IN (1,2) 
-AND IV.INVOICE_NUMBER = ID.INVOICE_NUMBER 
-AND ID.ITEM_NUMBER = IM.ITEM_NUMBER 
-AND IV.LOCATION_ID = IM.LOCATION_ID
-AND IV.TYPE = ''D'' 
-AND ID.CASEQTY > 0 
-AND ROWNUM < 10 
-AND IM.MATERIAL_TYPE IN (''FERT'', ''HAWA'')
-GROUP BY IV.LOCATION_ID, IV.CUSTOMER_NUMBER, IV.DELIVERY_DATE, ID.ITEM_NUMBER ')
-Go
 
-Select Distinct DeliveryDate
-From Smart.SaleHistory 
-Order By DeliveryDate
+--Declare @StartDate Date, @EndDate Date
+--Set @StartDate = '2019-02-05'
+--Set @EndDate = '2019-02-06'
+
+--While @StartDate < @EndDate
+--Begin
+
+--	Declare @Query nVarchar(2000)
+--	Set @Query = 'Insert Into Smart.SalesHistory Select * From OpenQuery(' 
+--	Set @Query += 'RM' +  ', ''';
+--	Set @Query += 'SELECT IV.DELIVERY_DATE DELIVERY_DATE, '
+--	Set @Query += 'IV.CUSTOMER_NUMBER ACCOUNT_NUMBER, ID.ITEM_NUMBER, '
+--	Set @Query += 'SUM(ID.CASEQTY) DELIVERYCASEQTY '
+--	Set @Query += 'FROM ACEUSER.INVOICE_MASTER IV, ACEUSER.INVOICE_DETAIL ID, ACEUSER.ITEM_MASTER IM  '
+--	Set @Query += 'WHERE TO_CHAR(IV.DELIVERY_DATE, ''''YYYY-MM-DD'''') = '
+--	Set @Query +=  dbo.udfConvertToPLSqlTimeFilter(@StartDate)
+--	Set @Query += ' AND IV.ORDER_STATUS IN (6,7) '
+--	Set @Query += 'AND IV.INVOICE_NUMBER = ID.INVOICE_NUMBER '             
+--	Set @Query += 'AND IV.TYPE = ''''D'''' '
+--	Set @Query += 'AND ID.CASEQTY > 0 '
+--	Set @Query += 'AND ID.ITEM_NUMBER = IM.ITEM_NUMBER '
+--	Set @Query += 'AND IV.LOCATION_ID = IM.LOCATION_ID '
+--	Set @Query += 'AND IM.MATERIAL_TYPE IN (''''FERT'''', ''''HAWA'''') '
+--	Set @Query += 'GROUP BY IV.LOCATION_ID, IV.CUSTOMER_NUMBER, IV.DELIVERY_DATE, ID.ITEM_NUMBER '
+--	Set @Query += ''')'	
+
+--	Select(@Query)
+--	Exec(@Query)
+
+--	Select @StartDate = DateAdd(Day, 1, @StartDate)
+--End
+--Go
+
