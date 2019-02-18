@@ -3,7 +3,7 @@
   <Items>
     <LogicalFolder Name="Connections" Type="2" Sorted="true">
       <Items>
-        <ConnectionNode Name="BCLDAP105:DPSG\wuxyx001">
+        <ConnectionNode Name="BCLDAP105:DPSG\WUXYX001">
           <Created>2018-10-09T11:22:31.959754-05:00</Created>
           <Type>SQL</Type>
           <Server>BCLDAP105</Server>
@@ -15,7 +15,7 @@
           <ConnectionProtocol>NotSpecified</ConnectionProtocol>
           <ApplicationName />
         </ConnectionNode>
-        <ConnectionNode Name="BSCCAP108:DPSG\wuxyx001">
+        <ConnectionNode Name="BSCCAP108:DPSG\WUXYX001">
           <Created>2018-10-09T11:22:21.9488001-05:00</Created>
           <Type>SQL</Type>
           <Server>BSCCAP108</Server>
@@ -27,7 +27,7 @@
           <ConnectionProtocol>NotSpecified</ConnectionProtocol>
           <ApplicationName />
         </ConnectionNode>
-        <ConnectionNode Name="BSCCAP121:DPSG\wuxyx001">
+        <ConnectionNode Name="BSCCAP121:DPSG\WUXYX001">
           <Created>2018-10-09T11:22:10.7716986-05:00</Created>
           <Type>SQL</Type>
           <Server>BSCCAP121</Server>
@@ -39,7 +39,7 @@
           <ConnectionProtocol>NotSpecified</ConnectionProtocol>
           <ApplicationName />
         </ConnectionNode>
-        <ConnectionNode Name="BSCCSQ07:DPSG\wuxyx001">
+        <ConnectionNode Name="BSCCSQ07:DPSG\WUXYX001">
           <Created>2018-10-09T11:22:44.5380273-05:00</Created>
           <Type>SQL</Type>
           <Server>BSCCSQ07</Server>
@@ -51,7 +51,7 @@
           <ConnectionProtocol>NotSpecified</ConnectionProtocol>
           <ApplicationName />
         </ConnectionNode>
-        <ConnectionNode Name="DPSGSharedClstr:DPSG\wuxyx001">
+        <ConnectionNode Name="DPSGSharedClstr:DPSG\WUXYX001">
           <Created>2018-10-09T11:22:54.3036329-05:00</Created>
           <Type>SQL</Type>
           <Server>DPSGSharedClstr</Server>
@@ -474,6 +474,12 @@
           <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>670.11 Enable San Antonio(2019-01-24).sql</FullPath>
+        </FileNode>
+        <FileNode Name="670.12 Enable BR.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>670.12 Enable BR.sql</FullPath>
         </FileNode>
         <FileNode Name="688. CheckForUploadStatus.sql">
           <AssociatedConnectionMoniker />
