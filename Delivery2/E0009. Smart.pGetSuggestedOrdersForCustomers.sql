@@ -73,6 +73,8 @@ Begin
 
 	If Exists (Select * From Smart.Config Where ConfigID = 1 And Designation = 0)
 	Begin
+		Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+			+ 'Smart.pGetSuggestedOrdersForCustomers reads from Smart.Daily'
 		Insert Into @Results 
 		Select d.SAPAccountNumber, a.DeliveryDate, 
 			DateDiff(day, DeliveryDate, NextDeliveryDate) NumberOfDays, d.SAPMaterialID, Rate, Rate*DateDiff(day, DeliveryDate, NextDeliveryDate) RawQty,
@@ -82,6 +84,8 @@ Begin
 	End
 	Else
 	Begin
+		Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+			+ 'Smart.pGetSuggestedOrdersForCustomers reads from Smart.Daily1'
 		Insert Into @Results 
 		Select d.SAPAccountNumber, a.DeliveryDate, 
 			DateDiff(day, DeliveryDate, NextDeliveryDate) NumberOfDays, d.SAPMaterialID, Rate, Rate*DateDiff(day, DeliveryDate, NextDeliveryDate) RawQty,
@@ -109,3 +113,5 @@ Insert @test Values(11307893, '2019-02-11', '2019-02-14')
 exec Smart.pGetSuggestedOrdersForCustomers @SAPAccounts = @test
 Go
 
+Select Top 1 * From Smart.Daily1
+Select Top 1 * From Smart.Daily
