@@ -158,8 +158,8 @@
           <FullPath>102. Setup.pDeleteStoreBySAPAccountNumber.sql</FullPath>
         </FileNode>
         <FileNode Name="103. Backup_Export.pGetStoreServiceReport.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>103. Backup_Export.pGetStoreServiceReport.sql</FullPath>
         </FileNode>
@@ -643,6 +643,12 @@
           <AssociatedConnUserName />
           <FullPath>C0013. SALES_SCHEDULE.sql</FullPath>
         </FileNode>
+        <FileNode Name="C0014. SALES_SCHEDULE2 .sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>C0014. SALES_SCHEDULE2 .sql</FullPath>
+        </FileNode>
         <FileNode Name="D0001. APNS-Schema.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
@@ -715,11 +721,11 @@
           <AssociatedConnUserName />
           <FullPath>E0002. INTDataLoading.sql</FullPath>
         </FileNode>
-        <FileNode Name="E0003. INT Test.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+        <FileNode Name="E0003. Session 1.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP108:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP108</AssociatedConnSrvName>
           <AssociatedConnUserName />
-          <FullPath>E0003. INT Test.sql</FullPath>
+          <FullPath>E0003. Session 1.sql</FullPath>
         </FileNode>
         <FileNode Name="E0004. Get History.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
@@ -744,6 +750,30 @@
           <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>E0007. Session 2.sql</FullPath>
+        </FileNode>
+        <FileNode Name="E0008. Smart.pUpdateDateRange.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>E0008. Smart.pUpdateDateRange.sql</FullPath>
+        </FileNode>
+        <FileNode Name="E0009. Smart.pGetSuggestedOrdersForCustomers.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>E0009. Smart.pGetSuggestedOrdersForCustomers.sql</FullPath>
+        </FileNode>
+        <FileNode Name="E0010. Installation DEV.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP108:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP108</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>E0010. Installation DEV.sql</FullPath>
+        </FileNode>
+        <FileNode Name="E0011. Smart.Config.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>E0011. Smart.Config.sql</FullPath>
         </FileNode>
         <FileNode Name="Json Query Test.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>

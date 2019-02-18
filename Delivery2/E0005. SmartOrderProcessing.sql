@@ -30,9 +30,9 @@ CREATE TABLE Smart.SalesHistory(
 	Quantity float NOT NULL,
 	CONSTRAINT PK_SalesHistory PRIMARY KEY CLUSTERED 
 	(
+		DeliveryDate ASC,
 		SAPAccountNumber ASC,
-		SAPMaterialID ASC,
-		DeliveryDate ASC
+		SAPMaterialID ASC
 	)
 ) 
 
@@ -45,6 +45,20 @@ CREATE NONCLUSTERED INDEX NCI_SmartSalesHistory_Account_Material ON Smart.SalesH
 )
 INCLUDE (Quantity)
 GO
+
+CREATE NONCLUSTERED INDEX NCI_SmartSalesHistory_DeliveryDate ON Smart.SalesHistory
+(
+	DeliveryDate ASC
+)
+INCLUDE (Quantity)
+GO
+
+--CREATE NONCLUSTERED INDEX NCI_SmartSalesHistory_Quantity ON [Smart].[SalesHistory] 
+--(
+--	Quantity
+--)
+--INCLUDE ([DeliveryDate],[SAPAccountNumber],[SAPMaterialID])
+--GO
 
 Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
 +  'Table Smart.SalesHistory created'
@@ -89,4 +103,71 @@ GO
 
 Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
 +  'Table Smart.Daily created'
+Go
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
+If Exists (Select * From sys.tables t Join sys.schemas s on t.schema_id = s.schema_id Where t.name = 'Daily1' and s.name = 'Smart')
+Begin
+	Drop Table Smart.Daily1
+	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+	+  '* Dropping table Smart.Daily1'
+End
+Go
+
+CREATE TABLE Smart.Daily1(
+	SAPAccountNumber bigint NOT NULL,
+	SAPMaterialID varchar(12) NOT NULL,
+	Sum1 float NULL Default(0),
+	Cnt int NULL Default(0),
+	Mean float NULL Default(0),
+	DiffSQR float Null Default(0),
+	Comp float Null Default(0),
+	STD float NULL Default(0),
+	Error float NULL Default(0),
+	Rate float NULL Default(0),
+	Modified DateTime2(0) Null Default SysDateTime(),
+	CONSTRAINT PK_SmartDaily1 PRIMARY KEY CLUSTERED 
+	(
+		SAPAccountNumber ASC,
+		SAPMaterialID ASC
+	)
+)
+
+Go
+
+CREATE NONCLUSTERED INDEX NCI_SmartDaily1_Rate ON Smart.Daily1
+(
+	SAPAccountNumber ASC
+)
+INCLUDE (SAPMaterialID, Rate)
+GO
+
+Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
++  'Table Smart.Daily1 created'
+Go
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
+If Exists (Select * From sys.tables t Join sys.schemas s on t.schema_id = s.schema_id Where t.name = 'DeliveryDateRange' and s.name = 'Smart')
+Begin
+	Drop Table Smart.DeliveryDateRange
+	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+	+  '* Dropping table Smart.DeliveryDateRange'
+End
+Go
+
+CREATE TABLE Smart.DeliveryDateRange(
+	DeliveryDate Date Not Null,
+	RecordCount Int,
+	InRange bit, 
+	DayOfWeek As DATENAME(dw, DeliveryDate),	
+	Constraint PK_DeliveryDateRange Primary Key Clustered
+	(
+		DeliveryDate ASC
+	)
+)
+
+Go
+
+Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
++  'Table Smart.DeliveryDateRange created'
 Go

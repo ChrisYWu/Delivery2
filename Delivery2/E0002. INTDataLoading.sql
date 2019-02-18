@@ -1,9 +1,6 @@
 Use Portal_Data
 Go
 
---Select @@SERVERNAME Server, DB_Name() As [Database]
---Go
-
 Set NoCount On
 Go
 
@@ -74,12 +71,14 @@ CREATE TABLE ETL.DataLoadingLog(
 	IsProcessed  AS (CONVERT(bit,case when ProcessDate IS NULL then (0) else (1) end)),
 	LoadingTimeInSeconds AS (datediff(second,StartDate,EndDate)),
 	MergingTimeInSeconds As DateDiff(s, EndDate, MergeDate),
-	ProcessingTimeInSeconds As DateDiff(s, MergeDate, ProcessDate),
+	DeleteTimeInSeconds As DateDiff(s, MergeDate, AdjustRangeDate),
+	ProcessingTimeInSeconds As DateDiff(s, AdjustRangeDate, ProcessDate),
 	TableName varchar(100) NOT NULL,
 	SchemaName varchar(50) NOT NULL,
 	StartDate datetime2(0) NOT NULL,
 	EndDate datetime2(0) NULL,
 	MergeDate datetime2(0) NULL,
+	AdjustRangeDate datetime2(0) Null,
 	ProcessDate datetime2(0) NULL,
 	NumberOfRecordsLoaded int NULL,
 	StartDeliveryDate date NULL,
@@ -129,7 +128,7 @@ Begin
 		And l.IsMerged = 1
 
 		DEclare @StartDeliveryDate Date
-		Select @StartDeliveryDate = DateAdd(Day, -2, @LatestLoadDeliveryDate)
+		Select @StartDeliveryDate = DateAdd(Day, -1, @LatestLoadDeliveryDate)
 		Select @DateRangeString = dbo.udfConvertToPLSqlTimeFilter(@StartDeliveryDate)
 
 		Insert ETL.DataLoadingLog(SchemaName, TableName, StartDate)
@@ -169,7 +168,7 @@ Begin
 		From Staging.RMDailySale
 
 		Update ETL.DataLoadingLog 
-		Set EndDate = GetDate(), NumberOfRecordsLoaded = @RecordCount, EndDeliveryDate = @LastRecordDate, StartDeliveryDate = @StartDeliveryDate
+		Set EndDate = SysDateTime(), NumberOfRecordsLoaded = @RecordCount, EndDeliveryDate = @LastRecordDate, StartDeliveryDate = @StartDeliveryDate
 		Where LogID = @LogID
 
 		-----------------------------------
@@ -180,20 +179,30 @@ Begin
 		Select DeliveryDate, SAPAccountNumber, SAPMaterialID, Quantity
 		From Staging.RMDailySale
 
-		Declare @CurOffDate Date
-		Select @CurOffDate = DateAdd(day, -89, @LastRecordDate)
-
-		Delete Smart.SalesHistory
-		Where DeliveryDate < @CurOffDate
-
 		Update ETL.DataLoadingLog 
-		Set MergeDate = GetDate()
+		Set MergeDate = SysDateTime()
 		Where LogID = @LogID
+
 		-----------------------------------
-		exec Smart.pCaulcateRateQty
+		exec Smart.pUpdateDateRange
+		Update ETL.DataLoadingLog 
+		Set AdjustRangeDate = SysDateTime()
+		Where LogID = @LogID
+
+		-----------------------------------
+		If Exists (Select * From Smart.Config Where ConfigID = 1 And Designation = 1)
+		Begin
+			exec Smart.pCaulcateRateQty
+			Update Smart.Config Set Designation = 0, LastModified = SYSDATETIME() Where ConfigID = 1 
+		End
+		Else 
+		Begin
+			exec Smart.pCaulcateRateQty1
+			Update Smart.Config Set Designation = 1, LastModified = SYSDATETIME() Where ConfigID = 1 
+		End
 
 		Update ETL.DataLoadingLog 
-		Set ProcessDate = GetDate()
+		Set ProcessDate = SysDateTime()
 		Where LogID = @LogID
 
 	End Try
