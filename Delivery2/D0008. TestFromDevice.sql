@@ -5,6 +5,13 @@ Select *
 From Setup.Merchandiser
 Where GSN = 'ADEAX015'--'WUXYX001'
 
+Select b.BranchName, mg.GroupName
+From Setup.Merchandiser m
+Join Setup.merchGroup mg on m.MerchGroupId = mg.MerchGroupID
+Join SAP.Branch b on mg.SAPBranchID = b.SAPBranchID
+Where GSN = 'WUXYX001'
+
+
 Select *
 From APNS.App
 
