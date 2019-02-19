@@ -172,6 +172,9 @@ Begin
 		Where LogID = @LogID
 
 		-----------------------------------
+		Drop INDEX NCI_SmartSalesHistory_Account_Material ON Smart.SalesHistory
+		Drop INDEX NCI_SmartSalesHistory_DeliveryDate ON Smart.SalesHistory
+
 		Delete Smart.SalesHistory
 		Where DeliveryDate In (Select Distinct DeliveryDate From Staging.RMDailySale)
 
@@ -185,10 +188,23 @@ Begin
 
 		-----------------------------------
 		exec Smart.pUpdateDateRange
+
+		CREATE NONCLUSTERED INDEX NCI_SmartSalesHistory_Account_Material ON Smart.SalesHistory
+		(
+			SAPAccountNumber ASC,
+			SAPMaterialID ASC
+		)
+		INCLUDE (Quantity)
+
+		CREATE NONCLUSTERED INDEX NCI_SmartSalesHistory_DeliveryDate ON Smart.SalesHistory
+		(
+			DeliveryDate ASC
+		)
+		INCLUDE (Quantity)
+		
 		Update ETL.DataLoadingLog 
 		Set AdjustRangeDate = SysDateTime()
 		Where LogID = @LogID
-
 		-----------------------------------
 		If Exists (Select * From Smart.Config Where ConfigID = 1 And Designation = 1)
 		Begin
@@ -221,6 +237,7 @@ Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120
 +  'ETL.pLoadRMDailySale Created'
 Go
 
-
+exec ETL.pLoadRMDailySale
+Go
 
 

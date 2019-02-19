@@ -15,52 +15,39 @@ End
 Go
 
 Create Proc Smart.pCaulcateRateQty
-(
-	@ZScore Float = 0.842,   --This is Z60
-	@SampleSize int = 90
-)
 As 
 Begin
 	Set NoCount On
-
-	Declare @Bessel Int
-	Set @Bessel = @SampleSize - 1
 
 	Truncate Table Smart.Daily
 	--@@@@--
 	Drop Index NCI_SmartDaily_Rate ON Smart.Daily
 
-	Insert Into Smart.Daily(SAPAccountNumber, SAPMaterialID, Sum1, Cnt, Mean)
-	Select SAPAccountNumber, SAPMaterialID, Sum(Quantity) Sum1, Count(*) Cnt, Sum(Quantity)/@SampleSize Mean
+	Insert Into Smart.Daily(SAPAccountNumber, SAPMaterialID, Sum1, Cnt, Mean, STD)
+	Select SAPAccountNumber, SAPMaterialID, Sum(Quantity) Sum1, Count(*) Cnt, AVG(Quantity) Mean, STDEV(Quantity) STD
 	From Smart.SalesHistory
-	Group By SAPAccountNumber, SAPMaterialID;
+	Group By SAPAccountNumber, SAPMaterialID
+	Having Count(*) > 4;
 
 	With Temp As
 	(
-		Select h.SAPAccountNumber, h.SAPMaterialID, Square(h.Quantity - d.Mean) SQR
+		Select h.SAPAccountNumber, h.SAPMaterialID, Case When h.Quantity < d.Cap Then h.Quantity Else Cap End Capped
 		From Smart.SalesHistory h
 		Join Smart.Daily d on h.SAPAccountNumber = d.SAPAccountNumber And h.SAPMaterialID = d.SAPMaterialID
 	)
 
 	Update d
-	Set d.DiffSQR = t.DiffSQR
+	Set d.Sum2 = t.Sum2
 	From Smart.Daily d 
 	Join
 	(
-		Select SAPAccountNumber, SAPMaterialID, Sum(SQR) DiffSQR
+		Select SAPAccountNumber, SAPMaterialID, Sum(Capped) Sum2
 		From Temp 
 		Group By SAPAccountNumber, SAPMaterialID
 	) t on d.SAPAccountNumber = t.SAPAccountNumber And d.SAPMaterialID = t.SAPMaterialID
 
-	-- Sqrt(90) = 9.48683298050514
 	Update Smart.Daily
-	Set Comp = (@SampleSize - Cnt) * Square(Mean)
-
-	Update Smart.Daily
-	Set STD = Sqrt((DiffSQR + Comp)/@Bessel)
-
-	Update Smart.Daily
-	Set Error = STD/9.48683298050514, Rate = Mean - @Zscore*STD/9.48683298050514, Modified = SysDateTime()
+	Set Rate = Sum2/90, Modified = SysDateTime()
 
 	--@@@@--
 	Create NONCLUSTERED INDEX NCI_SmartDaily_Rate ON Smart.Daily
@@ -88,55 +75,42 @@ End
 Go
 
 Create Proc Smart.pCaulcateRateQty1
-(
-	@ZScore Float = 0.842,   --This is Z60
-	@SampleSize int = 90
-)
 As 
 Begin
 	Set NoCount On
 
-	Declare @Bessel Int
-	Set @Bessel = @SampleSize - 1
-
 	Truncate Table Smart.Daily1
 	--@@@@--
-	Drop Index NCI_SmartDaily1_Rate ON Smart.Daily1
+	Drop Index NCI_SmartDaily_Rate1 ON Smart.Daily1
 
-	Insert Into Smart.Daily1(SAPAccountNumber, SAPMaterialID, Sum1, Cnt, Mean)
-	Select SAPAccountNumber, SAPMaterialID, Sum(Quantity) Sum1, Count(*) Cnt, Sum(Quantity)/@SampleSize Mean
+	Insert Into Smart.Daily1(SAPAccountNumber, SAPMaterialID, Sum1, Cnt, Mean, STD)
+	Select SAPAccountNumber, SAPMaterialID, Sum(Quantity) Sum1, Count(*) Cnt, AVG(Quantity) Mean, STDEV(Quantity) STD
 	From Smart.SalesHistory
-	Group By SAPAccountNumber, SAPMaterialID;
+	Group By SAPAccountNumber, SAPMaterialID
+	Having Count(*) > 4;
 
 	With Temp As
 	(
-		Select h.SAPAccountNumber, h.SAPMaterialID, Square(h.Quantity - d.Mean) SQR
+		Select h.SAPAccountNumber, h.SAPMaterialID, Case When h.Quantity < d.Cap Then h.Quantity Else Cap End Capped
 		From Smart.SalesHistory h
-		Join Smart.Daily1 d on h.SAPAccountNumber = d.SAPAccountNumber And h.SAPMaterialID = d.SAPMaterialID
+		Join Smart.Daily d on h.SAPAccountNumber = d.SAPAccountNumber And h.SAPMaterialID = d.SAPMaterialID
 	)
 
 	Update d
-	Set d.DiffSQR = t.DiffSQR
+	Set d.Sum2 = t.Sum2
 	From Smart.Daily1 d 
 	Join
 	(
-		Select SAPAccountNumber, SAPMaterialID, Sum(SQR) DiffSQR
+		Select SAPAccountNumber, SAPMaterialID, Sum(Capped) Sum2
 		From Temp 
 		Group By SAPAccountNumber, SAPMaterialID
 	) t on d.SAPAccountNumber = t.SAPAccountNumber And d.SAPMaterialID = t.SAPMaterialID
 
-	-- Sqrt(90) = 9.48683298050514
 	Update Smart.Daily1
-	Set Comp = (@SampleSize - Cnt) * Square(Mean)
-
-	Update Smart.Daily1
-	Set STD = Sqrt((DiffSQR + Comp)/@Bessel)
-
-	Update Smart.Daily1
-	Set Error = STD/9.48683298050514, Rate = Mean - @Zscore*STD/9.48683298050514, Modified = SysDateTime()
+	Set Rate = Sum2/90, Modified = SysDateTime()
 
 	--@@@@--
-	Create NONCLUSTERED INDEX NCI_SmartDaily1_Rate ON Smart.Daily1
+	Create NONCLUSTERED INDEX NCI_SmartDaily_Rate1 ON Smart.Daily1
 	(
 		SAPAccountNumber ASC
 	)
@@ -147,3 +121,7 @@ Go
 Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
 +  'Proc Smart.pCaulcateRateQty1 created'
 Go
+
+exec Smart.pCaulcateRateQty1
+Go
+

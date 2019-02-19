@@ -53,13 +53,6 @@ CREATE NONCLUSTERED INDEX NCI_SmartSalesHistory_DeliveryDate ON Smart.SalesHisto
 INCLUDE (Quantity)
 GO
 
---CREATE NONCLUSTERED INDEX NCI_SmartSalesHistory_Quantity ON [Smart].[SalesHistory] 
---(
---	Quantity
---)
---INCLUDE ([DeliveryDate],[SAPAccountNumber],[SAPMaterialID])
---GO
-
 Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
 +  'Table Smart.SalesHistory created'
 Go
@@ -79,10 +72,9 @@ CREATE TABLE Smart.Daily(
 	Sum1 float NULL Default(0),
 	Cnt int NULL Default(0),
 	Mean float NULL Default(0),
-	DiffSQR float Null Default(0),
-	Comp float Null Default(0),
-	STD float NULL Default(0),
-	Error float NULL Default(0),
+	STD float Null Default(0),
+	Cap as Mean + STD,
+	Sum2 float Null Default(0),
 	Rate float NULL Default(0),
 	Modified DateTime2(0) Null Default SysDateTime(),
 	CONSTRAINT PK_SmartDaily PRIMARY KEY CLUSTERED 
@@ -91,7 +83,6 @@ CREATE TABLE Smart.Daily(
 		SAPMaterialID ASC
 	)
 )
-
 Go
 
 CREATE NONCLUSTERED INDEX NCI_SmartDaily_Rate ON Smart.Daily
@@ -120,10 +111,9 @@ CREATE TABLE Smart.Daily1(
 	Sum1 float NULL Default(0),
 	Cnt int NULL Default(0),
 	Mean float NULL Default(0),
-	DiffSQR float Null Default(0),
-	Comp float Null Default(0),
-	STD float NULL Default(0),
-	Error float NULL Default(0),
+	STD float Null Default(0),
+	Cap as Mean + STD,
+	Sum2 float Null Default(0),
 	Rate float NULL Default(0),
 	Modified DateTime2(0) Null Default SysDateTime(),
 	CONSTRAINT PK_SmartDaily1 PRIMARY KEY CLUSTERED 
@@ -135,7 +125,7 @@ CREATE TABLE Smart.Daily1(
 
 Go
 
-CREATE NONCLUSTERED INDEX NCI_SmartDaily1_Rate ON Smart.Daily1
+CREATE NONCLUSTERED INDEX NCI_SmartDaily_Rate1 ON Smart.Daily1
 (
 	SAPAccountNumber ASC
 )

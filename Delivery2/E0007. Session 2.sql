@@ -43,3 +43,16 @@ From Smart.Daily
 Group By Cnt
 Order By Cnt
 ---------------------------------------------
+
+
+Declare @test Smart.tCustomerOrderInput
+
+Insert @test Values(11307896, '2019-02-11', '2019-03-03')
+Insert @test Values(11307893, '2019-02-11', '2019-02-14')
+
+exec Smart.pGetSuggestedOrdersForCustomers @SAPAccounts = @test
+Go
+
+Select Top 1 * From Smart.Daily1
+Select Top 1 * From Smart.Daily
+
