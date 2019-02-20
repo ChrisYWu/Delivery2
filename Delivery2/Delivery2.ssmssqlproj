@@ -787,11 +787,11 @@
           <AssociatedConnUserName />
           <FullPath>E0011. Smart.Config.sql</FullPath>
         </FileNode>
-        <FileNode Name="E0012. .sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP108:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>BSCCAP108</AssociatedConnSrvName>
+        <FileNode Name="E0012. DNA.pInsertVoidOrderDetails.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
-          <FullPath>E0012. .sql</FullPath>
+          <FullPath>E0012. DNA.pInsertVoidOrderDetails.sql</FullPath>
         </FileNode>
         <FileNode Name="Json Query Test.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
@@ -828,6 +828,12 @@
           <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>SQLQuery5.sql</FullPath>
+        </FileNode>
+        <FileNode Name="SQLQuery6.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>SQLQuery6.sql</FullPath>
         </FileNode>
       </Items>
     </LogicalFolder>

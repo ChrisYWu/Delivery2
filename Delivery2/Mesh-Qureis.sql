@@ -14,10 +14,10 @@ Full outer join Setup.WebAPILog e on l.CorrelationID = e.CorrelationID
 Where (l.CorrelationID is not null or e.CorrelationID is not null)
 --And (l.GetParemeters like '%111501301%'  Or l.PostJson like '%111501301%'  )
 --And e.LogID is Null
-And RouteID in (111601563, 111603101, 111603102)
+And RouteID in (111502701)
 --And WEbEndPoint = 'UploadNewSequence'
 --And e.LogID is not null
-and DeliveryDateUTC = Convert(Date, GetDate())
+and DeliveryDateUTC = '2019-02-19'
 --and RouteID Like '1116%'
 Order by coalesce(l.RequestTime, e.ServerInsertTime) Desc
 

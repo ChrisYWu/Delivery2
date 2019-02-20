@@ -122,7 +122,7 @@ Begin
 	Begin Try
 		Truncate Table Staging.RMDailySale
 
-		Select @LatestLoadDeliveryDate = Coalesce(Max(EndDeliveryDate), GetDate())
+		Select @LatestLoadDeliveryDate = Coalesce(Max(EndDeliveryDate), DateAdd(Day, -1, GetDate()))
 		From ETL.DataLoadingLog l
 		Where SchemaName = 'Staging' And TableName = 'RMDailySale'
 		And l.IsMerged = 1

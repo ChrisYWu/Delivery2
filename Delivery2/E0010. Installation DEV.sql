@@ -1,5 +1,6 @@
 Use Portal_Data
 Go
+
 Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
 +  'Connectoion set to Portal_Data'
 Go
@@ -153,6 +154,31 @@ Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120
 Go
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
+If Exists (Select * From sys.tables t Join sys.schemas s on t.schema_id = s.schema_id Where t.name = 'Config' and s.name = 'Smart')
+Begin
+	Drop Table Smart.Config
+	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+	+  '* Dropping table Smart.Config'
+End
+Go
+
+Create Table Smart.Config
+( 
+	ConfigID int Primary Key,
+	Descr varchar(128),
+	Designation varchar(128),
+	LastModified DateTime2(0)
+)
+Go
+
+Insert Into Smart.Config
+Values(1, 'Live indicator', '0', SysDateTime())
+
+Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
++  'Table Smart.Config created and initialized'
+Go
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 If Exists (Select * From sys.tables t Join sys.schemas s on t.schema_id = s.schema_id Where t.name = 'Daily' and s.name = 'Smart')
 Begin
 	Drop Table Smart.Daily
@@ -167,10 +193,9 @@ CREATE TABLE Smart.Daily(
 	Sum1 float NULL Default(0),
 	Cnt int NULL Default(0),
 	Mean float NULL Default(0),
-	DiffSQR float Null Default(0),
-	Comp float Null Default(0),
-	STD float NULL Default(0),
-	Error float NULL Default(0),
+	STD float Null Default(0),
+	Cap as Mean + STD,
+	Sum2 float Null Default(0),
 	Rate float NULL Default(0),
 	Modified DateTime2(0) Null Default SysDateTime(),
 	CONSTRAINT PK_SmartDaily PRIMARY KEY CLUSTERED 
@@ -179,7 +204,6 @@ CREATE TABLE Smart.Daily(
 		SAPMaterialID ASC
 	)
 )
-
 Go
 
 CREATE NONCLUSTERED INDEX NCI_SmartDaily_Rate ON Smart.Daily
@@ -191,6 +215,46 @@ GO
 
 Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
 +  'Table Smart.Daily created'
+Go
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
+If Exists (Select * From sys.tables t Join sys.schemas s on t.schema_id = s.schema_id Where t.name = 'Daily1' and s.name = 'Smart')
+Begin
+	Drop Table Smart.Daily1
+	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+	+  '* Dropping table Smart.Daily1'
+End
+Go
+
+CREATE TABLE Smart.Daily1(
+	SAPAccountNumber bigint NOT NULL,
+	SAPMaterialID varchar(12) NOT NULL,
+	Sum1 float NULL Default(0),
+	Cnt int NULL Default(0),
+	Mean float NULL Default(0),
+	STD float Null Default(0),
+	Cap as Mean + STD,
+	Sum2 float Null Default(0),
+	Rate float NULL Default(0),
+	Modified DateTime2(0) Null Default SysDateTime(),
+	CONSTRAINT PK_SmartDaily1 PRIMARY KEY CLUSTERED 
+	(
+		SAPAccountNumber ASC,
+		SAPMaterialID ASC
+	)
+)
+
+Go
+
+CREATE NONCLUSTERED INDEX NCI_SmartDaily_Rate1 ON Smart.Daily1
+(
+	SAPAccountNumber ASC
+)
+INCLUDE (SAPMaterialID, Rate)
+GO
+
+Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
++  'Table Smart.Daily1 created'
 Go
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
@@ -284,59 +348,35 @@ End
 Go
 
 Create Proc Smart.pCaulcateRateQty
-(
-	@ZScore Float = 0.842,   --This is Z60
-	@SampleSize int = 90
-)
 As 
 Begin
 	Set NoCount On
 
-	Declare @Bessel Int
-	Set @Bessel = @SampleSize - 1
-
 	Truncate Table Smart.Daily
 	--@@@@--
-	Drop Index NCI_SmartDaily_Rate ON Smart.Daily
-
-	Insert Into Smart.Daily(SAPAccountNumber, SAPMaterialID, Sum1, Cnt, Mean)
-	Select SAPAccountNumber, SAPMaterialID, Sum(Quantity) Sum1, Count(*) Cnt, Sum(Quantity)/@SampleSize Mean
+	Insert Into Smart.Daily(SAPAccountNumber, SAPMaterialID, Sum1, Cnt, Mean, STD)
+	Select SAPAccountNumber, SAPMaterialID, Sum(Quantity) Sum1, Count(*) Cnt, AVG(Quantity) Mean, STDEV(Quantity) STD
 	From Smart.SalesHistory
-	Group By SAPAccountNumber, SAPMaterialID;
+	Group By SAPAccountNumber, SAPMaterialID
+	Having Count(*) > 4;
 
 	With Temp As
 	(
-		Select h.SAPAccountNumber, h.SAPMaterialID, Square(h.Quantity - d.Mean) SQR
+		Select h.SAPAccountNumber, h.SAPMaterialID, Case When h.Quantity < d.Cap Then h.Quantity Else Cap End Capped
 		From Smart.SalesHistory h
 		Join Smart.Daily d on h.SAPAccountNumber = d.SAPAccountNumber And h.SAPMaterialID = d.SAPMaterialID
 	)
 
 	Update d
-	Set d.DiffSQR = t.DiffSQR
+	Set d.Sum2 = t.Sum2, d.Rate = t.Sum2/90, d.Modified = SysDateTime()
 	From Smart.Daily d 
 	Join
 	(
-		Select SAPAccountNumber, SAPMaterialID, Sum(SQR) DiffSQR
+		Select SAPAccountNumber, SAPMaterialID, Sum(Capped) Sum2
 		From Temp 
 		Group By SAPAccountNumber, SAPMaterialID
 	) t on d.SAPAccountNumber = t.SAPAccountNumber And d.SAPMaterialID = t.SAPMaterialID
 
-	-- Sqrt(90) = 9.48683298050514
-	Update Smart.Daily
-	Set Comp = (@SampleSize - Cnt) * Square(Mean)
-
-	Update Smart.Daily
-	Set STD = Sqrt((DiffSQR + Comp)/@Bessel)
-
-	Update Smart.Daily
-	Set Error = STD/9.48683298050514, Rate = Mean - @Zscore*STD/9.48683298050514, Modified = SysDateTime()
-
-	--@@@@--
-	Create NONCLUSTERED INDEX NCI_SmartDaily_Rate ON Smart.Daily
-	(
-		SAPAccountNumber ASC
-	)
-	INCLUDE (SAPMaterialID, Rate)
 End
 Go
 
@@ -344,6 +384,53 @@ Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120
 +  'Proc Smart.pCaulcateRateQty created'
 Go
 
+
+------------------------------------------------------------
+If Exists (Select * From sys.procedures p join sys.schemas s on p.schema_id = s.schema_id and p.name = 'pCaulcateRateQty1' and s.name = 'Smart')
+Begin
+	Drop proc Smart.pCaulcateRateQty1
+	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+	+  '* Dropping proc Smart.pCaulcateRateQty1'
+End 
+Go
+
+Create Proc Smart.pCaulcateRateQty1
+As 
+Begin
+	Set NoCount On
+
+	Truncate Table Smart.Daily1
+	--@@@@--
+
+	Insert Into Smart.Daily1(SAPAccountNumber, SAPMaterialID, Sum1, Cnt, Mean, STD)
+	Select SAPAccountNumber, SAPMaterialID, Sum(Quantity) Sum1, Count(*) Cnt, AVG(Quantity) Mean, STDEV(Quantity) STD
+	From Smart.SalesHistory
+	Group By SAPAccountNumber, SAPMaterialID
+	Having Count(*) > 4;
+
+	With Temp As
+	(
+		Select h.SAPAccountNumber, h.SAPMaterialID, Case When h.Quantity < d.Cap Then h.Quantity Else Cap End Capped
+		From Smart.SalesHistory h
+		Join Smart.Daily d on h.SAPAccountNumber = d.SAPAccountNumber And h.SAPMaterialID = d.SAPMaterialID
+	)
+
+	Update d
+	Set d.Sum2 = t.Sum2, d.Rate = t.Sum2/90, d.Modified = SysDateTime()
+	From Smart.Daily1 d 
+	Join
+	(
+		Select SAPAccountNumber, SAPMaterialID, Sum(Capped) Sum2
+		From Temp 
+		Group By SAPAccountNumber, SAPMaterialID
+	) t on d.SAPAccountNumber = t.SAPAccountNumber And d.SAPMaterialID = t.SAPMaterialID
+
+End
+Go
+
+Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
++  'Proc Smart.pCaulcateRateQty1 created'
+Go
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 If Exists (Select * From sys.procedures p join sys.schemas s on p.schema_id = s.schema_id and p.name = 'pLoadRMDailySale' and s.name = 'ETL')
@@ -369,13 +456,13 @@ Begin
 	Begin Try
 		Truncate Table Staging.RMDailySale
 
-		Select @LatestLoadDeliveryDate = Coalesce(Max(EndDeliveryDate), GetDate())
+		Select @LatestLoadDeliveryDate = Coalesce(Max(EndDeliveryDate), DateAdd(Day, -1, GetDate()))
 		From ETL.DataLoadingLog l
 		Where SchemaName = 'Staging' And TableName = 'RMDailySale'
 		And l.IsMerged = 1
 
 		DEclare @StartDeliveryDate Date
-		Select @StartDeliveryDate = DateAdd(Day, -1, @LatestLoadDeliveryDate)  -- Include that last loaded day to create one day overlap
+		Select @StartDeliveryDate = DateAdd(Day, -1, @LatestLoadDeliveryDate)
 		Select @DateRangeString = dbo.udfConvertToPLSqlTimeFilter(@StartDeliveryDate)
 
 		Insert ETL.DataLoadingLog(SchemaName, TableName, StartDate)
@@ -419,6 +506,9 @@ Begin
 		Where LogID = @LogID
 
 		-----------------------------------
+		Drop INDEX NCI_SmartSalesHistory_Account_Material ON Smart.SalesHistory
+		Drop INDEX NCI_SmartSalesHistory_DeliveryDate ON Smart.SalesHistory
+
 		Delete Smart.SalesHistory
 		Where DeliveryDate In (Select Distinct DeliveryDate From Staging.RMDailySale)
 
@@ -432,12 +522,34 @@ Begin
 
 		-----------------------------------
 		exec Smart.pUpdateDateRange
+
+		CREATE NONCLUSTERED INDEX NCI_SmartSalesHistory_Account_Material ON Smart.SalesHistory
+		(
+			SAPAccountNumber ASC,
+			SAPMaterialID ASC
+		)
+		INCLUDE (Quantity)
+
+		CREATE NONCLUSTERED INDEX NCI_SmartSalesHistory_DeliveryDate ON Smart.SalesHistory
+		(
+			DeliveryDate ASC
+		)
+		INCLUDE (Quantity)
+		
 		Update ETL.DataLoadingLog 
 		Set AdjustRangeDate = SysDateTime()
 		Where LogID = @LogID
-
 		-----------------------------------
-		exec Smart.pCaulcateRateQty
+		If Exists (Select * From Smart.Config Where ConfigID = 1 And Designation = 1)
+		Begin
+			exec Smart.pCaulcateRateQty
+			Update Smart.Config Set Designation = 0, LastModified = SYSDATETIME() Where ConfigID = 1 
+		End
+		Else 
+		Begin
+			exec Smart.pCaulcateRateQty1
+			Update Smart.Config Set Designation = 1, LastModified = SYSDATETIME() Where ConfigID = 1 
+		End
 
 		Update ETL.DataLoadingLog 
 		Set ProcessDate = SysDateTime()
@@ -519,11 +631,28 @@ Begin
 		SuggestedQty Int
 	)
 
-	Insert Into @Results 
-	Select d.SAPAccountNumber, a.DeliveryDate, DateDiff(day, DeliveryDate, NextDeliveryDate) NumberOfDays, d.SAPMaterialID, Rate, Rate*DateDiff(day, DeliveryDate, NextDeliveryDate) RawQty,
-	Convert(Int, Case When Rate*(DateDiff(day, DeliveryDate, NextDeliveryDate)) < 1.0 Then 0 Else Round(Rate*DateDiff(day, DeliveryDate, NextDeliveryDate), 0) End) SuggestedQty
-	From @SAPAccounts a 
-	Join Smart.Daily d on a.SAPAccountNumber = d.SAPAccountNumber
+	If Exists (Select * From Smart.Config Where ConfigID = 1 And Designation = 0)
+	Begin
+		Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+			+ 'Smart.pGetSuggestedOrdersForCustomers reads from Smart.Daily'
+		Insert Into @Results 
+		Select d.SAPAccountNumber, a.DeliveryDate, 
+			DateDiff(day, DeliveryDate, NextDeliveryDate) NumberOfDays, d.SAPMaterialID, Rate, Rate*DateDiff(day, DeliveryDate, NextDeliveryDate) RawQty,
+			Convert(Int, Case When Rate*(DateDiff(day, DeliveryDate, NextDeliveryDate)) < 1.0 Then 0 Else Round(Rate*DateDiff(day, DeliveryDate, NextDeliveryDate), 0) End) SuggestedQty
+		From @SAPAccounts a 
+		Join Smart.Daily d on a.SAPAccountNumber = d.SAPAccountNumber
+	End
+	Else
+	Begin
+		Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+			+ 'Smart.pGetSuggestedOrdersForCustomers reads from Smart.Daily1'
+		Insert Into @Results 
+		Select d.SAPAccountNumber, a.DeliveryDate, 
+			DateDiff(day, DeliveryDate, NextDeliveryDate) NumberOfDays, d.SAPMaterialID, Rate, Rate*DateDiff(day, DeliveryDate, NextDeliveryDate) RawQty,
+			Convert(Int, Case When Rate*(DateDiff(day, DeliveryDate, NextDeliveryDate)) < 1.0 Then 0 Else Round(Rate*DateDiff(day, DeliveryDate, NextDeliveryDate), 0) End) SuggestedQty
+		From @SAPAccounts a 
+		Join Smart.Daily1 d on a.SAPAccountNumber = d.SAPAccountNumber
+	End
 
 	Select SAPAccountNumber, DeliveryDate, ItemNumber, SuggestedQty
 	From @Results
@@ -536,6 +665,171 @@ Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120
 +  'Proc Smart.pGetSuggestedOrdersForCustomers created'
 Go
 
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
+-------------------------------------
+
+If Not Exists (
+	Select *
+	From sys.columns c
+	Join sys.tables t on c.object_id = t.object_id
+	Where c.name = 'Source'
+	And t.name = 'VoidOrderTracking'
+)
+Begin
+	Alter Table DNA.VoidOrderTracking
+	Add Source Varchar(128)
+
+	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+	+  'Adding column Source to table DNA.VoidOrderTracking'
+End
+Go
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
+Drop Proc DNA.pInsertVoidOrderDetails
+Go
+Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
++  '* Proc DNA.pInsertVoidOrderDetails dropped'
+Go
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
+DROP TYPE DNA.utd_Void_OrderTracking
+GO
+Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
++  '* Type DNA.utd_Void_OrderTracking dropped'
+Go
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
+CREATE TYPE DNA.utd_Void_OrderTracking AS TABLE(
+	OrderNumber nvarchar(15) NOT NULL,
+	SAPAccountNumber bigint NOT NULL,
+	SAPMaterialID varchar(12) NOT NULL,
+	ProposedQty int NOT NULL,
+	OrderedQty int NOT NULL,
+	VoidReasonCodeID int NOT NULL,
+	OrderedBy varchar(50) NOT NULL,
+	OrderDate datetime NOT NULL,
+	Comments varchar(250) NULL,
+	Source varchar(128) NULL,
+	PRIMARY KEY CLUSTERED 
+	(
+		OrderNumber ASC,
+		SAPMaterialID ASC
+	) WITH (IGNORE_DUP_KEY = OFF)
+)
+GO
+
+Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
++  'Type DNA.utd_Void_OrderTracking created'
+Go
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
+Create PROCEDURE DNA.pInsertVoidOrderDetails(@tvpTable DNA.utd_Void_OrderTracking READONLY)
+AS
+    SET NOCOUNT ON;
+    BEGIN TRY
+        BEGIN
+            --BEGIN TRAN UploadVoidOrder;
+            DECLARE @SD INT;
+
+            MERGE INTO DNA.VoidOrderTracking AS C1
+            USING @tvpTable AS C2
+            ON(C1.OrderNumber = C2.OrderNumber
+               AND C1.SAPAccountNumber = C2.SAPAccountNumber
+               AND C1.SAPMaterialID = C2.SAPMaterialID)
+                WHEN MATCHED
+                THEN UPDATE SET
+                    C1.ProposedQty = C2.ProposedQty,
+                    C1.OrderedQty = C2.OrderedQty,
+                    C1.VoidReasonCodeID = C2.VoidReasonCodeID,
+                    C1.OrderedBy = C2.OrderedBy,
+                    C1.OrderDate = C2.OrderDate,
+                    C1.InsertedBy = 'System',
+                    C1.InsertDate = GETDATE(),
+					C1.Comments = C2.Comments,
+					C1.Source = Case When C2.Source is null Then 'POGVOID' When RTRIM(LTRIM(C2.Source)) = '' Then 'POGVOID' Else C2.Source End 
+                WHEN NOT MATCHED
+                THEN INSERT(OrderNumber,
+                    SAPAccountNumber,
+                    SAPMaterialID,
+                    ProposedQty,
+                    OrderedQty,
+                    VoidReasonCodeID,
+                    OrderedBy,
+                    OrderDate,
+                    InsertedBy,
+                    InsertDate,
+					Comments,
+					Source) VALUES
+            (C2.OrderNumber,
+             C2.SAPAccountNumber,
+             C2.SAPMaterialID,
+             C2.ProposedQty,
+             C2.OrderedQty,
+             C2.VoidReasonCodeID,
+             C2.OrderedBy,
+             C2.OrderDate,
+             'System',
+             GETDATE(),
+			 C2.Comments,
+			 Case When C2.Source is null Then 'POGVOID' When RTRIM(LTRIM(C2.Source)) = '' Then 'POGVOID' Else C2.Source End
+            );
+
+            MERGE INTO DNA.Snoozing AS C1
+            USING @tvpTable AS C2
+            ON(C1.SAPAccountNumber = C2.SAPAccountNumber
+               AND C1.SAPMaterialID = C2.SAPMaterialID)
+                WHEN MATCHED
+                THEN UPDATE SET
+                                C1.InsertedBy = 'System',
+                                C1.InsertDate = GETDATE(),
+                                C1.SnoozeDate =
+            (
+                SELECT DATEADD(day, SnoozeDuration, GETDATE())
+                FROM DNA.VoidReasonCode
+                WHERE VoidReasonCodeId = C2.VoidReasonCodeID
+            )
+                WHEN NOT MATCHED
+                THEN INSERT(SAPAccountNumber,
+                            SAPMaterialID,
+                            InsertedBy,
+                            InsertDate,
+                            SNOOZEDATE) VALUES
+            (C2.SAPAccountNumber,
+             C2.SAPMaterialID,
+             'System',
+             GETDATE(),
+            (
+                SELECT DATEADD(day, SnoozeDuration, GETDATE())
+                FROM DNA.VoidReasonCode
+                WHERE VoidReasonCodeId = C2.VoidReasonCodeID
+            )
+            );
+
+            --COMMIT TRAN UploadVoidOrder;
+        END;
+    END TRY
+    BEGIN CATCH
+        DECLARE @msg NVARCHAR(2048)= ERROR_MESSAGE(), @ErrorMessage NVARCHAR(4000), @ErrorSeverity INT, @ErrorState INT;
+        RAISERROR(@msg, 16, 1);
+        SELECT @ErrorMessage = ERROR_MESSAGE(),
+               @ErrorSeverity = ERROR_SEVERITY(),
+               @ErrorState = ERROR_STATE();
+    END CATCH;
+GO
+
+Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
++  'Proc DNA.pInsertVoidOrderDetails created'
+Go
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
+Update DNA.VoidOrderTracking
+Set Source = 'POGVOID'
+Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
++  'Column [Source] on table DNA.VoidOrderTracking updated with default value POGVOID'
+Go
+
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 -------------------------------------
 USE [msdb]
 GO
@@ -543,7 +837,6 @@ GO
 Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
 +  'Connectoion set to msdb'
 Go
-
 
 Declare @JobID varchar(100)
 Select @JobID = job_id
@@ -556,11 +849,9 @@ Begin
 End
 GO
 
-/****** Object:  Job [001Test.SalesHistoryFromInvoice]    Script Date: 2/13/2019 10:07:12 AM ******/
 BEGIN TRANSACTION
 DECLARE @ReturnCode INT
 SELECT @ReturnCode = 0
-/****** Object:  JobCategory [[Uncategorized (Local)]]    Script Date: 2/13/2019 10:07:12 AM ******/
 IF NOT EXISTS (SELECT name FROM msdb.dbo.syscategories WHERE name=N'[Uncategorized (Local)]' AND category_class=1)
 BEGIN
 EXEC @ReturnCode = msdb.dbo.sp_add_category @class=N'JOB', @type=N'LOCAL', @name=N'[Uncategorized (Local)]'
