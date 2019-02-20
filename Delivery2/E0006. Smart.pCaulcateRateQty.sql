@@ -4,7 +4,6 @@ Go
 Set NoCount On
 Go
 
-
 ------------------------------------------------------------
 If Exists (Select * From sys.procedures p join sys.schemas s on p.schema_id = s.schema_id and p.name = 'pCaulcateRateQty' and s.name = 'Smart')
 Begin
@@ -21,8 +20,6 @@ Begin
 
 	Truncate Table Smart.Daily
 	--@@@@--
-	Drop Index NCI_SmartDaily_Rate ON Smart.Daily
-
 	Insert Into Smart.Daily(SAPAccountNumber, SAPMaterialID, Sum1, Cnt, Mean, STD)
 	Select SAPAccountNumber, SAPMaterialID, Sum(Quantity) Sum1, Count(*) Cnt, AVG(Quantity) Mean, STDEV(Quantity) STD
 	From Smart.SalesHistory
@@ -37,7 +34,7 @@ Begin
 	)
 
 	Update d
-	Set d.Sum2 = t.Sum2
+	Set d.Sum2 = t.Sum2, d.Rate = t.Sum2/90, d.Modified = SysDateTime()
 	From Smart.Daily d 
 	Join
 	(
@@ -46,15 +43,6 @@ Begin
 		Group By SAPAccountNumber, SAPMaterialID
 	) t on d.SAPAccountNumber = t.SAPAccountNumber And d.SAPMaterialID = t.SAPMaterialID
 
-	Update Smart.Daily
-	Set Rate = Sum2/90, Modified = SysDateTime()
-
-	--@@@@--
-	Create NONCLUSTERED INDEX NCI_SmartDaily_Rate ON Smart.Daily
-	(
-		SAPAccountNumber ASC
-	)
-	INCLUDE (SAPMaterialID, Rate)
 End
 Go
 
@@ -81,7 +69,6 @@ Begin
 
 	Truncate Table Smart.Daily1
 	--@@@@--
-	Drop Index NCI_SmartDaily_Rate1 ON Smart.Daily1
 
 	Insert Into Smart.Daily1(SAPAccountNumber, SAPMaterialID, Sum1, Cnt, Mean, STD)
 	Select SAPAccountNumber, SAPMaterialID, Sum(Quantity) Sum1, Count(*) Cnt, AVG(Quantity) Mean, STDEV(Quantity) STD
@@ -97,7 +84,7 @@ Begin
 	)
 
 	Update d
-	Set d.Sum2 = t.Sum2
+	Set d.Sum2 = t.Sum2, d.Rate = t.Sum2/90, d.Modified = SysDateTime()
 	From Smart.Daily1 d 
 	Join
 	(
@@ -106,15 +93,6 @@ Begin
 		Group By SAPAccountNumber, SAPMaterialID
 	) t on d.SAPAccountNumber = t.SAPAccountNumber And d.SAPMaterialID = t.SAPMaterialID
 
-	Update Smart.Daily1
-	Set Rate = Sum2/90, Modified = SysDateTime()
-
-	--@@@@--
-	Create NONCLUSTERED INDEX NCI_SmartDaily_Rate1 ON Smart.Daily1
-	(
-		SAPAccountNumber ASC
-	)
-	INCLUDE (SAPMaterialID, Rate)
 End
 Go
 
@@ -124,4 +102,8 @@ Go
 
 exec Smart.pCaulcateRateQty1
 Go
+
+exec Smart.pCaulcateRateQty
+Go
+
 
