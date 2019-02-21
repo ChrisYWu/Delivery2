@@ -187,8 +187,6 @@ Begin
 		Where LogID = @LogID
 
 		-----------------------------------
-		exec Smart.pUpdateDateRange
-
 		CREATE NONCLUSTERED INDEX NCI_SmartSalesHistory_Account_Material ON Smart.SalesHistory
 		(
 			SAPAccountNumber ASC,
@@ -201,6 +199,8 @@ Begin
 			DeliveryDate ASC
 		)
 		INCLUDE (Quantity)
+
+		exec Smart.pUpdateDateRange
 		
 		Update ETL.DataLoadingLog 
 		Set AdjustRangeDate = SysDateTime()

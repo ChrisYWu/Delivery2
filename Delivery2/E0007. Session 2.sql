@@ -19,6 +19,9 @@ Where InRange = 1
 Select *
 From ETL.DataLoadingLog
 
+Select *
+From BSCCAP108.Portal_Data.ETL.DataLoadingLog
+
 Select Count(*)
 From Smart.SalesHistory 
 

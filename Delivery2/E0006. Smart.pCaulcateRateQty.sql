@@ -19,6 +19,8 @@ Begin
 	Set NoCount On
 
 	Truncate Table Smart.Daily
+	Drop INDEX NCI_SmartDaily_Rate ON Smart.Daily
+
 	--@@@@--
 	Insert Into Smart.Daily(SAPAccountNumber, SAPMaterialID, Sum1, Cnt, Mean, STD)
 	Select SAPAccountNumber, SAPMaterialID, Sum(Quantity) Sum1, Count(*) Cnt, AVG(Quantity) Mean, STDEV(Quantity) STD
@@ -34,7 +36,7 @@ Begin
 	)
 
 	Update d
-	Set d.Sum2 = t.Sum2, d.Rate = t.Sum2/90, d.Modified = SysDateTime()
+	Set d.Sum2 = t.Sum2, d.Rate = t.Sum2/90.0, d.Modified = SysDateTime()
 	From Smart.Daily d 
 	Join
 	(
@@ -42,6 +44,12 @@ Begin
 		From Temp 
 		Group By SAPAccountNumber, SAPMaterialID
 	) t on d.SAPAccountNumber = t.SAPAccountNumber And d.SAPMaterialID = t.SAPMaterialID
+
+	CREATE NONCLUSTERED INDEX NCI_SmartDaily_Rate ON Smart.Daily
+	(
+		SAPAccountNumber ASC
+	)
+	INCLUDE (SAPMaterialID, Rate)
 
 End
 Go
@@ -68,6 +76,7 @@ Begin
 	Set NoCount On
 
 	Truncate Table Smart.Daily1
+	Drop INDEX NCI_SmartDaily_Rate1 ON Smart.Daily1
 	--@@@@--
 
 	Insert Into Smart.Daily1(SAPAccountNumber, SAPMaterialID, Sum1, Cnt, Mean, STD)
@@ -84,7 +93,7 @@ Begin
 	)
 
 	Update d
-	Set d.Sum2 = t.Sum2, d.Rate = t.Sum2/90, d.Modified = SysDateTime()
+	Set d.Sum2 = t.Sum2, d.Rate = t.Sum2/90.0, d.Modified = SysDateTime()
 	From Smart.Daily1 d 
 	Join
 	(
@@ -92,6 +101,12 @@ Begin
 		From Temp 
 		Group By SAPAccountNumber, SAPMaterialID
 	) t on d.SAPAccountNumber = t.SAPAccountNumber And d.SAPMaterialID = t.SAPMaterialID
+
+	CREATE NONCLUSTERED INDEX NCI_SmartDaily_Rate1 ON Smart.Daily1
+	(
+		SAPAccountNumber ASC
+	)
+	INCLUDE (SAPMaterialID, Rate)
 
 End
 Go

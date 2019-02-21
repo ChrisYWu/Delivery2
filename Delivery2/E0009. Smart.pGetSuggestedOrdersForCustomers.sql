@@ -35,14 +35,6 @@ Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120
 + 'Type Smart.tCustomerOrderInput created'
 Go
 
-Declare @test Smart.tCustomerOrderInput
-
-Insert @test Values(11307893, '2019-02-11', '2019-02-14')
-Insert @test Values(11307896, '2019-02-11', '2019-02-18')
-
-Select * From @test
-Go
-
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 If Exists (Select * From sys.procedures p join sys.schemas s on p.schema_id = s.schema_id and p.name = 'pGetSuggestedOrdersForCustomers' and s.name = 'Smart')
 Begin
@@ -54,7 +46,8 @@ Go
 
 Create Proc Smart.pGetSuggestedOrdersForCustomers
 (
-	@SAPAccounts Smart.tCustomerOrderInput ReadOnly
+	@SAPAccounts Smart.tCustomerOrderInput ReadOnly,
+	@Debug Bit = 0
 )
 As 
 Begin
@@ -71,6 +64,66 @@ Begin
 		SuggestedQty Int
 	)
 
+	--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	Declare @FilteredAccounts Table
+	(
+		SAPAccountNumber int not null,
+		DeliveryDate Date not null,
+		NextDeliveryDate Date not null
+	)
+
+	Declare @IncludedBranchs Varchar(max)
+	Declare @ExcludedNationalChains Varchar(max)
+
+	Select @IncludedBranchs = Coalesce(Designation, 'All')
+	From Smart.Config
+	Where ConfigID = 2
+
+	Select @ExcludedNationalChains = Coalesce(Designation, 'None')
+	From Smart.Config
+	Where ConfigID = 3
+
+	If @Debug = 1
+	Begin
+		Select 'Input Accounts' Step1
+		Select * From @SAPAccounts Order by SAPAccountNumber
+	End
+
+	Insert Into @FilteredAccounts
+	Select *
+	From @SAPAccounts
+	Where SAPAccountNumber In (
+		Select SAPAccountNumber 
+		From SAP.Account a 
+		Join SAP.Branch b on a.BranchID = b.BranchID 
+		Join dbo.Split(@IncludedBranchs, ',') s on b.SAPBranchID = s.Value
+		)
+	Or @IncludedBranchs = 'All'
+
+	If @Debug = 1
+	Begin
+		Select 'Accounts after filtered by branches' Step2
+		Select @IncludedBranchs IncludedBranchs
+		Select * From @FilteredAccounts Order by SAPAccountNumber
+	End
+
+	Delete @FilteredAccounts
+	Where SAPAccountNumber In (
+		Select SAPAccountNumber 
+		From SAP.Account a 
+		Join SAP.LocalChain lc on a.LocalChainID = lc.LocalChainID
+		Join SAP.RegionalChain rc on lc.RegionalChainID = rc.RegionalChainID
+		Join dbo.Split(@ExcludedNationalChains, ',') s on Convert(varchar(10), rc.NationalChainID) = s.Value
+		)
+
+	If @Debug = 1
+	Begin
+		Select 'Accounts after filtered by national chains' Step3
+		Select @ExcludedNationalChains ExcludedNationalChains
+		Select * From @FilteredAccounts Order by SAPAccountNumber
+	End
+	--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 	If Exists (Select * From Smart.Config Where ConfigID = 1 And Designation = 0)
 	Begin
 		Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
@@ -79,7 +132,7 @@ Begin
 		Select d.SAPAccountNumber, a.DeliveryDate, 
 			DateDiff(day, DeliveryDate, NextDeliveryDate) NumberOfDays, d.SAPMaterialID, Rate, Rate*DateDiff(day, DeliveryDate, NextDeliveryDate) RawQty,
 			Convert(Int, Case When Rate*(DateDiff(day, DeliveryDate, NextDeliveryDate)) < 1.0 Then 0 Else Round(Rate*DateDiff(day, DeliveryDate, NextDeliveryDate), 0) End) SuggestedQty
-		From @SAPAccounts a 
+		From @FilteredAccounts a 
 		Join Smart.Daily d on a.SAPAccountNumber = d.SAPAccountNumber
 	End
 	Else
@@ -90,13 +143,14 @@ Begin
 		Select d.SAPAccountNumber, a.DeliveryDate, 
 			DateDiff(day, DeliveryDate, NextDeliveryDate) NumberOfDays, d.SAPMaterialID, Rate, Rate*DateDiff(day, DeliveryDate, NextDeliveryDate) RawQty,
 			Convert(Int, Case When Rate*(DateDiff(day, DeliveryDate, NextDeliveryDate)) < 1.0 Then 0 Else Round(Rate*DateDiff(day, DeliveryDate, NextDeliveryDate), 0) End) SuggestedQty
-		From @SAPAccounts a 
+		From @FilteredAccounts a 
 		Join Smart.Daily1 d on a.SAPAccountNumber = d.SAPAccountNumber
 	End
 
 	Select SAPAccountNumber, DeliveryDate, ItemNumber, SuggestedQty
 	From @Results
 	Where SuggestedQty > 0
+	Order By SAPAccountNumber
 
 End
 Go
@@ -107,11 +161,21 @@ Go
 
 Declare @test Smart.tCustomerOrderInput
 
-Insert @test Values(11307896, '2019-02-11', '2019-03-03')
-Insert @test Values(11307893, '2019-02-11', '2019-02-14')
+Insert @test Values(11307896, '2019-02-11', '2019-03-03') --Lows
+Insert @test Values(11307893, '2019-02-11', '2019-02-14') --Lows
+Insert @test Values(11234400, '2019-02-11', '2019-02-14') --'Walmart, 50'
+Insert @test Values(11235319, '2019-02-11', '2019-02-14') --'Walmart, 170'
+Insert @test Values(11497602, '2019-02-11', '2019-02-14') --'Target'
+Insert @test Values(12663423, '2019-02-11', '2019-03-14') --'Price Chopper Express 009405, 50'
+Insert @test Values(12063909, '2019-02-11', '2019-03-14') --'Family Dollar 005570, 50'
+Insert @test Values(11233202, '2019-02-11', '2019-03-14') --'Target 001177, 50'
 
-exec Smart.pGetSuggestedOrdersForCustomers @SAPAccounts = @test
+
+exec Smart.pGetSuggestedOrdersForCustomers @SAPAccounts = @test, @Debug = 1
 Go
 
-Select Top 1 * From Smart.Daily1
-Select Top 1 * From Smart.Daily
+
+
+
+
+

@@ -782,8 +782,8 @@
           <FullPath>E0010. Installation Dev.sql</FullPath>
         </FileNode>
         <FileNode Name="E0011. Smart.Config.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP108:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP108</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>E0011. Smart.Config.sql</FullPath>
         </FileNode>
@@ -792,6 +792,12 @@
           <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>E0012. DNA.pInsertVoidOrderDetails.sql</FullPath>
+        </FileNode>
+        <FileNode Name="E0013. Config.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>E0013. Config.sql</FullPath>
         </FileNode>
         <FileNode Name="Json Query Test.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>

@@ -20,7 +20,7 @@ Create Table Smart.Config
 ( 
 	ConfigID int Primary Key,
 	Descr varchar(128),
-	Designation varchar(128),
+	Designation varchar(max),
 	LastModified DateTime2(0)
 )
 Go

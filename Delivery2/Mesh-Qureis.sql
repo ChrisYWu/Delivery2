@@ -14,10 +14,11 @@ Full outer join Setup.WebAPILog e on l.CorrelationID = e.CorrelationID
 Where (l.CorrelationID is not null or e.CorrelationID is not null)
 --And (l.GetParemeters like '%111501301%'  Or l.PostJson like '%111501301%'  )
 --And e.LogID is Null
-And RouteID in (111502701)
+And RouteID in (118400029)
 --And WEbEndPoint = 'UploadNewSequence'
 --And e.LogID is not null
-and DeliveryDateUTC = '2019-02-19'
+--and (DeliveryDateUTC = '2019-02-19'
+--or DeliveryDateUTC = '2019-02-18')
 --and RouteID Like '1116%'
 Order by coalesce(l.RequestTime, e.ServerInsertTime) Desc
 
@@ -26,12 +27,10 @@ Exec Mesh.pGetDeliveryManifest @RouteID = 112002021, @DeliveryDateUTC = '1120022
 exec ETL.pLoadOrderPeriodically
 exec ETL.pLoadDeliverySchedulePeriodically
 
-Select LastManifestFetched, *
+Select *
 From Mesh.Deliveryroute
-Where DeliveryDAteUTC = '2018-06-28'
-And RouteID like '1120%'
---And TotalQuantity > 0
-Order by RouteID
+Where RouteID = 118400029
+Order by DeliveryDateUTC Desc
 
 
 Select *
