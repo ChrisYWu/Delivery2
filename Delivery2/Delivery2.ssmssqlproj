@@ -428,8 +428,8 @@
           <FullPath>670.03 Mesh Deployment(2018-06-22).sql</FullPath>
         </FileNode>
         <FileNode Name="670.04 Enable Features(2018-06-22).sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP108:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP108</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>670.04 Enable Features(2018-06-22).sql</FullPath>
         </FileNode>
@@ -486,6 +486,12 @@
           <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>670.13 Boise 1184.sql</FullPath>
+        </FileNode>
+        <FileNode Name="670.14 Enable 20190225.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>670.14 Enable 20190225.sql</FullPath>
         </FileNode>
         <FileNode Name="688. CheckForUploadStatus.sql">
           <AssociatedConnectionMoniker />
@@ -840,6 +846,12 @@
           <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>SQLQuery6.sql</FullPath>
+        </FileNode>
+        <FileNode Name="SQLQuery7.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>SQLQuery7.sql</FullPath>
         </FileNode>
       </Items>
     </LogicalFolder>
