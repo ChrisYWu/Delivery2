@@ -15,7 +15,7 @@ As
 	1020,1021,1022,1023,1024,
 	1025,1027,1030,1032,1034,
 	1036,1037,1056,1057,1061,
-	1062,1065,1066,1068,1069,
+	1062,1066,1068,1069,
 	1070,1071,1073,1074,1075,
 	1076,1077,1078,1088,1090,
 	1092,1093,1094,1095,1096,
@@ -53,3 +53,7 @@ Where FeatureID = 6
 Select *
 From Merch.Setup.Config
 Go
+
+Select *
+From Portal_Data.Shared.Feature_Authorization
+Where featureid = 6
