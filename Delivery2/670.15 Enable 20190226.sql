@@ -7,8 +7,8 @@ Go
 Select *
 From SAP.Branch
 Where BranchName like 'Reno' 
-
 --1183,1185,1139
+Go
 
 Alter Proc dbo.pEnableBranchesForMesh
 As
@@ -16,18 +16,7 @@ As
 	Select 6 FeatureID, SAPBranchID BranchID, 1 IsActive
 	From SAP.Branch
 	Where SAPBranchID in (
-	1002,1003,1004,1005,1006,
-	1008,1010,1012,1015,1016,
-	1020,1021,1022,1023,1024,
-	1025,1027,1030,1032,1034,
-	1036,1037,1056,1057,1061,
-	1062,1066,1068,1069,
-	1070,1071,1073,1074,1075,
-	1076,1077,1078,1088,1090,
-	1092,1093,1094,1095,1096,
-	1097,1099,1100,1101,1102,
-	1106,1107,1110,1113,1173,
-	1187,1192,1193
+	1183,1185,1139
 	)
 	And SAPBranchID <> 'TJW1'
 	And SAPBranchID Not In (Select BranchID From Shared.Feature_Authorization Where FeatureID = 6)
@@ -63,3 +52,4 @@ Go
 Select *
 From Portal_Data.Shared.Feature_Authorization
 Where featureid = 6
+Go

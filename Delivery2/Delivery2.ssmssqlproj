@@ -493,6 +493,12 @@
           <AssociatedConnUserName />
           <FullPath>670.14 Enable 20190225.sql</FullPath>
         </FileNode>
+        <FileNode Name="670.15 Enable 20190226.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>670.15 Enable 20190226.sql</FullPath>
+        </FileNode>
         <FileNode Name="688. CheckForUploadStatus.sql">
           <AssociatedConnectionMoniker />
           <AssociatedConnSrvName />
