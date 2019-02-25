@@ -59,3 +59,8 @@ Go
 Select Top 1 * From Smart.Daily1
 Select Top 1 * From Smart.Daily
 
+Select Substring(convert(varchar(20), SAPAccountNumber), 1,1), count(*) 
+From Smart.Daily
+Group By Substring(convert(varchar(20), SAPAccountNumber), 1,1)
+Order By Substring(convert(varchar(20), SAPAccountNumber), 1,1)
+
