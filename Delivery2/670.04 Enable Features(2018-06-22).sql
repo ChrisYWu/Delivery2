@@ -6,6 +6,12 @@ From SAP.Branch
 Where SAPBranchID = '1120'
 Go
 
+Select *
+From Shared.Feature_Applications
+
+Select *
+From Shared.Feature_Master 
+
 Set IDENTITY_INSERT Shared.Feature_Applications On
 Insert Into Shared.Feature_Applications(ID, ApplicationID, ApplicationName, IsActive)
 Values(2, 2, 'DRIVERMYDAY ', 1)

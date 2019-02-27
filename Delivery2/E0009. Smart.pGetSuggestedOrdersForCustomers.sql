@@ -72,40 +72,15 @@ Begin
 		NextDeliveryDate Date not null
 	)
 
-	Declare @IncludedBranchs Varchar(max)
 	Declare @ExcludedNationalChains Varchar(max)
-
-	Select @IncludedBranchs = Coalesce(Designation, 'All')
-	From Smart.Config
-	Where ConfigID = 2
 
 	Select @ExcludedNationalChains = Coalesce(Designation, 'None')
 	From Smart.Config
 	Where ConfigID = 3
 
-	If @Debug = 1
-	Begin
-		Select 'Input Accounts' Step1
-		Select * From @SAPAccounts Order by SAPAccountNumber
-	End
-
 	Insert Into @FilteredAccounts
 	Select *
 	From @SAPAccounts
-	Where SAPAccountNumber In (
-		Select SAPAccountNumber 
-		From SAP.Account a 
-		Join SAP.Branch b on a.BranchID = b.BranchID 
-		Join dbo.Split(@IncludedBranchs, ',') s on b.SAPBranchID = s.Value
-		)
-	Or @IncludedBranchs = 'All'
-
-	If @Debug = 1
-	Begin
-		Select 'Accounts after filtered by branches' Step2
-		Select @IncludedBranchs IncludedBranchs
-		Select * From @FilteredAccounts Order by SAPAccountNumber
-	End
 
 	Delete @FilteredAccounts
 	Where SAPAccountNumber In (
@@ -114,7 +89,7 @@ Begin
 		Join SAP.LocalChain lc on a.LocalChainID = lc.LocalChainID
 		Join SAP.RegionalChain rc on lc.RegionalChainID = rc.RegionalChainID
 		Join dbo.Split(@ExcludedNationalChains, ',') s on Convert(varchar(10), rc.NationalChainID) = s.Value
-		)
+	)
 
 	If @Debug = 1
 	Begin

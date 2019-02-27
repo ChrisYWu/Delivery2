@@ -47,7 +47,6 @@ Group By Cnt
 Order By Cnt
 ---------------------------------------------
 
-
 Declare @test Smart.tCustomerOrderInput
 
 Insert @test Values(11307896, '2019-02-11', '2019-03-03')

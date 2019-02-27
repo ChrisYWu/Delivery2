@@ -1,6 +1,17 @@
 use Merch
 Go
 
+SElect *
+From Mesh.DeliveryStop
+Where RouteID in (102000910
+,102000911
+,102000913
+,102000915
+)
+--And ISaddedByDriver = 0
+Order By RouteID, Sequence
+
+
 Select Convert(datetime2(0), RequestTime), Count(*)
 From Mesh.MyDayActivityLog
 Where DeliveryDateUTC > '2019-02-24'
@@ -23,15 +34,23 @@ Full outer join Setup.WebAPILog e on l.CorrelationID = e.CorrelationID
 Where (l.CorrelationID is not null or e.CorrelationID is not null)
 --And (l.GetParemeters like '%111501301%'  Or l.PostJson like '%111501301%'  )
 --And e.LogID is Null
-And RouteID in (118400029)
+And RouteID in (102000910, 102000911, 102000913,102000915
+)
+--And WebEndPoint = 'UploadAddedStops'
 --And WEbEndPoint = 'UploadNewSequence'
 --And e.LogID is not null
 --and (DeliveryDateUTC = '2019-02-19'
 --or DeliveryDateUTC = '2019-02-18')
 --and RouteID Like '1116%'
-Order by coalesce(l.RequestTime, e.ServerInsertTime) Desc
+Order by RouteID, coalesce(l.RequestTime, e.ServerInsertTime) Desc
 
 --Exec Mesh.pGetDeliveryManifest @RouteID = 112002021, @DeliveryDateUTC = '112002201'
 --exec ETL.pLoadOrderPeriodically
 --exec ETL.pLoadDeliverySchedulePeriodically
+
+Select *
+From mesh.DeliveryStop
+Where RouteID = 102000910
+And DeliveryDateUTC = '2019-02-26'
+Order by Sequence
 
