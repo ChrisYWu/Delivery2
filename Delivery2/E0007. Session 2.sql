@@ -4,6 +4,14 @@ Go
 Select @@SERVERNAME Server, DB_Name() As [Database]
 Go
 
+Use merch
+Go
+
+Select DAtepart(year, LastModified) Year, Datepart(month, lastmodified) Month, count(*) Count
+From [Operation].[AzureBlobStorage]
+Group by DAtepart(year, LastModified), Datepart(month, lastmodified)
+Order By DAtepart(year, LastModified), Datepart(month, lastmodified)
+
 Select DeliveryDate, Count(*) Cnt, DATENAME(dw, DeliveryDate) DayOfWeek
 From Smart.SalesHistory 
 Group By DeliveryDate

@@ -211,7 +211,7 @@ Go
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 If Exists (Select * From sys.tables t Join sys.schemas s on t.schema_id = s.schema_id Where t.name = 'ChainExclusion' and s.name = 'Smart')
 Begin
-	Drop Table Smart.Config
+	Drop Table Smart.ChainExclusion
 	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
 	+  '* Dropping table Smart.ChainExclusion'
 End
