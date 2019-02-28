@@ -174,12 +174,63 @@ Go
 Insert Into Smart.Config
 Values(1, 'Live indicator', '0', SysDateTime())
 
-Insert Smart.Config
-Values(3, 'National Chain Exclusion', 'None', SYSDATETIME())
-Go
-
 Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
 +  'Table Smart.Config created and initialized'
+Go
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
+If Not Exists (Select *  From Shared.Feature_Master Where FeatureID = 8)
+Begin
+	Set IDENTITY_INSERT Shared.Feature_Master On
+	Insert Into Shared.Feature_Master(FeatureID, FeatureName, ApplicationID, IsActive, IsCustomized)
+	Values(8, 'SMARTORDER', 1, 1, 1)
+	Set IDENTITY_INSERT Shared.Feature_Master Off
+
+	Insert Shared.Feature_Authorization(FeatureID, BranchID, IsActive)
+	Select 8, SAPBranchID, 1
+	From SAP.Branch b
+	Where SAPBranchID Not In
+	(Select BranchID
+	From Shared.Feature_Authorization fa 
+	Where FeatureID = 6 )
+	And SAPBranchID <> 'TJW1'
+	Order By SAPBranchID
+
+	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+	+  'Feature SMARTORDER added and initialized with all branches'
+
+End
+Else 
+Begin
+	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+	+  'Feature 8 existed? check what it is...'
+	Select * From Shared.Feature_Master Where FeatureID = 8
+End
+Go
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
+If Exists (Select * From sys.tables t Join sys.schemas s on t.schema_id = s.schema_id Where t.name = 'ChainExclusion' and s.name = 'Smart')
+Begin
+	Drop Table Smart.Config
+	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+	+  '* Dropping table Smart.ChainExclusion'
+End
+Go
+
+Create Table Smart.ChainExclusion
+( 
+	ExclusionID int Identity(1,1) Primary Key,
+	NationalChainID Int Null,
+	RegionalChainID Int Null,
+	LocalChainID Int Null,
+	LastModified DateTime2(0) Default SysDateTime()
+)
+Go
+
+Insert Into Smart.ChainExclusion(NationalChainID) Values (60)
+
+Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
++  'Table Smart.ChainExclusion created and initialized(Walmart added)'
 Go
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
@@ -657,29 +708,37 @@ Begin
 		NextDeliveryDate Date not null
 	)
 
-	Declare @ExcludedNationalChains Varchar(max)
-
-	Select @ExcludedNationalChains = Coalesce(Designation, 'None')
-	From Smart.Config
-	Where ConfigID = 3
-
 	Insert Into @FilteredAccounts
 	Select *
-	From @SAPAccounts
+	From @SAPAccounts;
+
+	With localChainExclusion As (
+		Select lc.LocalChainID
+		From Smart.ChainExclusion ce
+		Join SAP.RegionalChain rc on ce.NationalChainID = rc.NationalChainID
+		Join SAP.LocalChain lc on rc.RegionalChainID = lc.RegionalChainID
+		Where ce.NationalChainID Is Not Null
+		Union
+		Select lc.LocalChainID
+		From Smart.ChainExclusion ce
+		Join SAP.LocalChain lc on ce.RegionalChainID = lc.RegionalChainID
+		Where ce.RegionalChainID Is Not Null
+		Union
+		Select ce.LocalChainID
+		From Smart.ChainExclusion ce
+		Where ce.LocalChainID Is Not Null
+	)
 
 	Delete @FilteredAccounts
 	Where SAPAccountNumber In (
 		Select SAPAccountNumber 
 		From SAP.Account a 
-		Join SAP.LocalChain lc on a.LocalChainID = lc.LocalChainID
-		Join SAP.RegionalChain rc on lc.RegionalChainID = rc.RegionalChainID
-		Join dbo.Split(@ExcludedNationalChains, ',') s on Convert(varchar(10), rc.NationalChainID) = s.Value
+		Join localChainExclusion lc on a.LocalChainID = lc.LocalChainID
 	)
 
 	If @Debug = 1
 	Begin
-		Select 'Accounts after filtered by national chains' Step3
-		Select @ExcludedNationalChains ExcludedNationalChains
+		Select 'Accounts after filtered by chains' Step2
 		Select * From @FilteredAccounts Order by SAPAccountNumber
 	End
 	--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

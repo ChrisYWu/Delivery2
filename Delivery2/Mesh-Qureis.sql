@@ -1,6 +1,13 @@
 use Merch
 Go
 
+Select Count(*)
+From Mesh.CustomerInvoice
+
+Select Count(*)
+From Mesh.InvoiceItem
+
+
 SElect *
 From Mesh.DeliveryStop
 Where RouteID in (102000910
@@ -14,13 +21,25 @@ Order By RouteID, Sequence
 
 Select Convert(datetime2(0), RequestTime), Count(*)
 From Mesh.MyDayActivityLog
-Where DeliveryDateUTC > '2019-02-24'
+Where DeliveryDateUTC > '2019-02-26'
 Group By Convert(datetime2(0), RequestTime)
 Order By Convert(datetime2(0), RequestTime) Desc
 
+Select WebEndPoint, Count(*) Cnt
+From Mesh.MyDayActivityLog
+Where DeliveryDateUTC > '2019-02-27'
+Group By WebEndPoint
+Order By Count(*) ASC
+
 Select Top 100 *
 From Mesh.MyDayActivityLog
+--Where CorrelationID = 'c5690851-be48-40ae-be24-ec019b32'
 Order By LogID Desc
+
+Select DeliveryDateUTC, RouteID, LastModifiedBy
+From Mesh.DeliveryRoute
+Where RouteID in (111502882, 111502864, 111502836)
+Order by DeliveryDateUTC desc
 
 -- Get request details --
 Select Top 100 convert(Datetime2(1), l.RequestTime) ActivityTime, l.DeliveryDateUTC, l.GSN, l.RouteID,
@@ -28,18 +47,17 @@ Select Top 100 convert(Datetime2(1), l.RequestTime) ActivityTime, l.DeliveryDate
 	Else 'Error'
 	End Status,
 	Substring(UserAgent, 0, 30) MyDayVersion,
-	Convert(Datetime2(1), e.ServerInserttime) ExceptionTime, l.LogID ActivityLogID, e.LogID ExceptionLogID, l.WebEndPoint, l.StoredProc, l.GetParemeters, l.PostJson, e.GSN, e.Exception, e.ComputerName, e.UserAgent, e.ModifiedDate, l.CorrelationID
+	Convert(Datetime2(1), e.ServerInserttime) ExceptionTime, l.LogID ActivityLogID, e.LogID ExceptionLogID, l.WebEndPoint, l.StoredProc, l.GetParemeters, l.PostJson, e.GSN, e.Exception, e.ComputerName, e.UserAgent, e.ModifiedDate, l.CorrelationID, e.CorrelationID
 From Mesh.MyDayActivityLog l
 Full outer join Setup.WebAPILog e on l.CorrelationID = e.CorrelationID
 Where (l.CorrelationID is not null or e.CorrelationID is not null)
 --And (l.GetParemeters like '%111501301%'  Or l.PostJson like '%111501301%'  )
 --And e.LogID is Null
-And RouteID in (102000910, 102000911, 102000913,102000915
-)
+--And RouteID in (111502882, 111502864, 111502836)
 --And WebEndPoint = 'UploadAddedStops'
 --And WEbEndPoint = 'UploadNewSequence'
 --And e.LogID is not null
---and (DeliveryDateUTC = '2019-02-19'
+and (DeliveryDateUTC = '2019-02-28')
 --or DeliveryDateUTC = '2019-02-18')
 --and RouteID Like '1116%'
 Order by RouteID, coalesce(l.RequestTime, e.ServerInsertTime) Desc

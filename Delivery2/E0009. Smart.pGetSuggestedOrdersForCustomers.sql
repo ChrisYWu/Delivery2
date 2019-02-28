@@ -72,29 +72,37 @@ Begin
 		NextDeliveryDate Date not null
 	)
 
-	Declare @ExcludedNationalChains Varchar(max)
-
-	Select @ExcludedNationalChains = Coalesce(Designation, 'None')
-	From Smart.Config
-	Where ConfigID = 3
-
 	Insert Into @FilteredAccounts
 	Select *
-	From @SAPAccounts
+	From @SAPAccounts;
+
+	With localChainExclusion As (
+		Select lc.LocalChainID
+		From Smart.ChainExclusion ce
+		Join SAP.RegionalChain rc on ce.NationalChainID = rc.NationalChainID
+		Join SAP.LocalChain lc on rc.RegionalChainID = lc.RegionalChainID
+		Where ce.NationalChainID Is Not Null
+		Union
+		Select lc.LocalChainID
+		From Smart.ChainExclusion ce
+		Join SAP.LocalChain lc on ce.RegionalChainID = lc.RegionalChainID
+		Where ce.RegionalChainID Is Not Null
+		Union
+		Select ce.LocalChainID
+		From Smart.ChainExclusion ce
+		Where ce.LocalChainID Is Not Null
+	)
 
 	Delete @FilteredAccounts
 	Where SAPAccountNumber In (
 		Select SAPAccountNumber 
 		From SAP.Account a 
-		Join SAP.LocalChain lc on a.LocalChainID = lc.LocalChainID
-		Join SAP.RegionalChain rc on lc.RegionalChainID = rc.RegionalChainID
-		Join dbo.Split(@ExcludedNationalChains, ',') s on Convert(varchar(10), rc.NationalChainID) = s.Value
+		Join localChainExclusion lc on a.LocalChainID = lc.LocalChainID
 	)
 
 	If @Debug = 1
 	Begin
-		Select 'Accounts after filtered by national chains' Step3
-		Select @ExcludedNationalChains ExcludedNationalChains
+		Select 'Accounts after filtered by chains' Step2
 		Select * From @FilteredAccounts Order by SAPAccountNumber
 	End
 	--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
