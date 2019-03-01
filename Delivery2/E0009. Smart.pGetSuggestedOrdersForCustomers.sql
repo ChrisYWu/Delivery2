@@ -157,8 +157,142 @@ Insert @test Values(11233202, '2019-02-11', '2019-03-14') --'Target 001177, 50'
 exec Smart.pGetSuggestedOrdersForCustomers @SAPAccounts = @test, @Debug = 1
 Go
 
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
+IF TYPE_ID(N'Smart.tCustomerADD') IS Not NULL
+Begin
+	If Exists (Select * From sys.procedures p join sys.schemas s on p.schema_id = s.schema_id and p.name = 'pGetADDsForCustomers' and s.name = 'Smart')
+	Begin
+		Drop proc Smart.pGetADDsForCustomers
+		Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+		+  '* Dropping proc Smart.pGetADDsForCustomers'
+	End
+
+	Drop Type Smart.tCustomerADD
+	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+	+ '* Smart.tCustomerADD'
+End
+GO
+
+CREATE TYPE Smart.tCustomerADD AS TABLE(
+	SAPAccountNumber int not null
+	PRIMARY KEY CLUSTERED 
+	(
+		SAPAccountNumber ASC
+	)WITH (IGNORE_DUP_KEY = OFF)
+)
+GO
+
+Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
++ 'Type Smart.tCustomerADD created'
+Go
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
+If Exists (Select * From sys.procedures p join sys.schemas s on p.schema_id = s.schema_id and p.name = 'pGetADDsForCustomers' and s.name = 'Smart')
+Begin
+	Drop proc Smart.pGetADDsForCustomers
+	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+	+  '* Dropping proc Smart.pGetADDsForCustomers'
+End 
+Go
+
+Create Proc Smart.pGetADDsForCustomers
+(
+	@SAPAccounts Smart.tCustomerADD ReadOnly,
+	@Debug Bit = 0
+)
+As 
+Begin
+	Set NoCount On;
+	
+	Declare @Results Table
+	(
+		SAPAccountNumber int,
+		ItemNumber varchar(20),
+		Rate Float
+	)
+
+	--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	Declare @FilteredAccounts Table
+	(
+		SAPAccountNumber int not null
+	)
+
+	Insert Into @FilteredAccounts
+	Select *
+	From @SAPAccounts;
+
+	With localChainExclusion As (
+		Select lc.LocalChainID
+		From Smart.ChainExclusion ce
+		Join SAP.RegionalChain rc on ce.NationalChainID = rc.NationalChainID
+		Join SAP.LocalChain lc on rc.RegionalChainID = lc.RegionalChainID
+		Where ce.NationalChainID Is Not Null
+		Union
+		Select lc.LocalChainID
+		From Smart.ChainExclusion ce
+		Join SAP.LocalChain lc on ce.RegionalChainID = lc.RegionalChainID
+		Where ce.RegionalChainID Is Not Null
+		Union
+		Select ce.LocalChainID
+		From Smart.ChainExclusion ce
+		Where ce.LocalChainID Is Not Null
+	)
+
+	Delete @FilteredAccounts
+	Where SAPAccountNumber In (
+		Select SAPAccountNumber 
+		From SAP.Account a 
+		Join localChainExclusion lc on a.LocalChainID = lc.LocalChainID
+	)
+
+	If @Debug = 1
+	Begin
+		Select 'Accounts after filtered by chains' Step1
+		Select * From @FilteredAccounts Order by SAPAccountNumber
+	End
+	--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+	If Exists (Select * From Smart.Config Where ConfigID = 1 And Designation = 0)
+	Begin
+		Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+			+ 'Smart.pGetADDsForCustomers reads from Smart.Daily'
+		Insert Into @Results 
+		Select d.SAPAccountNumber, d.SAPMaterialID, Rate
+		From @FilteredAccounts a 
+		Join Smart.Daily d on a.SAPAccountNumber = d.SAPAccountNumber
+	End
+	Else
+	Begin
+		Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+			+ 'Smart.pGetADDsForCustomers reads from Smart.Daily1'
+		Insert Into @Results 
+		Select d.SAPAccountNumber, d.SAPMaterialID, Rate
+		From @FilteredAccounts a 
+		Join Smart.Daily1 d on a.SAPAccountNumber = d.SAPAccountNumber
+	End
+
+	Select SAPAccountNumber, ItemNumber, Rate
+	From @Results
+	Order By SAPAccountNumber, ItemNumber
+
+End
+Go
+
+Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
++  'Proc Smart.pGetADDsForCustomers created'
+Go
+
+Declare @test1 Smart.tCustomerADD
+
+Insert @test1 Values(11307896) --Lows
+Insert @test1 Values(11307893) --Lows
+Insert @test1 Values(11234400) --'Walmart, 50'
+Insert @test1 Values(11235319) --'Walmart, 170'
+Insert @test1 Values(11497602) --'Target'
+Insert @test1 Values(12663423) --'Price Chopper Express 009405, 50'
+Insert @test1 Values(12063909) --'Family Dollar 005570, 50'
+Insert @test1 Values(11233202) --'Target 001177, 50'
 
 
-
-
-
+exec Smart.pGetADDsForCustomers @SAPAccounts = @test1, @Debug = 1
+Go

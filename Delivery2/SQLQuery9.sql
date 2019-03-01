@@ -19,3 +19,5 @@ From APNSMerch.DeliveryInfo
 Select *
 From APNSMerch.StoreDeliveryTimeTrace
 
+
+

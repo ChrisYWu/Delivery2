@@ -7,6 +7,8 @@ CREATE NONCLUSTERED INDEX NCI_Mesh_InvoiceItem_RMInvoiceID ON Mesh.InvoiceItem
 )
 Go
 
+-------------------------------------------------------------
+-------------------------------------------------------------
 Create Proc Mesh.pTrimCustomerInvoice
 (
 	@TrimBackDays Int = 2,
@@ -35,6 +37,9 @@ Begin
 End
 Go
 
+-------------------------------------------------------------
+-------------------------------------------------------------
+
 exec Mesh.pTrimCustomerInvoice @TrimBackDays = 175, @force = 1
 Go
 Select DeliveryDateUTC, Count(*) cnt
@@ -44,6 +49,8 @@ Group By DeliveryDateUTC
 Order By DeliveryDateUTC
 Go
 
+-------------------------------------------------------------
+-------------------------------------------------------------
 ALTER Proc [Mesh].[pInsertInvoice]
 (
 	@Headers Mesh.tInvoiceHeaders ReadOnly,
@@ -53,30 +60,79 @@ ALTER Proc [Mesh].[pInsertInvoice]
 )
 As
     Set NoCount On;
-	
+
 	exec Mesh.pTrimCustomerInvoice 
 
-	Declare @TotalQuantity int, @InvoiceID int
+	Begin Try
+		Begin Transaction;
+			Delete Mesh.InvoiceItem
+			Where RMInvoiceID in 
+			(
+				Select ci.InvoiceID
+				From Mesh.CustomerInvoice ci
+				Join @Headers h on ci.RMInvoiceID = h.RMInvoiceID
+			)
 
-	Insert Into Mesh.CustomerInvoice(DeliveryDateUTC, RMInvoiceID, RMOrderID, SAPBranchID, SAPAccountNumber, LastModifiedUTC, LastModifiedBy, LocalInsertTime)
-	Select DeliveryDateUTC, RMInvoiceID, RMOrderID, SAPBranchID, SAPAccountNumber, @LastModifiedUTC, @LastModifiedBy, GetDate()
-	From @Headers
+			Delete ci
+			From Mesh.CustomerInvoice ci
+			Join @Headers h on ci.RMInvoiceID = h.RMInvoiceID
+
+			Insert Into Mesh.CustomerInvoice(DeliveryDateUTC, RMInvoiceID, RMOrderID, SAPBranchID, SAPAccountNumber, LastModifiedUTC, LastModifiedBy, LocalInsertTime)
+			Select DeliveryDateUTC, RMInvoiceID, RMOrderID, SAPBranchID, SAPAccountNumber, @LastModifiedUTC, @LastModifiedBy, GetDate()
+			From @Headers
 	
-	Insert Into Mesh.InvoiceItem(RMInvoiceID, ItemNumber, Quantity, LastModifiedUTC, LastModifiedBy, LocalInsertTime)
-	Select RMInvoiceID, ItemNumber, Quantity, @LastModifiedUTC, @LastModifiedBy, GetDate()
-	From @Items
-	Where Quantity > 0;
+			Insert Into Mesh.InvoiceItem(RMInvoiceID, ItemNumber, Quantity, LastModifiedUTC, LastModifiedBy, LocalInsertTime)
+			Select RMInvoiceID, ItemNumber, Quantity, @LastModifiedUTC, @LastModifiedBy, GetDate()
+			From @Items
+			Where Quantity > 0;
 
-	With Temp
-	As
-	(
-		Select RMInvoiceID, Sum(Quantity) TotalQuantity
-		From Mesh.InvoiceItem 
-		Group By RMInvoiceID
-	)
+			With Temp
+			As
+			(
+				Select RMInvoiceID, Sum(Quantity) TotalQuantity
+				From @Items
+				Group By RMInvoiceID
+			)
 
-	Update ci
-	Set TotalQuantity = t.TotalQuantity
-	from Mesh.CustomerInvoice ci
-	Join Temp t on ci.RMInvoiceID = t.RMInvoiceID
+			Update ci
+			Set TotalQuantity = t.TotalQuantity
+			from Mesh.CustomerInvoice ci
+			Join Temp t on ci.RMInvoiceID = t.RMInvoiceID
+
+		Commit Transaction;
+	End Try
+	Begin Catch
+		declare @ErrorMessage nvarchar(max), @ErrorSeverity int, @ErrorState int;
+		select @ErrorMessage = ERROR_MESSAGE() + ' Line ' + cast(ERROR_LINE() as nvarchar(5)), @ErrorSeverity = ERROR_SEVERITY(), @ErrorState = ERROR_STATE();
+		rollback transaction;
+		raiserror (@ErrorMessage, @ErrorSeverity, @ErrorState);
+	End Catch
 Go
+
+
+-----------------------------------------------
+-----------------------------------------------
+;
+With CTE As 
+(
+	Select Top 1 RMInvoiceID, ItemNumber, Quantity, LastModifiedBy, Count(*) Cnt, Max(InvoiceItemID) InvoiceItemID
+	From Mesh.InvoiceItem With (nolock)
+	Group By RMInvoiceID, ItemNumber, Quantity, LastModifiedBy
+)
+
+Delete Mesh.InvoiceItem 
+Where InvoiceItemID Not In (Select InvoiceItemID From CTE)
+Go
+
+Delete 
+From Mesh.CustomerInvoice 
+Where InvoiceID Not In 
+(
+	Select InvoiceID From
+		(
+		Select RMInvoiceID, count(*) Cnt, Max(InvoiceID) InvoiceID
+		From Mesh.CustomerInvoice ii With (nolock)
+		Group By RMInvoiceID
+		) a
+)
+

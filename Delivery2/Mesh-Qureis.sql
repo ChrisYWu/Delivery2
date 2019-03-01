@@ -33,8 +33,17 @@ Order By Count(*) ASC
 
 Select Top 100 *
 From Mesh.MyDayActivityLog
---Where CorrelationID = 'c5690851-be48-40ae-be24-ec019b32'
+Where DeliveryDateUTC = '2019-03-01'
+And PostJson like '%3516307362%'
+----Where CorrelationID = 'c5690851-be48-40ae-be24-ec019b32'
 Order By LogID Desc
+
+Select *
+From Setup.WebAPILog
+Where CorrelationID in ('ebb246e4-c6dc-4174-827e-8a8d9b70',
+'fb235f2e-96fe-42d6-b2fb-e2c8e42f',
+'cfb7cc58-a09c-4419-9d2b-e5e48712',
+'e07dafec-dd35-4edd-952d-e907cafb')
 
 Select DeliveryDateUTC, RouteID, LastModifiedBy
 From Mesh.DeliveryRoute
@@ -57,9 +66,10 @@ Where (l.CorrelationID is not null or e.CorrelationID is not null)
 --And WebEndPoint = 'UploadAddedStops'
 --And WEbEndPoint = 'UploadNewSequence'
 --And e.LogID is not null
-and (DeliveryDateUTC = '2019-02-28')
+and (DeliveryDateUTC = '2019-03-01')
 --or DeliveryDateUTC = '2019-02-18')
 --and RouteID Like '1116%'
+And Json like '%3516307362%'
 Order by RouteID, coalesce(l.RequestTime, e.ServerInsertTime) Desc
 
 --Exec Mesh.pGetDeliveryManifest @RouteID = 112002021, @DeliveryDateUTC = '112002201'
