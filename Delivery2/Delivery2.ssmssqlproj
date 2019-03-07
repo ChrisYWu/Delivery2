@@ -691,6 +691,18 @@
           <AssociatedConnUserName />
           <FullPath>C0014. SALES_SCHEDULE2 .sql</FullPath>
         </FileNode>
+        <FileNode Name="C0015. KS_Predictive_20190307.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>C0015. KS_Predictive_20190307.sql</FullPath>
+        </FileNode>
+        <FileNode Name="C0016. Demo20190307.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>C0016. Demo20190307.sql</FullPath>
+        </FileNode>
         <FileNode Name="D0001. APNS-Schema.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
@@ -758,8 +770,8 @@
           <FullPath>D0012. LoadDelivery.sql</FullPath>
         </FileNode>
         <FileNode Name="D0013. TrimInvoices-Forward.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>D0013. TrimInvoices-Forward.sql</FullPath>
         </FileNode>
@@ -768,6 +780,12 @@
           <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>D0014. TrimInvoices-Backward.sql</FullPath>
+        </FileNode>
+        <FileNode Name="D0015. APNS Test Monitoring.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>D0015. APNS Test Monitoring.sql</FullPath>
         </FileNode>
         <FileNode Name="E0002. INTDataLoading.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
@@ -782,8 +800,8 @@
           <FullPath>E0003. Session 1.sql</FullPath>
         </FileNode>
         <FileNode Name="E0004. Get History.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP108:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP108</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>E0004. Get History.sql</FullPath>
         </FileNode>
@@ -800,8 +818,8 @@
           <FullPath>E0006. Smart.pCaulcateRateQty.sql</FullPath>
         </FileNode>
         <FileNode Name="E0007. Session 2.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>E0007. Session 2.sql</FullPath>
         </FileNode>
@@ -818,8 +836,8 @@
           <FullPath>E0009. Smart.pGetSuggestedOrdersForCustomers.sql</FullPath>
         </FileNode>
         <FileNode Name="E0010. Installation Dev.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP108:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>BSCCAP108</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>E0010. Installation Dev.sql</FullPath>
         </FileNode>
@@ -865,11 +883,23 @@
           <AssociatedConnUserName />
           <FullPath>SQLQuery10.sql</FullPath>
         </FileNode>
-        <FileNode Name="SQLQuery9.sql">
+        <FileNode Name="SQLQuery12.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
           <AssociatedConnUserName />
-          <FullPath>SQLQuery9.sql</FullPath>
+          <FullPath>SQLQuery12.sql</FullPath>
+        </FileNode>
+        <FileNode Name="SQLQuery14.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>SQLQuery14.sql</FullPath>
+        </FileNode>
+        <FileNode Name="SQLQuery15.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>SQLQuery15.sql</FullPath>
         </FileNode>
       </Items>
     </LogicalFolder>

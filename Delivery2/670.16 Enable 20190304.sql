@@ -41,23 +41,23 @@ As
 	Where ConfigID = 4
 Go
 
-exec dbo.pEnableBranchesForMesh1
-Go
+--exec dbo.pEnableBranchesForMesh1
+--Go
 
-Select Count(*) Cnt 
-From Shared.Feature_Authorization
-Where FeatureID = 6
+--Select Count(*) Cnt 
+--From Shared.Feature_Authorization
+--Where FeatureID = 6
 
-Select *
-From Merch.Setup.Config
-Go
+--Select *
+--From Merch.Setup.Config
+--Go
 
-Select *
-From Portal_Data.Shared.Feature_Authorization
-Where featureid = 6
-Order By BranchID
-Go
+--Select *
+--From Portal_Data.Shared.Feature_Authorization
+--Where featureid = 6
+--Order By BranchID
+--Go
 
-Select *
-From Portal_Data.Shared.Features
+--Select *
+--From Portal_Data.Shared.Features
 

@@ -6,8 +6,9 @@ Go
 
 Select *
 From SAP.Branch
-Where BranchName like 'Reno' 
---1183,1185,1139
+Where SAPBranchID in ('1009','1064','1065')
+
+
 Go
 
 Alter Proc dbo.pEnableBranchesForMesh
@@ -38,18 +39,18 @@ As
 	Where ConfigID = 4
 Go
 
-exec dbo.pEnableBranchesForMesh
-Go
+--exec dbo.pEnableBranchesForMesh
+--Go
 
-Select Count(*) Cnt 
-From Shared.Feature_Authorization
-Where FeatureID = 6
+--Select Count(*) Cnt 
+--From Shared.Feature_Authorization
+--Where FeatureID = 6
 
-Select *
-From Merch.Setup.Config
-Go
+--Select *
+--From Merch.Setup.Config
+--Go
 
-Select *
-From Portal_Data.Shared.Feature_Authorization
-Where featureid = 6
-Go
+--Select *
+--From Portal_Data.Shared.Feature_Authorization
+--Where featureid = 6
+--Go

@@ -17,8 +17,8 @@ Go
 */
 
 Declare @StartDate Date, @EndDate Date
-Set @StartDate = '2018-11-18'
-Set @EndDate = '2018-11-19'
+Set @StartDate = '2018-12-09'
+Set @EndDate = '2019-02-28'
 
 While @StartDate < @EndDate
 Begin

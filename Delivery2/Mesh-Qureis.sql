@@ -1,6 +1,33 @@
 use Merch
 Go
 
+Select Top 1000 *
+From Setup.WebAPILog
+Order By LogID DEsc
+
+[ClientDataError]{Mesh.pUpdateEstimatedArrivals}: The route has not been checked out. @RouteID=111502345 and @DeliveryDateUTC=2019-02-21.
+
+[ClientDataError]{Mesh.pUpdateEstimatedArrivals}: The route has not been checked out. @RouteID=111602463 and @DeliveryDateUTC=2019-03-05.
+
+Select *
+From Mesh.DeliveryRoute
+Where RouteID = 111602463
+And DeliveryDateUTC = '2019-03-05'
+
+Select *
+From 
+
+Select *
+From Mesh.MyDayActivityLog
+Where DeliveryDateUTC = '2019-03-05'
+And GSN = 'SANEX017'
+Order by RequestTime desc
+
+
+
+
+
+
 Select Count(*)
 From Mesh.CustomerInvoice
 
@@ -33,9 +60,6 @@ Order By Count(*) ASC
 
 Select Top 100 *
 From Mesh.MyDayActivityLog
-Where DeliveryDateUTC = '2019-03-01'
-And PostJson like '%3516307362%'
-----Where CorrelationID = 'c5690851-be48-40ae-be24-ec019b32'
 Order By LogID Desc
 
 Select *
@@ -66,11 +90,15 @@ Where (l.CorrelationID is not null or e.CorrelationID is not null)
 --And WebEndPoint = 'UploadAddedStops'
 --And WEbEndPoint = 'UploadNewSequence'
 --And e.LogID is not null
-and (DeliveryDateUTC = '2019-03-01')
+and (DeliveryDateUTC = '2019-03-04')
 --or DeliveryDateUTC = '2019-02-18')
 --and RouteID Like '1116%'
-And Json like '%3516307362%'
 Order by RouteID, coalesce(l.RequestTime, e.ServerInsertTime) Desc
+
+Select Top 1 *
+From Setup.WebAPILog
+Order by LogID Desc
+
 
 --Exec Mesh.pGetDeliveryManifest @RouteID = 112002021, @DeliveryDateUTC = '112002201'
 --exec ETL.pLoadOrderPeriodically

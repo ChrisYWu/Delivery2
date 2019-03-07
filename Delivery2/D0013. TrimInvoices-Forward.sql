@@ -7,6 +7,12 @@ CREATE NONCLUSTERED INDEX NCI_Mesh_InvoiceItem_RMInvoiceID ON Mesh.InvoiceItem
 )
 Go
 
+CREATE NONCLUSTERED INDEX NCI_Mesh_Invoice_RMInvoiceID ON Mesh.CustomerInvoice
+(
+	RMInvoiceID ASC
+)
+Go
+
 -------------------------------------------------------------
 -------------------------------------------------------------
 Create Proc Mesh.pTrimCustomerInvoice
@@ -43,8 +49,8 @@ Go
 exec Mesh.pTrimCustomerInvoice @TrimBackDays = 175, @force = 1
 Go
 Select DeliveryDateUTC, Count(*) cnt
-From Mesh.InvoiceItem ii
-Join Mesh.CustomerInvoice ci on ii.RMInvoiceID = ci.RMInvoiceID 
+From Mesh.InvoiceItem ii with (nolock)
+Join Mesh.CustomerInvoice ci with (nolock) on ii.RMInvoiceID = ci.RMInvoiceID 
 Group By DeliveryDateUTC
 Order By DeliveryDateUTC
 Go
@@ -135,4 +141,13 @@ Where InvoiceID Not In
 		Group By RMInvoiceID
 		) a
 )
+Go
 
+Select count(*)
+From Mesh.InvoiceItem
+Go
+
+Select DeliveryDateUTC, count(*) Cnt
+From Mesh.CustomerInvoice
+Group By DeliveryDateUTC
+Go

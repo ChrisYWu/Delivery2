@@ -15,6 +15,11 @@ Begin
 	Alter Table DNA.VoidOrderTracking
 	Add Source Varchar(128)
 
+	CREATE NONCLUSTERED INDEX NCI_VoidOrderTracking_Source ON DNA.VoidOrderTracking
+	(
+		Source ASC
+	)
+
 	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
 	+  'Adding column Source to table DNA.VoidOrderTracking'
 End

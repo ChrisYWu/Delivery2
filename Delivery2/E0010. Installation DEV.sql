@@ -917,6 +917,11 @@ Begin
 	Alter Table DNA.VoidOrderTracking
 	Add Source Varchar(128)
 
+	CREATE NONCLUSTERED INDEX NCI_VoidOrderTracking_Source ON DNA.VoidOrderTracking
+	(
+		Source ASC
+	)
+
 	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
 	+  'Adding column Source to table DNA.VoidOrderTracking'
 End
@@ -1112,7 +1117,6 @@ EXEC @ReturnCode =  msdb.dbo.sp_add_job @job_name=N'KDP.SDM.JobSalesHistoryForPr
 		@category_name=N'[Uncategorized (Local)]', 
 		@owner_login_name=N'OnePortal', @job_id = @jobId OUTPUT
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
-/****** Object:  Step [exec ETL.pLoadRMDailySale]    Script Date: 2/13/2019 10:07:13 AM ******/
 EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'exec ETL.pLoadRMDailySale', 
 		@step_id=1, 
 		@cmdexec_success_code=0, 

@@ -3,6 +3,8 @@ Go
 
 Select *
 From APNS.AppUserToken
+Where AppID = 2
+
 
 Select *
 From APNS.App
