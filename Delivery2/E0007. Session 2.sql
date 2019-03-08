@@ -13,12 +13,16 @@ Group by DAtepart(year, LastModified), Datepart(month, lastmodified)
 Order By DAtepart(year, LastModified), Datepart(month, lastmodified)
 
 Select DeliveryDate, Count(*) Cnt, DATENAME(dw, DeliveryDate) DayOfWeek
-From Smart.SalesHistory 
+From BSCCAP121.Portal_Data.Smart.SalesHistory with (nolock)
 Group By DeliveryDate
 Order By DeliveryDate
 
 Select *
 From Smart.DeliveryDateRange
+
+Select *
+From BSCCAP108.Portal_Data.Smart.DeliveryDateRange
+
 
 Select Count(*)
 From Smart.DeliveryDateRange

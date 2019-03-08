@@ -800,8 +800,8 @@
           <FullPath>E0003. Session 1.sql</FullPath>
         </FileNode>
         <FileNode Name="E0004. Get History.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP108:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>BSCCAP108</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>E0004. Get History.sql</FullPath>
         </FileNode>

@@ -151,3 +151,8 @@ Select DeliveryDateUTC, count(*) Cnt
 From Mesh.CustomerInvoice
 Group By DeliveryDateUTC
 Go
+
+Select GetDate()
+exec Mesh.pTrimCustomerInvoice @Force = 1
+Go
+

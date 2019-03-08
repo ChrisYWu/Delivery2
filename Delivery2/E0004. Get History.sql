@@ -18,7 +18,7 @@ Go
 
 Declare @StartDate Date, @EndDate Date
 Set @StartDate = '2018-12-09'
-Set @EndDate = '2019-02-28'
+Set @EndDate = '2019-03-06'
 
 While @StartDate < @EndDate
 Begin
@@ -51,6 +51,6 @@ Go
 
 
 Select DeliveryDate, Count(*) Cnt, DATENAME(dw, DeliveryDate) DayOfWeek
-From Smart.SalesHistory 
+From Smart.SalesHistory with (nolock)
 Group By DeliveryDate
 Order By DeliveryDate
