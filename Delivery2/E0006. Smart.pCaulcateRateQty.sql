@@ -4,6 +4,11 @@ Go
 Set NoCount On
 Go
 
+Select Top 1 SAPAccountNumber
+From Smart.SalesHistory
+Where SAPAccountNumber / 10000000 = 5
+Go
+
 ------------------------------------------------------------
 If Exists (Select * From sys.procedures p join sys.schemas s on p.schema_id = s.schema_id and p.name = 'pCaulcateRateQty' and s.name = 'Smart')
 Begin
@@ -25,6 +30,7 @@ Begin
 	Insert Into Smart.Daily(SAPAccountNumber, SAPMaterialID, Sum1, Cnt, Mean, STD)
 	Select SAPAccountNumber, SAPMaterialID, Sum(Quantity) Sum1, Count(*) Cnt, AVG(Quantity) Mean, STDEV(Quantity) STD
 	From Smart.SalesHistory
+	Where SAPAccountNumber / 10000000 <> 5
 	Group By SAPAccountNumber, SAPMaterialID
 	Having Count(*) > 4;
 
@@ -82,6 +88,7 @@ Begin
 	Insert Into Smart.Daily1(SAPAccountNumber, SAPMaterialID, Sum1, Cnt, Mean, STD)
 	Select SAPAccountNumber, SAPMaterialID, Sum(Quantity) Sum1, Count(*) Cnt, AVG(Quantity) Mean, STDEV(Quantity) STD
 	From Smart.SalesHistory
+	Where SAPAccountNumber / 10000000 <> 5
 	Group By SAPAccountNumber, SAPMaterialID
 	Having Count(*) > 4;
 
@@ -115,10 +122,10 @@ Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120
 +  'Proc Smart.pCaulcateRateQty1 created'
 Go
 
-exec Smart.pCaulcateRateQty1
-Go
+--exec Smart.pCaulcateRateQty1
+--Go
 
-exec Smart.pCaulcateRateQty
-Go
+--exec Smart.pCaulcateRateQty
+--Go
 
 

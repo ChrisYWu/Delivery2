@@ -1,13 +1,56 @@
 use Merch
 Go
 
+Select *
+From ETL.DataLoadingLog
+
+Select Top 1 *
+From Mesh.CustomerOrder
+Where SAPAccountNumber = 12270286
+And DeliveryDateUTC = Convert(Date, GetDate())
+
+Select *
+From mesh.DeliveryRoute
+Where routeID = 113102021
+Order By DeliveryDateUTC Desc
+
+Select *
+From Mesh.DeliveryStop
+Where SAPAccountNumber = 12270286
+And DeliveryDateUTC = Convert(Date, GetDate())
+
+Select *
+From Mesh.PlannedStop
+Where SAPAccountNumber = 12270286
+And DeliveryDateUTC = Convert(Date, GetDate())
+
+Select *
+From Operation.StoreDelivery
+Where SAPAccountNumber = 12270286
+And DeliveryDate = Convert(Date, GetDate())
+
+Select Top 1 *
+From Staging.ORDER_MASTER
+Where CUSTOMER_NUMBER = 12270286
+
+
 Select Top 1000 *
 From Setup.WebAPILog
+Where CorrelationID = 'ab3a18ca-2163-41dc-9675-16193795'
 Order By LogID DEsc
 
-[ClientDataError]{Mesh.pUpdateEstimatedArrivals}: The route has not been checked out. @RouteID=111502345 and @DeliveryDateUTC=2019-02-21.
+Select top 100 *
+From Mesh.MyDayActivityLog al 
+Left Join Setup.WebAPILog pl on al.CorrelationID = pl.CorrelationID
+Where RouteID = 106501766
+--And WebEndPoint = 'UploadRouteCheckOut'
+Order by al.LogID Desc
 
-[ClientDataError]{Mesh.pUpdateEstimatedArrivals}: The route has not been checked out. @RouteID=111602463 and @DeliveryDateUTC=2019-03-05.
+Select top 100 *
+From Mesh.MyDayActivityLog
+Where WebEndPoint = 'UploadRouteCheckOut'
+
+
 
 Select *
 From Mesh.DeliveryRoute

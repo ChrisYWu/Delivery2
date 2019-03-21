@@ -174,6 +174,9 @@ Go
 Insert Into Smart.Config
 Values(1, 'Live indicator', '0', SysDateTime())
 
+Insert Smart.Config
+Values(4, 'Weekend Split', '0.5', SYSDATETIME())
+
 Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
 +  'Table Smart.Config created and initialized'
 Go
@@ -414,6 +417,7 @@ Begin
 	Insert Into Smart.Daily(SAPAccountNumber, SAPMaterialID, Sum1, Cnt, Mean, STD)
 	Select SAPAccountNumber, SAPMaterialID, Sum(Quantity) Sum1, Count(*) Cnt, AVG(Quantity) Mean, STDEV(Quantity) STD
 	From Smart.SalesHistory
+	Where SAPAccountNumber / 10000000 <> 5
 	Group By SAPAccountNumber, SAPMaterialID
 	Having Count(*) > 4;
 
@@ -468,6 +472,7 @@ Begin
 	Insert Into Smart.Daily1(SAPAccountNumber, SAPMaterialID, Sum1, Cnt, Mean, STD)
 	Select SAPAccountNumber, SAPMaterialID, Sum(Quantity) Sum1, Count(*) Cnt, AVG(Quantity) Mean, STDEV(Quantity) STD
 	From Smart.SalesHistory
+	Where SAPAccountNumber / 10000000 <> 5
 	Group By SAPAccountNumber, SAPMaterialID
 	Having Count(*) > 4;
 
@@ -656,20 +661,20 @@ Begin
 End
 GO
 
-CREATE TYPE Smart.tCustomerOrderInput AS TABLE(
-	SAPAccountNumber int not null,
-	DeliveryDate Date not null,
-	NextDeliveryDate Date not null,
-	PRIMARY KEY CLUSTERED 
-	(
-		SAPAccountNumber ASC
-	)WITH (IGNORE_DUP_KEY = OFF)
-)
-GO
+--CREATE TYPE Smart.tCustomerOrderInput AS TABLE(
+--	SAPAccountNumber int not null,
+--	DeliveryDate Date not null,
+--	NextDeliveryDate Date not null,
+--	PRIMARY KEY CLUSTERED 
+--	(
+--		SAPAccountNumber ASC
+--	)WITH (IGNORE_DUP_KEY = OFF)
+--)
+--GO
 
-Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
-+ 'Type Smart.tCustomerOrderInput created'
-Go
+--Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+--+ 'Type Smart.tCustomerOrderInput created'
+--Go
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 If Exists (Select * From sys.procedures p join sys.schemas s on p.schema_id = s.schema_id and p.name = 'pGetSuggestedOrdersForCustomers' and s.name = 'Smart')
@@ -680,103 +685,103 @@ Begin
 End 
 Go
 
-Create Proc Smart.pGetSuggestedOrdersForCustomers
-(
-	@SAPAccounts Smart.tCustomerOrderInput ReadOnly,
-	@Debug Bit = 0
-)
-As 
-Begin
-	Set NoCount On;
+--Create Proc Smart.pGetSuggestedOrdersForCustomers
+--(
+--	@SAPAccounts Smart.tCustomerOrderInput ReadOnly,
+--	@Debug Bit = 0
+--)
+--As 
+--Begin
+--	Set NoCount On;
 	
-	Declare @Results Table
-	(
-		SAPAccountNumber int,
-		DeliveryDate Date,
-		NumberOfDays Int,
-		ItemNumber varchar(20),
-		Rate Float,
-		RawQty Float,
-		SuggestedQty Int
-	)
+--	Declare @Results Table
+--	(
+--		SAPAccountNumber int,
+--		DeliveryDate Date,
+--		NumberOfDays Int,
+--		ItemNumber varchar(20),
+--		Rate Float,
+--		RawQty Float,
+--		SuggestedQty Int
+--	)
 
-	--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-	Declare @FilteredAccounts Table
-	(
-		SAPAccountNumber int not null,
-		DeliveryDate Date not null,
-		NextDeliveryDate Date not null
-	)
+--	--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+--	Declare @FilteredAccounts Table
+--	(
+--		SAPAccountNumber int not null,
+--		DeliveryDate Date not null,
+--		NextDeliveryDate Date not null
+--	)
 
-	Insert Into @FilteredAccounts
-	Select *
-	From @SAPAccounts;
+--	Insert Into @FilteredAccounts
+--	Select *
+--	From @SAPAccounts;
 
-	With localChainExclusion As (
-		Select lc.LocalChainID
-		From Smart.ChainExclusion ce
-		Join SAP.RegionalChain rc on ce.NationalChainID = rc.NationalChainID
-		Join SAP.LocalChain lc on rc.RegionalChainID = lc.RegionalChainID
-		Where ce.NationalChainID Is Not Null
-		Union
-		Select lc.LocalChainID
-		From Smart.ChainExclusion ce
-		Join SAP.LocalChain lc on ce.RegionalChainID = lc.RegionalChainID
-		Where ce.RegionalChainID Is Not Null
-		Union
-		Select ce.LocalChainID
-		From Smart.ChainExclusion ce
-		Where ce.LocalChainID Is Not Null
-	)
+--	With localChainExclusion As (
+--		Select lc.LocalChainID
+--		From Smart.ChainExclusion ce
+--		Join SAP.RegionalChain rc on ce.NationalChainID = rc.NationalChainID
+--		Join SAP.LocalChain lc on rc.RegionalChainID = lc.RegionalChainID
+--		Where ce.NationalChainID Is Not Null
+--		Union
+--		Select lc.LocalChainID
+--		From Smart.ChainExclusion ce
+--		Join SAP.LocalChain lc on ce.RegionalChainID = lc.RegionalChainID
+--		Where ce.RegionalChainID Is Not Null
+--		Union
+--		Select ce.LocalChainID
+--		From Smart.ChainExclusion ce
+--		Where ce.LocalChainID Is Not Null
+--	)
 
-	Delete @FilteredAccounts
-	Where SAPAccountNumber In (
-		Select SAPAccountNumber 
-		From SAP.Account a 
-		Join localChainExclusion lc on a.LocalChainID = lc.LocalChainID
-	)
+--	Delete @FilteredAccounts
+--	Where SAPAccountNumber In (
+--		Select SAPAccountNumber 
+--		From SAP.Account a 
+--		Join localChainExclusion lc on a.LocalChainID = lc.LocalChainID
+--	)
 
-	If @Debug = 1
-	Begin
-		Select 'Accounts after filtered by chains' Step2
-		Select * From @FilteredAccounts Order by SAPAccountNumber
-	End
-	--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+--	If @Debug = 1
+--	Begin
+--		Select 'Accounts after filtered by chains' Step2
+--		Select * From @FilteredAccounts Order by SAPAccountNumber
+--	End
+--	--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-	If Exists (Select * From Smart.Config Where ConfigID = 1 And Designation = 0)
-	Begin
-		Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
-			+ 'Smart.pGetSuggestedOrdersForCustomers reads from Smart.Daily'
-		Insert Into @Results 
-		Select d.SAPAccountNumber, a.DeliveryDate, 
-			DateDiff(day, DeliveryDate, NextDeliveryDate) NumberOfDays, d.SAPMaterialID, Rate, Rate*DateDiff(day, DeliveryDate, NextDeliveryDate) RawQty,
-			Convert(Int, Case When Rate*(DateDiff(day, DeliveryDate, NextDeliveryDate)) < 1.0 Then 0 Else Round(Rate*DateDiff(day, DeliveryDate, NextDeliveryDate), 0) End) SuggestedQty
-		From @FilteredAccounts a 
-		Join Smart.Daily d on a.SAPAccountNumber = d.SAPAccountNumber
-	End
-	Else
-	Begin
-		Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
-			+ 'Smart.pGetSuggestedOrdersForCustomers reads from Smart.Daily1'
-		Insert Into @Results 
-		Select d.SAPAccountNumber, a.DeliveryDate, 
-			DateDiff(day, DeliveryDate, NextDeliveryDate) NumberOfDays, d.SAPMaterialID, Rate, Rate*DateDiff(day, DeliveryDate, NextDeliveryDate) RawQty,
-			Convert(Int, Case When Rate*(DateDiff(day, DeliveryDate, NextDeliveryDate)) < 1.0 Then 0 Else Round(Rate*DateDiff(day, DeliveryDate, NextDeliveryDate), 0) End) SuggestedQty
-		From @FilteredAccounts a 
-		Join Smart.Daily1 d on a.SAPAccountNumber = d.SAPAccountNumber
-	End
+--	If Exists (Select * From Smart.Config Where ConfigID = 1 And Designation = 0)
+--	Begin
+--		Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+--			+ 'Smart.pGetSuggestedOrdersForCustomers reads from Smart.Daily'
+--		Insert Into @Results 
+--		Select d.SAPAccountNumber, a.DeliveryDate, 
+--			DateDiff(day, DeliveryDate, NextDeliveryDate) NumberOfDays, d.SAPMaterialID, Rate, Rate*DateDiff(day, DeliveryDate, NextDeliveryDate) RawQty,
+--			Convert(Int, Case When Rate*(DateDiff(day, DeliveryDate, NextDeliveryDate)) < 1.0 Then 0 Else Round(Rate*DateDiff(day, DeliveryDate, NextDeliveryDate), 0) End) SuggestedQty
+--		From @FilteredAccounts a 
+--		Join Smart.Daily d on a.SAPAccountNumber = d.SAPAccountNumber
+--	End
+--	Else
+--	Begin
+--		Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+--			+ 'Smart.pGetSuggestedOrdersForCustomers reads from Smart.Daily1'
+--		Insert Into @Results 
+--		Select d.SAPAccountNumber, a.DeliveryDate, 
+--			DateDiff(day, DeliveryDate, NextDeliveryDate) NumberOfDays, d.SAPMaterialID, Rate, Rate*DateDiff(day, DeliveryDate, NextDeliveryDate) RawQty,
+--			Convert(Int, Case When Rate*(DateDiff(day, DeliveryDate, NextDeliveryDate)) < 1.0 Then 0 Else Round(Rate*DateDiff(day, DeliveryDate, NextDeliveryDate), 0) End) SuggestedQty
+--		From @FilteredAccounts a 
+--		Join Smart.Daily1 d on a.SAPAccountNumber = d.SAPAccountNumber
+--	End
 
-	Select SAPAccountNumber, DeliveryDate, ItemNumber, SuggestedQty
-	From @Results
-	Where SuggestedQty > 0
-	Order By SAPAccountNumber
+--	Select SAPAccountNumber, DeliveryDate, ItemNumber, SuggestedQty
+--	From @Results
+--	Where SuggestedQty > 0
+--	Order By SAPAccountNumber
 
-End
-Go
+--End
+--Go
 
-Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
-+  'Proc Smart.pGetSuggestedOrdersForCustomers created'
-Go
+--Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
+--+  'Proc Smart.pGetSuggestedOrdersForCustomers created'
+--Go
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 IF TYPE_ID(N'Smart.tCustomerADD') IS Not NULL
@@ -829,7 +834,8 @@ Begin
 	(
 		SAPAccountNumber int,
 		ItemNumber varchar(20),
-		Rate Float
+		WeekendRate Float,
+		WeekdayRate Float
 	)
 
 	--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -872,13 +878,19 @@ Begin
 		Select * From @FilteredAccounts Order by SAPAccountNumber
 	End
 	--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	Declare @WeekendSplit Float
+	Select @WeekendSplit = Coalesce(Designation, 0.5) From Smart.Config Where ConfigID = 4
+
+	Declare @RoundDigit Int
+	Set @RoundDigit = 4
 
 	If Exists (Select * From Smart.Config Where ConfigID = 1 And Designation = 0)
 	Begin
 		Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
 			+ 'Smart.pGetADDsForCustomers reads from Smart.Daily'
 		Insert Into @Results 
-		Select d.SAPAccountNumber, d.SAPMaterialID, Rate
+		Select d.SAPAccountNumber, d.SAPMaterialID, Round(Rate * @WeekendSplit * 7.00 / 2.0, @RoundDigit) WeekendRate, 
+													Round(Rate * (1.0 - @WeekendSplit) * 7.00 / 5.0, @RoundDigit) WeekdayRate
 		From @FilteredAccounts a 
 		Join Smart.Daily d on a.SAPAccountNumber = d.SAPAccountNumber
 	End
@@ -887,12 +899,13 @@ Begin
 		Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
 			+ 'Smart.pGetADDsForCustomers reads from Smart.Daily1'
 		Insert Into @Results 
-		Select d.SAPAccountNumber, d.SAPMaterialID, Rate
+		Select d.SAPAccountNumber, d.SAPMaterialID, Round(Rate * @WeekendSplit * 7.00 / 2.0, @RoundDigit) WeekendRate, 
+													Round(Rate * (1.0 - @WeekendSplit) * 7.00 / 5.0, @RoundDigit) WeekdayRate
 		From @FilteredAccounts a 
 		Join Smart.Daily1 d on a.SAPAccountNumber = d.SAPAccountNumber
 	End
 
-	Select SAPAccountNumber, ItemNumber, Rate
+	Select SAPAccountNumber, ItemNumber, WeekendRate, WeekdayRate
 	From @Results
 	Order By SAPAccountNumber, ItemNumber
 
@@ -989,7 +1002,7 @@ AS
                     C1.InsertedBy = 'System',
                     C1.InsertDate = GETDATE(),
 					C1.Comments = C2.Comments,
-					C1.Source = Case When C2.Source is null Then 'POGVOID' When RTRIM(LTRIM(C2.Source)) = '' Then 'POGVOID' Else C2.Source End 
+					C1.Source = Case When C2.Source is null Then 'POG' When RTRIM(LTRIM(C2.Source)) = '' Then 'POG' Else C2.Source End 
                 WHEN NOT MATCHED
                 THEN INSERT(OrderNumber,
                     SAPAccountNumber,
@@ -1014,7 +1027,7 @@ AS
              'System',
              GETDATE(),
 			 C2.Comments,
-			 Case When C2.Source is null Then 'POGVOID' When RTRIM(LTRIM(C2.Source)) = '' Then 'POGVOID' Else C2.Source End
+			 Case When C2.Source is null Then 'POG' When RTRIM(LTRIM(C2.Source)) = '' Then 'POG' Else C2.Source End
             );
 
             MERGE INTO DNA.Snoozing AS C1
@@ -1066,9 +1079,11 @@ Go
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 Update DNA.VoidOrderTracking
-Set Source = 'POGVOID'
+Set Source = 'POG'
+Go
+
 Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
-+  'Column [Source] on table DNA.VoidOrderTracking updated with default value POGVOID'
++  'Column [Source] on table DNA.VoidOrderTracking updated with default value POG'
 Go
 
 
@@ -1085,13 +1100,14 @@ Declare @JobID varchar(100)
 Select @JobID = job_id
 From dbo.sysjobs
 Where name = 'KDP.SDM.JobSalesHistoryForPredictiveOrders'
+or name = 'KDP.SDM.JobSalesHistoryForPredictiveOrders.Portal_Data.Import'
 
 If @JobID is not null 
 Begin
 	EXEC msdb.dbo.sp_delete_job @job_id=@JobID, @delete_unused_schedule=1
 
 	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
-	+  '* Agent Job KDP.SDM.JobSalesHistoryForPredictiveOrders deleted with schedule'
+	+  '* Agent Job KDP.SDM.JobSalesHistoryForPredictiveOrders.Portal_Data.Import deleted with schedule'
 End
 GO
 

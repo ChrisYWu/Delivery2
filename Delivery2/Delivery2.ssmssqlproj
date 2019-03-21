@@ -110,26 +110,26 @@
           <FullPath>03. ETL.pProcessPlannedDelivery.sql</FullPath>
         </FileNode>
         <FileNode Name="04. Operation.pGetDriverDeliveryPlan.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>04. Operation.pGetDriverDeliveryPlan.sql</FullPath>
         </FileNode>
         <FileNode Name="05. Testing.pGetNonBreakRouteForToday.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>05. Testing.pGetNonBreakRouteForToday.sql</FullPath>
         </FileNode>
         <FileNode Name="06. ETL.pUploadToAzure.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>06. ETL.pUploadToAzure.sql</FullPath>
         </FileNode>
         <FileNode Name="07. Operation.pGetDeliveryByRoute.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>07. Operation.pGetDeliveryByRoute.sql</FullPath>
         </FileNode>
@@ -140,20 +140,20 @@
           <FullPath>08. Erase.sql</FullPath>
         </FileNode>
         <FileNode Name="09. Testing.pResetRouteDeliveryTime.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP108:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP108</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>09. Testing.pResetRouteDeliveryTime.sql</FullPath>
         </FileNode>
         <FileNode Name="101. dbo.udfDistanceInMiles.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP108:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP108</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>101. dbo.udfDistanceInMiles.sql</FullPath>
         </FileNode>
         <FileNode Name="102. Setup.pDeleteStoreBySAPAccountNumber.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP108:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP108</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>102. Setup.pDeleteStoreBySAPAccountNumber.sql</FullPath>
         </FileNode>
@@ -511,6 +511,12 @@
           <AssociatedConnUserName />
           <FullPath>670.17 Enable 20190227.sql</FullPath>
         </FileNode>
+        <FileNode Name="670.18 Enable KnoxvilleAndWest.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>670.18 Enable KnoxvilleAndWest.sql</FullPath>
+        </FileNode>
         <FileNode Name="671. Mesh.pInsertInvoice.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
@@ -812,8 +818,8 @@
           <FullPath>E0005. SmartOrderProcessing.sql</FullPath>
         </FileNode>
         <FileNode Name="E0006. Smart.pCaulcateRateQty.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>E0006. Smart.pCaulcateRateQty.sql</FullPath>
         </FileNode>
@@ -830,8 +836,8 @@
           <FullPath>E0008. Smart.pUpdateDateRange.sql</FullPath>
         </FileNode>
         <FileNode Name="E0009. Smart.pGetSuggestedOrdersForCustomers.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>E0009. Smart.pGetSuggestedOrdersForCustomers.sql</FullPath>
         </FileNode>
@@ -854,8 +860,8 @@
           <FullPath>E0012. DNA.pInsertVoidOrderDetails.sql</FullPath>
         </FileNode>
         <FileNode Name="E0013. Config.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>E0013. Config.sql</FullPath>
         </FileNode>
