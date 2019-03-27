@@ -480,7 +480,7 @@ Begin
 	(
 		Select h.SAPAccountNumber, h.SAPMaterialID, Case When h.Quantity < d.Cap Then h.Quantity Else Cap End Capped
 		From Smart.SalesHistory h
-		Join Smart.Daily d on h.SAPAccountNumber = d.SAPAccountNumber And h.SAPMaterialID = d.SAPMaterialID
+		Join Smart.Daily1 d on h.SAPAccountNumber = d.SAPAccountNumber And h.SAPMaterialID = d.SAPMaterialID
 	)
 
 	Update d

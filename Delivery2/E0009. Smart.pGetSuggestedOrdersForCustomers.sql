@@ -292,14 +292,16 @@ Go
 
 Declare @test1 Smart.tCustomerADD
 
-Insert @test1 Values(11307896) -- Lows
-Insert @test1 Values(11307893) -- Lows
-Insert @test1 Values(11234400) --'Walmart, 50'
-Insert @test1 Values(11235319) --'Walmart, 170'
-Insert @test1 Values(11497602) --'Target'
-Insert @test1 Values(12663423) --'Price Chopper Express 009405, 50'
-Insert @test1 Values(12063909) --'Family Dollar 005570, 50'
-Insert @test1 Values(11233202) --'Target 001177, 50'
+Insert @test1 Values(11276626) -- mike's test case
+
+--Insert @test1 Values(11307896) -- Lows
+--Insert @test1 Values(11307893) -- Lows
+--Insert @test1 Values(11234400) --'Walmart, 50'
+--Insert @test1 Values(11235319) --'Walmart, 170'
+--Insert @test1 Values(11497602) --'Target'
+--Insert @test1 Values(12663423) --'Price Chopper Express 009405, 50'
+--Insert @test1 Values(12063909) --'Family Dollar 005570, 50'
+--Insert @test1 Values(11233202) --'Target 001177, 50'
 
 exec Smart.pGetADDsForCustomers @SAPAccounts = @test1, @Debug = 1
 Go

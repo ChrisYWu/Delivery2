@@ -25,13 +25,19 @@ Where SAPBranchID in (
 Order By BUName, RegionName, AreaName, SAPBranchID
 Go
 
-Alter Proc dbo.pEnableBranchesForMesh1
+Delete
+From Shared.Feature_Authorization
+Where BranchID = 1060
+And FeatureID = 6
+Go
+
+Alter Proc dbo.pEnableBranchesForMesh
 As
 	Insert Shared.Feature_Authorization(FeatureID, BranchID, IsActive)
 	Select 6 FeatureID, SAPBranchID BranchID, 1 IsActive
 	From SAP.Branch
 	Where SAPBranchID in (
-	1164
+	1060 
 	)
 	And SAPBranchID <> 'TJW1'
 	And SAPBranchID Not In (Select BranchID From Shared.Feature_Authorization Where FeatureID = 6)

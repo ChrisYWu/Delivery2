@@ -58,9 +58,6 @@ Where RouteID = 111602463
 And DeliveryDateUTC = '2019-03-05'
 
 Select *
-From 
-
-Select *
 From Mesh.MyDayActivityLog
 Where DeliveryDateUTC = '2019-03-05'
 And GSN = 'SANEX017'

@@ -1,32 +1,46 @@
 use Merch
 Go
 
-Select DeliveryDateUTC, count(*)
-From Mesh.InvoiceItem ii With (nolock)
-Join (Select Distinct RMInvoiceID, DeliveryDAteUTC From Mesh.CustomerInvoice with (nolock)) ci on ii.RMInvoiceID = ci.RMInvoiceID
-Group By DeliveryDateUTC
+Select *
+From Setup.Person
+Where LastName = 'Hendrickson'
 
-;
-With CTE As 
-(
-	Select Top 1 RMInvoiceID, ItemNumber, Quantity, LastModifiedBy, Count(*) Cnt, Max(InvoiceItemID) InvoiceItemID
-	From Mesh.InvoiceItem With (nolock)
-	Group By RMInvoiceID, ItemNumber, Quantity, LastModifiedBy
-)
+Select *
+From SEtup.Merchandiser
+Where GSN = 'HENCL001'
 
-Delete Mesh.InvoiceItem 
-Where InvoiceItemID Not In (Select InvoiceItemID From CTE)
-Go
+Select *
+From Portal_Data.Staging.ADExtractData
+Where UserID = 'HENCL001'
 
-Delete 
-From Mesh.CustomerInvoice 
-Where InvoiceID Not In 
-(
-	Select InvoiceID From
-		(
-		Select RMInvoiceID, count(*) Cnt, Max(InvoiceID) InvoiceID
-		From Mesh.CustomerInvoice ii With (nolock)
-		Group By RMInvoiceID
-		) a
-)
+exec Planning.pGetMerchProfileByGSN @GSN = 'HENCL001'
+
+Select *
+From SAP.Branch
+Where ZipCode like '57104%'
+
+Select b.*, c.*
+From Operation.MerchStopCheckIn c
+Join SAP.Account a on c.SAPAccountNumber = a.SAPAccountNumber
+Join SAP.Branch b on a.BranchID = b.BranchID
+Where GSN = 'HENCL001'
+Order By DispatchDate DEsc
+
+Select *
+From setup.MerchGroup
+Where MerchGroupID = 309
+
+Select *
+From SAP.Branch
+Where SAPBranchID = '1060'
+
+Select Min(DispatchDAte)
+From Planning.Dispatch
+Order by DispatchDate
+
+Where GSN = 'HENCL001'
+
+
+
+
 
