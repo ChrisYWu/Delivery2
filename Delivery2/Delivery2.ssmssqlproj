@@ -356,8 +356,8 @@
           <FullPath>619. Mesh.pCancelDNS.sql</FullPath>
         </FileNode>
         <FileNode Name="621. Operation.pGetMerchStoreDelivery.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>621. Operation.pGetMerchStoreDelivery.sql</FullPath>
         </FileNode>
@@ -709,6 +709,12 @@
           <AssociatedConnUserName />
           <FullPath>C0016. Demo20190307.sql</FullPath>
         </FileNode>
+        <FileNode Name="C0017. Trying to fix sequence issue.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>C0017. Trying to fix sequence issue.sql</FullPath>
+        </FileNode>
         <FileNode Name="D0001. APNS-Schema.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
@@ -722,8 +728,8 @@
           <FullPath>D0002. APNSMerch-Schema.sql</FullPath>
         </FileNode>
         <FileNode Name="D0003. Merch-schema.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>D0003. Merch-schema.sql</FullPath>
         </FileNode>
@@ -793,6 +799,12 @@
           <AssociatedConnUserName />
           <FullPath>D0015. APNS Test Monitoring.sql</FullPath>
         </FileNode>
+        <FileNode Name="D0016. Operation.pGetMerchStoreDelivery.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>D0016. Operation.pGetMerchStoreDelivery.sql</FullPath>
+        </FileNode>
         <FileNode Name="E0002. INTDataLoading.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
@@ -836,14 +848,14 @@
           <FullPath>E0008. Smart.pUpdateDateRange.sql</FullPath>
         </FileNode>
         <FileNode Name="E0009. Smart.pGetSuggestedOrdersForCustomers.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>E0009. Smart.pGetSuggestedOrdersForCustomers.sql</FullPath>
         </FileNode>
         <FileNode Name="E0010. Installation Dev.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>E0010. Installation Dev.sql</FullPath>
         </FileNode>
@@ -884,14 +896,14 @@
           <FullPath>Readme.sql</FullPath>
         </FileNode>
         <FileNode Name="SQLQuery10.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DPSGSharedClstr:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>DPSGSharedClstr</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>SQLQuery10.sql</FullPath>
         </FileNode>
         <FileNode Name="SQLQuery12.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCAP121:True</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>BSCCAP121</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:BSCCSQ07:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>BSCCSQ07</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>SQLQuery12.sql</FullPath>
         </FileNode>

@@ -1,53 +1,17 @@
-Use Merch
-Go
+USE [Merch]
+GO
+/****** Object:  StoredProcedure [Operation].[pGetMerchStoreDelivery]    Script Date: 3/28/2019 11:52:58 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 
-Set NoCount On
-Go
+--exec [Operation].[pGetMerchStoreDelivery]
+--	@DeliveryDate = '2019-02-27',
+--	@SAPAccountNumber = '11303382,11278635,12663640', @IsDetailNeeded = 0,
+--	@Debug = 1
+--Go
 
---~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
-If Not Exists (Select *
-	From Sys.columns c join sys.tables t on c.object_id = t.object_id
-	Where c.name = 'TimeZoneOffSet' and t.name = 'Merchandiser')
-Begin
-	Alter Table Setup.Merchandiser
-	Add TimeZoneOffSet Int Null
-
-	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
-	+  '* Column TimeZoneOffSet added to table Setup.Merchandiser'
-End
-Go
-
-Update Setup.Merchandiser
-Set TimeZoneOffset = 0
-
-Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
-+  'Column TimeZoneOffSet initialized'
-Go
-
---~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
-ALTER PROCEDURE Operation.pUpsertMerchPhoneNumber
-(
-	@GSN Varchar(50),
-	@PhoneNumber Varchar(50),
-	@TimeZoneOffSet int = 0
-)
-
-AS
-
-BEGIN 
-	UPDATE Setup.Merchandiser 
-		SET Phone = @PhoneNumber, TimeZoneOffSet = @TimeZoneOffSet
-	WHERE GSN = @GSN
-END
-Go
-
-Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
-+  'Procedure Operation.pUpsertMerchPhoneNumber updated'
-Go
-
---~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
---------------------------------------------------------
---------------------------------------------------------
 ALTER Proc [Operation].[pGetMerchStoreDelivery]
 (
 	@DeliveryDate Datetime,
@@ -342,4 +306,5 @@ Go
 Print 'ETL.pLoadDeliveryForToday altered'
 Go
 
-
+Select *
+From Mesh.DeliveryStop

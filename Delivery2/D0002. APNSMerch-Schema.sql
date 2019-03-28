@@ -1,6 +1,31 @@
 Use Merch
 Go
 
+If Not Exists (Select * From Setup.Config Where ConfigID = 11)
+Begin
+	Set Identity_Insert Setup.Config On
+	Insert Setup.Config(ConfigID, [Key], [Value], [Description], ModifiedDate, SendToMyday)
+	Values(11, 'APNSForDeliveryUpdates', '', 'APNS for delivery updates in SAP Branch ID', GetDate(), 0)
+	Set Identity_Insert Setup.Config Off
+End
+Go
+
+Declare @V Varchar(8000)
+Set @V = '' 
+
+Select @V = @V + Convert(Varchar(10), SAPBranchID) + ','
+From SAP.Branch
+Where SAPBranchID <> 'TJW1'
+Order By BranchID
+
+Update Merch.Setup.Config
+Set Value = SUBSTRING(@V, 1, Len(@V) - 1)
+Where ConfigID = 11
+Go
+
+Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
++  'Setup APNSEnabledBranchesForDeliveryUpdates added'
+
 Set NoCount On
 Go
 
@@ -126,10 +151,19 @@ Create proc APNSMerch.pUpsertKnownDeliveries
 )
 As
 Begin
+	Declare @ConfigValue varchar(4000)
+	
+	Select @ConfigValue = [Value]
+	From Setup.Config Where ConfigID = 11
+
 	Merge APNSMerch.DeliveryInfo t
 	Using (
-		Select @DeliveryDateUTC DeliveryDateUTC, @GSN GSN, SAPAccountNumber, KnownArrivalTime, KnownDNS 
-		From @Known) s 
+		Select @DeliveryDateUTC DeliveryDateUTC, @GSN GSN, k.SAPAccountNumber, KnownArrivalTime, KnownDNS 
+		From @Known k
+		Join SAP.Account a with (nolock) on k.SAPAccountNumber = a.SAPAccountNumber 
+		Join SAP.Branch b with (nolock) on a.BranchID = b.BranchID
+		Join dbo.udfSplit(@ConfigValue, ',') sp on b.SAPBranchID = sp.Value
+		) s 
 	On t.DeliveryDateUTC = s.DeliveryDateUTC And t.MerchandiserGSN = s.GSN And t.SAPAccountNumber = s.SAPAccountNumber
 	When Matched Then Update
 		Set t.KnownArrivalTime = s.KnownArrivalTime, t.KnownDNS = s.KnownDNS, t.LastModifiedBy = s.GSN, t.LastModified = SysDateTime()

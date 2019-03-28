@@ -1,6 +1,7 @@
 use Portal_Data
 Go
 
+
 select * from BSCCAP121.Portal_Data.Smart.Daily 
 where SAPAccountNUmber = '11276626' and SAPMAterialID ='10000703'
 
