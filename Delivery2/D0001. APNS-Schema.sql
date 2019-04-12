@@ -376,7 +376,7 @@ Begin
 End 
 Go
 
---exec  APNS.pGetMessagesForNotification @LockerID='00', @Debug=1
+--  exec APNS.pGetMessagesForNotification @LockerID='00', @Debug=1
 
 Create proc APNS.pGetMessagesForNotification
 (
@@ -412,14 +412,20 @@ Begin
 
 		Select *
 		From APNS.NotificationQueue
-		Where 
+		Where ItemID In
 		(
-			(DateDiff(s, @Lastest, SysDateTime()) > @DelayThreshold)
-				Or
-			(DateDiff(s, @LastestSent, SysDateTime()) > @LonerThreshhold)
+			Select Max(ItemID) ItemID
+			From APNS.NotificationQueue
+			Where 
+			(
+				(DateDiff(s, @Lastest, SysDateTime()) > @DelayThreshold)
+					Or
+				(DateDiff(s, @LastestSent, SysDateTime()) > @LonerThreshhold)
+			)
+			And LockerID is null
+			And DateDiff(s, EnqueueDate, SysDateTime()) < 86400   --Only interested in notifications within a day
+			Group By GSN, SubjectIdentifier
 		)
-		And LockerID is null
-		And DateDiff(s, EnqueueDate, SysDateTime()) < 86400   --Only interested in notifications within a day
 	End
 
 	If (@Debug <> 1 )
@@ -438,7 +444,12 @@ Begin
 		Select ItemID, Message, Token
 		From APNS.NotificationQueue q
 		Join APNS.AppUserToken t on q.GSN = t.GSN
-		Where LockerID = @LockerID And LockDate = @LockDate
+		Where ItemID in (
+			Select Max(ItemID) ItemID
+			From APNS.NotificationQueue
+			Where LockerID = @LockerID And LockDate = @LockDate
+			Group By GSN, SubjectIdentifier
+		)
 		Order By ItemID
 	End
 End

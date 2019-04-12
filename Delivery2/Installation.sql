@@ -190,13 +190,17 @@ Begin
 	Set IDENTITY_INSERT Shared.Feature_Master Off
 
 	Insert Shared.Feature_Authorization(FeatureID, BranchID, IsActive)
-	Values(8, 1116, 1)  --- San Antonio to go first
+	Select 8, SAPBranchID, 1
+	From SAP.Branch b
+	Where SAPBranchID Not In
+	(Select BranchID
+	From Shared.Feature_Authorization fa 
+	Where FeatureID = 6 )
+	And SAPBranchID <> 'TJW1'
+	Order By SAPBranchID
 
 	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
 	+  'Feature SMARTORDER added and initialized with all branches'
-
-	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
-	+  'San Antonio(1116) enabled for feature 8(SMARTORDER)'
 
 End
 Else 
@@ -586,16 +590,6 @@ Begin
 		Select DeliveryDate, SAPAccountNumber, SAPMaterialID, Quantity
 		From Staging.RMDailySale
 
-		----
-		Delete Smart.OrderTracking
-		Output DELETED.*
-		Into Smart.OrderTrackingHistory
-
-		Delete
-		From Smart.OrderTrackingHistory
-		Where OrderDate <= DateAdd(Day, -546, GetDate())
-		----
-
 		Update ETL.DataLoadingLog 
 		Set MergeDate = SysDateTime()
 		Where LogID = @LogID
@@ -946,18 +940,31 @@ Begin
 End
 Go
 
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 Drop Proc DNA.pInsertVoidOrderDetails
 Go
 Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
 +  '* Proc DNA.pInsertVoidOrderDetails dropped'
 Go
 
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
+If Not Exists (Select * From sys.columns c join sys.objects o on c.object_id = o.object_id Where c.name = 'SnoozeDuration' and o.name = 'VoidReasonCode')
+Begin
+	Alter Table DNA.VoidReasonCode
+	Add SnoozeDuration Int 
+End
+Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
++  'Column SnoozeDuration in table DNA.VoidReasonCode added if needed'
+Go
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 DROP TYPE DNA.utd_Void_OrderTracking
 GO
 Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
 +  '* Type DNA.utd_Void_OrderTracking dropped'
 Go
 
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 CREATE TYPE DNA.utd_Void_OrderTracking AS TABLE(
 	OrderNumber nvarchar(15) NOT NULL,
 	SAPAccountNumber bigint NOT NULL,
@@ -981,93 +988,7 @@ Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120
 +  'Type DNA.utd_Void_OrderTracking created'
 Go
 
-If Exists (
-	Select *
-	From sys.tables t
-	Join sys.schemas s on t.schema_id = s.schema_id
-	Where t.name = 'OrderTrackingHistory'
-	And s.name = 'Smart'
-)
-Begin
-	Drop Table [Smart].OrderTrackingHistory
-
-	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
-	+  '* Table Smart.OrderTrackingHistory dropped'
-End
-Go
-
-CREATE TABLE [Smart].[OrderTrackingHistory](
-	[OrderNumber] [nvarchar](15) NOT NULL,
-	[SAPAccountNumber] [bigint] NOT NULL,
-	[SAPMaterialID] [varchar](12) NOT NULL,
-	[ProposedQty] [int] NOT NULL,
-	[OrderedQty] [int] NOT NULL,
-	[VoidReasonCodeID] [int] NOT NULL,
-	[OrderedBy] [varchar](50) NOT NULL,
-	[OrderDate] [datetime] NOT NULL,
-	[InsertedBy] [varchar](50) NOT NULL,
-	[InsertDate] [datetime] NOT NULL,
-	[Comments] [varchar](250) NULL,
-	[Source] [varchar](128) NULL,
- CONSTRAINT [PK_OrderTrackingHistory] PRIMARY KEY CLUSTERED 
-(
-	[OrderNumber] ASC,
-	[SAPMaterialID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-
-Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
-+  'Table Smart.OrderTrackingHistory created'
-Go
-
-If Exists (
-	Select *
-	From sys.tables t
-	Join sys.schemas s on t.schema_id = s.schema_id
-	Where t.name = 'OrderTracking'
-	And s.name = 'Smart'
-)
-Begin
-	Drop Table [Smart].[OrderTracking]
-
-	Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
-	+  '* Table Smart.OrderTracking dropped'
-End
-Go
-
-CREATE TABLE [Smart].[OrderTracking](
-	[OrderNumber] [nvarchar](15) NOT NULL,
-	[SAPAccountNumber] [bigint] NOT NULL,
-	[SAPMaterialID] [varchar](12) NOT NULL,
-	[ProposedQty] [int] NOT NULL,
-	[OrderedQty] [int] NOT NULL,
-	[VoidReasonCodeID] [int] NOT NULL,
-	[OrderedBy] [varchar](50) NOT NULL,
-	[OrderDate] [datetime] NOT NULL,
-	[InsertedBy] [varchar](50) NOT NULL,
-	[InsertDate] [datetime] NOT NULL,
-	[Comments] [varchar](250) NULL,
-	[Source] [varchar](128) NULL,
- CONSTRAINT [PK_OrderTracking] PRIMARY KEY CLUSTERED 
-(
-	[OrderNumber] ASC,
-	[SAPMaterialID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-
-ALTER TABLE [Smart].[OrderTracking]  WITH CHECK ADD  CONSTRAINT [FK_OrderTracking_VoidReasonCode_VoidReasonCodeID] FOREIGN KEY([VoidReasonCodeID])
-REFERENCES [DNA].[VoidReasonCode] ([VoidReasonCodeID])
-GO
-
-ALTER TABLE [Smart].[OrderTracking] CHECK CONSTRAINT [FK_OrderTracking_VoidReasonCode_VoidReasonCodeID]
-GO
-
-Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
-+  'Table Smart.OrderTracking created'
-Go
-
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 Create PROCEDURE DNA.pInsertVoidOrderDetails(@tvpTable DNA.utd_Void_OrderTracking READONLY)
 AS
     SET NOCOUNT ON;
@@ -1076,40 +997,8 @@ AS
             --BEGIN TRAN UploadVoidOrder;
             DECLARE @SD INT;
 
-			INSERT Smart.OrderTracking(OrderNumber,
-                    SAPAccountNumber,
-                    SAPMaterialID,
-                    ProposedQty,
-                    OrderedQty,
-                    VoidReasonCodeID,
-                    OrderedBy,
-                    OrderDate,
-                    InsertedBy,
-                    InsertDate,
-					Comments,
-					Source)
-			Select 	OrderNumber,
-                    SAPAccountNumber,
-                    SAPMaterialID,
-                    ProposedQty,
-                    OrderedQty,
-                    VoidReasonCodeID,
-                    OrderedBy,
-                    OrderDate,
-					'System',
-					GETDATE(),
-					Comments,
-					Source
-			From @tvpTable
-			Where Source in ('PREDICTIVE', 'SMART')
-
-			Declare @tvpTable2 DNA.utd_Void_OrderTracking
-			Insert @tvpTable2 
-			Select * From @tvpTable
-			Where Source not in ('PREDICTIVE', 'SMART')
-
             MERGE INTO DNA.VoidOrderTracking AS C1
-            USING @tvpTable2 AS C2
+            USING @tvpTable AS C2
             ON(C1.OrderNumber = C2.OrderNumber
                AND C1.SAPAccountNumber = C2.SAPAccountNumber
                AND C1.SAPMaterialID = C2.SAPMaterialID)
@@ -1152,7 +1041,7 @@ AS
             );
 
             MERGE INTO DNA.Snoozing AS C1
-            USING @tvpTable2 AS C2
+            USING @tvpTable AS C2
             ON(C1.SAPAccountNumber = C2.SAPAccountNumber
                AND C1.SAPMaterialID = C2.SAPMaterialID)
                 WHEN MATCHED
@@ -1195,7 +1084,7 @@ AS
 GO
 
 Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120) + '> '
-+  'Proc DNA.pInsertVoidOrderDetails created'
++  'Proc DNA.pInsertVoidOrderDetails updated'
 Go
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
@@ -1207,9 +1096,6 @@ Print @@ServerName + '/' + DB_Name() + ':' + Convert(varchar, SysDateTime(), 120
 +  'Column [Source] on table DNA.VoidOrderTracking updated with default value POG'
 Go
 
-Select *
-From DNA.VoidOrderTracking
-Order By InsertDate Desc
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 -------------------------------------

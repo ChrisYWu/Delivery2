@@ -1,6 +1,7 @@
 USE [Merch]
 GO
 
+----- Trying to fix the existing sequence -----
 Update rsw
 Set rsw.Sequence = t.NewSequence,
 	LastModified = SysUTCDatetime(),
@@ -27,6 +28,7 @@ From Planning.PreDispatch pd Join (
 on pd.RouteID = t.RouteID And pd.DispatchDate = t.DispatchDate And pd.GSN = t.GSN and pd.Sequence = t.Sequence And pd.MerchGroupID = t.MerchGroupID
 Go
 
+-----------------------
 ALTER Proc [Planning].[pRemoveStoreByWeekDay]
 (
 	@WeekDay int,

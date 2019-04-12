@@ -296,7 +296,7 @@ Insert @test1 Values(11276626) -- mike's test case
 
 --Insert @test1 Values(11307896) -- Lows
 --Insert @test1 Values(11307893) -- Lows
---Insert @test1 Values(11234400) --'Walmart, 50'
+Insert @test1 Values(11234400) --'Walmart, 50'
 --Insert @test1 Values(11235319) --'Walmart, 170'
 --Insert @test1 Values(11497602) --'Target'
 --Insert @test1 Values(12663423) --'Price Chopper Express 009405, 50'
@@ -306,8 +306,69 @@ Insert @test1 Values(11276626) -- mike's test case
 exec Smart.pGetADDsForCustomers @SAPAccounts = @test1, @Debug = 1
 Go
 
-Select (1.50323 / 7)
+Declare @test1 Smart.tCustomerADD
 
-Select 0.21 * 7
-Select 0.214 * 7
-Select 0.2142 * 7
+Insert @test1 Values(11308012)
+Insert @test1 Values(11308163)
+Insert @test1 Values(11308298)
+Insert @test1 Values(11309302)
+Insert @test1 Values(11360041)
+Insert @test1 Values(11282859)
+Insert @test1 Values(11283384)
+Insert @test1 Values(11289237)
+Insert @test1 Values(11289542)
+Insert @test1 Values(11289390)
+
+exec Smart.pGetADDsForCustomers @SAPAccounts = @test1, @Debug = 1
+Go
+
+Select *
+From Smart.SalesHistory
+Where SAPAccountNumber In 
+(11308012
+,11308163
+,11308298
+,11309302
+,11360041
+,11282859
+,11283384
+,11289237
+,11289542
+,11289390
+)
+Order by DeliveryDate, SAPAccountNumber, SAPMaterialID, Quantity
+
+Select Sum(RecordCount)
+from Smart.DeliveryDateRange
+Where InRange = 1
+
+Select *
+From SAP.Route
+Where RouteID = 2955
+
+
+Select *
+From SAP.RouteSchedule
+Where RouteID = 210
+
+Select *
+From SAP.RouteSchedule rs
+Join SAP.Account a on rs.AccountID = a.AccountID
+Where SAPAccountNumber = 11308163
+
+Select *
+From Smart.Daily
+where sapaccountnumber in (11186223, 11186242)
+
+
+Select *
+From ETL.DataLoadingLog
+
+Select *
+From Smart.DeliveryDateRange
+
+
+SELECT definition  
+FROM sys.sql_modules  
+
+

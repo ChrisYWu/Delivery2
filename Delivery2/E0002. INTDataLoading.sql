@@ -182,6 +182,16 @@ Begin
 		Select DeliveryDate, SAPAccountNumber, SAPMaterialID, Quantity
 		From Staging.RMDailySale
 
+		----
+		Delete Smart.OrderTracking  
+		Output DELETED.*
+		Into Smart.OrderTrackingHistory
+
+		Delete
+		From Smart.OrderTrackingHistory
+		Where OrderDate <= DateAdd(Day, -546, GetDate())
+		----
+
 		Update ETL.DataLoadingLog 
 		Set MergeDate = SysDateTime()
 		Where LogID = @LogID

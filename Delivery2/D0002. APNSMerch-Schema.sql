@@ -86,14 +86,15 @@ Create Table APNSMerch.StoreDeliveryTimeTrace(
 	SAPAccountNumber int NOT NULL,
 	ArrivalTime datetime2(0) NULL,
 	IsEstimated bit NOT NULL,
-	DNS bit NULL,
-	ReportTimeLocal datetime2(0) NOT NULL,
+	DNS bit Not NULL,
+	ReportTimeLocal datetime2(7) NOT NULL,
 	LastModifiedBy varchar(50) NOT NULL
 	Constraint PK_StoreDeliveryTimeTrace Primary Key Clustered 
 	(
 		DeliveryDateUTC DESC,
 		SAPAccountNumber ASC,
-		ReportTimeLocal DESC
+		ReportTimeLocal DESC,
+		DNS ASC
 	)
 )
 GO

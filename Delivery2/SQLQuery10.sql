@@ -2,45 +2,55 @@ use Merch
 Go
 
 Select *
-From Setup.Person
-Where LastName = 'Hendrickson'
+From APNS.NotificationQueue
 
 Select *
-From SEtup.Merchandiser
-Where GSN = 'HENCL001'
+From APNSMerch.DeliveryInfo
+
+Select Top 1000 *
+From Setup.WebAPILog
+Order By LogID Desc
+
 
 Select *
-From Portal_Data.Staging.ADExtractData
-Where UserID = 'HENCL001'
+From Mesh.DeliveryStop
+Where SAPAccountNumber = 11293013
+order by DeliveryDateUTC desc
 
-exec Planning.pGetMerchProfileByGSN @GSN = 'HENCL001'
+Declare @Known APNSMerch.tDeliveries 
+Insert @Known
+Values(49093, Null)
 
-Select *
-From SAP.Branch
-Where ZipCode like '57104%'
-
-Select b.*, c.*
-From Operation.MerchStopCheckIn c
-Join SAP.Account a on c.SAPAccountNumber = a.SAPAccountNumber
-Join SAP.Branch b on a.BranchID = b.BranchID
-Where GSN = 'HENCL001'
-Order By DispatchDate DEsc
+exec APNSMerch.pUpdateDeliveries @Known	
 
 Select *
-From setup.MerchGroup
-Where MerchGroupID = 309
+From APNSMerch.StoreDeliveryTimeTrace
+Where SAPAccountNumber = 11293013
+order by ReportTimeLocal desc
 
-Select *
-From SAP.Branch
-Where SAPBranchID = '1060'
-
-Select Min(DispatchDAte)
-From Planning.Dispatch
-Order by DispatchDate
-
-Where GSN = 'HENCL001'
-
-
-
-
+Select 
+	sm.DeliveryDateUTC,
+	sm.SAPAccountNumber,
+	p.GSN,
+	--'[' + b.BranchName + ']' + 
+	Case 
+		When sm.DNS = 1 Then 'Delivery for ' 
+		When sm.IsEstimated = 1 Then 'The new estimated delivery arrival for ' 
+		Else 'Delivery for ' End 
+	+
+	--Concat(A.AccountName, '(' + Convert(Varchar(12), A.SAPAccountNumber), + ')' + ', ', A.Address, ', ', a.City, ' ')
+	Concat(A.AccountName, ', ', A.Address, ', ', a.City, ' ')
+	+
+	Case When sm.DNS = 1 Then 'is canceled'  
+		When sm.IsEstimated = 1 Then 'is ' 
+		Else 'is arrived at ' End 
+	+
+	Case When sm.DNS = 1 Then '' 
+		Else Ltrim(Substring(Convert(varchar(30), DateAdd(Hour, TimeZoneOffSet, sm.ArrivalTime), 100), 13, 100)) End Message
+	From @DeliveryInfo ds
+	Join APNSMerch.DeliveryInfo sm on sm.SAPAccountNumber = ds.SAPAccountNumber And ds.DeliveryDateUTC = sm.DeliveryDateUTC
+	Join Setup.Merchandiser p on sm.MerchandiserGSN = p.GSN
+	Join SAP.Account a on sm.SAPAccountNumber = a.SAPAccountNumber
+	Join SAP.Branch b on a.BranchID = b.BranchID
+	And (( Delta > 1800 ) Or ( Delta <> 0 And sm.IsEstimated = 0))
 
